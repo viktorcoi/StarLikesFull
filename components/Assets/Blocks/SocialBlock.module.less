@@ -1,0 +1,183 @@
+@import "../../../public/assets/css/vars";
+
+.for-social, .for-social + p {
+    margin: .41rem;
+}
+
+.social {
+    background-color: @ColorBGSocialBlock;
+    border: 2px solid @BorderSocialBlock;
+    border-radius: @Border16px;
+    min-width: max(11.68em, 136.25px);
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.33);
+    min-height: max(3.94em, 46px);
+    p {
+        font-size: @16px;
+    }
+    img {
+        margin-right: max(.38em, 4.37px)
+    }
+    &.select {
+        font-weight: 700;
+        background-color: @ColorLanguageHeader;
+        border: 2px solid @ColorBorderLogo;
+        box-shadow: 0px 0px 2.31em @ShadowLanguageHeader;
+        color: @ColorTextWhite;
+        img {
+            filter: brightness(200%);
+        }
+    }
+}
+
+.inst, .spotify, .wt, .pay-btc, .pay-bnb, .pay-usdc, .pay-usdt {
+    width: max(1.44em, 16.76px);
+}
+
+.inst, .telegram, .face, .twitter, .spotify, 
+.wt, .clubhouse, .ok {
+    height: max(1.44em, 16.76px);
+}
+
+.youtube, .vk, .soundcloud {
+    width: max(1.56em, 18.22px);
+}
+
+.telegram {
+    width: max(1.71em, 19.98px);
+}
+
+.youtube {
+    height: max(1.10em, 12,85px);
+}
+
+.tt {
+    width: max(1.30em, 15.19px);
+    height: max(1.50em, 17.52px);
+}
+
+.vk {
+    height: max(0.89em, 10.43px);
+}
+
+.face {
+    width: max(0.73em, 8.47px);
+}
+
+.twitter {
+    width: max(1.76em, 20.47px);
+}
+
+.soundcloud {
+    height: max(0.69em, 8.02px);
+}
+
+.clubhouse {
+    width: max(1.36em, 15.83px);
+}
+
+.reddit {
+    width: max(1.36em, 18.94px);
+    height: max(1.44em, 16.68px);
+}
+
+.ok {
+    width: max(0.87em, 10.09px);
+}
+
+.pay-card, .pay-umoney, .pay-qiwi, .pay-sber {
+    width: max(1.62em, 18px);
+}
+
+.pay-card, .pay-umoney, .pay-qiwi, .pay-sber,
+.pay-btc, .pay-bnb, .pay-usdc, .pay-usdt {
+    height: auto; 
+}
+
+.pay-etc {
+    width: max(1.12em, 13.93px);
+    height: max(1.86em, 23px);
+} 
+
+.pay-doge {
+    width: max(1.23em, 15px);
+    height: max(1.33em, 16px);
+}
+
+@media screen and (max-width:1271px) {
+    .for-social, .for-social + P {
+        margin-left: auto;
+        margin-right: auto;
+        &:nth-child(4n+1) {
+            margin-left: unset;
+        }
+        &:nth-child(4n+4) {
+            margin-right: unset;
+        }
+    }
+}
+
+@media screen and (max-width:910px) {
+    .for-social {
+        &, &:nth-child(4n+1), &:nth-child(4n+4) {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &:nth-child(3n+1) {
+            margin-left: unset;
+        }
+       &:nth-child(3n+3) {
+            margin-right: unset;
+        }
+        .social {
+            margin: 0 4px;
+        }
+    }
+}
+
+@media screen and (max-width:834px) {
+    .for-social {
+        &, &:nth-child(3n+1), &:nth-child(3n+3) {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &:nth-child(4n+1) {
+            margin-left: unset;
+        }
+        &:nth-child(4n+4) {
+            margin-right: unset;
+        }
+    }
+}
+
+@media screen and (max-width:678px) {
+    .for-social {
+        &, &:nth-child(4n+1), &:nth-child(4n+4) {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &:nth-child(3n+1) {
+            margin-left: unset;
+        }
+        &:nth-child(3n+3) {
+            margin-right: unset;
+        }
+    }
+}
+
+@media screen and (max-width:470px) {
+    .for-social {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: 48%;
+        > div {
+            margin: unset !important;
+        }
+        &:nth-child(2n+1) {
+            margin-left: unset !important;
+        }
+        &:nth-child(2n+2) {
+            margin-right: unset !important; 
+        }
+    }
+}

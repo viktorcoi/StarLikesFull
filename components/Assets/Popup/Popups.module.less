@@ -1,0 +1,140 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.bg-popup, .for-close {
+    z-index: 5;
+    top: 0; left: 0; right: 0; bottom: 0;
+    position: fixed;
+}
+
+.bg-popup {
+    overflow: auto;
+    padding: 1em;
+    background-color: @BGPopup;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    visibility: hidden;
+    opacity: 0;
+    &.open {
+        visibility: visible;
+        opacity: 1;
+        & .popup {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+.popup {
+    width: max(36.94em, 430px);
+    padding: 3em 2.5em;
+    z-index: 6;
+    background-color: @BGColorDarkPurpleBlock;
+    transform: translateY(-100vh);
+    opacity: 0;
+    > div {
+        width: 100%;
+        > p {
+            width: 38ch;
+            span {
+                color: @ColorTextPurple;
+            }
+        }
+    }
+    a {
+        img {
+            display: none;
+        }
+    }
+}
+
+.popup-title {
+    min-width: 32em;
+    margin-bottom: 2.5em;
+    h2 {
+        font-size: @24px;
+    }
+    img {
+
+        width: 1.65em;
+        height: 1.50em;
+        margin: .1em 0 0 2em;
+        .animation_purple_img_white;
+        &:hover {
+            animation: hover-in .3s ease-out;
+            animation-fill-mode: forwards
+        }
+        &:not(:hover) {
+            animation: hover-out .3s ease-out;
+        }
+    }
+}
+
+.popup-text {
+    .popup-title {
+        margin-bottom: 0.81em;
+    }
+    button {
+        width: 100%;
+    }
+    > div {
+        margin-bottom: 2.13em;
+        span {
+            color: #E857CC !important;
+            &:hover {
+                color: @ColorTextWhite !important;
+            }
+        }
+    }
+}
+
+@media screen and (max-width:834px) {
+    .popup {
+        button {
+            span {
+                padding: 1px 0;
+            }
+        }
+        a {
+            span {
+                padding: .5px 0;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 509px) {
+    .popup {
+        width: 90%;
+        > div > p {
+            width: 100%;
+        }
+    }
+}
+
+
+@media screen and (max-width: 465px) {
+    .popup {
+        width: 100%;
+        padding: 30px 20px;
+        button, a {
+            padding-left: unset !important;
+            padding-right: unset !important;
+            min-width: 100% !important;
+        }
+        &.yes-no {
+            > div:not(.popup-title) {
+                flex-direction: column;
+                > button:last-child {
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+    .popup-title {
+        min-width: unset;
+    }
+    .popup-title > img {
+        margin-left: 10px;
+    }
+}

@@ -1,0 +1,44 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.alert {
+    position: fixed;
+    background-color: @ColorTextInputError;
+    border: 2px solid #BB90BB;
+    min-width: 21.56em;
+    bottom: 2em; right: 2em;
+    transform: translateX(120vw);
+    z-index: 6;
+    .status {
+        width: 4.29em;
+        height: 4.72em;
+        top: -1em;
+        left: -2em;
+    }
+    > div {
+        padding: 1.38em 3.5em 1.69em 3.5em;
+    }
+    .close {
+        width: 1.19em;
+        height: 1.19em;
+        top: 1.28em; right: 1.66em;
+        &:hover {
+            animation: hover-in .3s ease-out;
+            animation-fill-mode: forwards
+        }
+        &:not(:hover) {
+            animation: hover-out .3s ease-out;
+        }
+    }
+    h3 {
+        font-size: @24px;
+    }
+    p {
+        margin-top: .2rem;
+        font-size: @14px;
+        width: 25ch;
+    }
+    &.open {
+        transform: translateX(0);
+    }
+}

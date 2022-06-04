@@ -1,0 +1,61 @@
+@import "vars";
+@import "mixing";
+
+.error-page {
+    margin-top: 8.63em;
+    h2 {
+        font-size: max(2.5rem, 24px);
+        margin-bottom: max(.9rem, 10px);
+    }
+    h3 {
+        font-size: @32px;
+        font-weight: 400;
+    }
+    p {
+        margin: 1.04rem 0 2.56rem 0;
+        font-size: @16px;
+        width: 40.2ch;
+        letter-spacing: .04em;
+        &.text-500 {
+            width: 44ch;
+        }
+    }
+    img {
+        width: 38.21em;
+        height: 26.12em;    
+    }
+}
+
+@media screen and (max-width:809px) {
+
+    .error-page {
+        margin-top: 3rem;
+        flex-direction: column;
+        flex-direction: column-reverse;
+        a {
+            min-width: unset;
+        }
+        h2 {
+            margin-top: 3rem;
+        }
+        h2, h3, p {
+            text-align: center;
+        }
+        p {
+            width: 328px !important;
+        }
+    }
+}
+
+@media screen and (max-width: 449px) {
+
+    .error-page {
+        img {
+            width: 90%;
+            height: auto;
+        }
+        p {
+            width: 100% !important;
+        }
+    }
+}

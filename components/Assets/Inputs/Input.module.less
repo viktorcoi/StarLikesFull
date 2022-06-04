@@ -1,0 +1,420 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.for-input {
+    margin-bottom: .81rem;
+    .main-input, textarea {
+        border-radius: @Border16px;
+        padding: max(1.151rem, 13.7px) max(1.69rem, 19px) max(1.151rem, 13.7px) max(4.63rem, 40px);
+        background-color: @ColorBGMainInput;
+        border: 2px solid @ColorBorderLogo;
+    }
+    input, textarea {
+        background-color: @ColorBGInput;
+        background-position: 1.9rem center;
+        background-repeat: no-repeat;
+        border: 2px solid @ColorBorderInput;
+        font-size: @18px;
+        padding: max(1.151rem, 13.7px) max(1.69rem, 19px) max(1.151rem, 13.7px) max(1.69rem, 19px);
+        width: 100%;
+        color: @ColorTextWhite;
+        & ~ .view-pass {
+            width: max(1.38em, 13.25px);
+            height: max(0.87em, 8.42px);
+            right: 2rem;
+            &:hover {
+                filter: brightness(200%);
+            }
+            &.view {
+                filter: brightness(200%);
+            }
+        }
+        &.ref {
+            background-image: url(../../../public/assets/img/input-link-ref.svg);
+            background-size: max(1.46rem, 18.7px);
+        }
+        &.pass {
+            background-image: url(../../../public/assets/img/input-pass.svg);
+            background-size: max(1.22rem, 10.03px) max(1.63rem, 13.41px);
+        }
+        &.phone {
+            background-image: url(../../../public/assets/img/input-phone.svg);
+            background-size: max(1.23rem, 10.11px) max(1.63rem, 13.41px);
+        }
+        &.enter {
+            background-image: url(../../../public/assets/img/input-enter.svg);
+            background-size: max(1.44rem, 11.83px);
+        }
+        &.mail {
+            background-image: url(../../../public/assets/img/input-mail.svg);
+            background-size: max(1.63rem, 13.4px) max(1.16rem, 9.55px);
+        }
+        &.world {
+            background-image: url(../../../public/assets/img/input-world.svg);
+            background-size: max(1.44rem, 11.83px);
+        }
+        &.wallet {
+            background-image: url(../../../public/assets/img/input-wallet.svg);
+            background-size: max(1.63rem, 13.4px) max(1.4rem, 11.5px);
+        }
+        &.chat {
+            background-image: url(../../../public/assets/img/input-chat.svg);
+            background-size: max(1.63rem, 13.4px) max(1.4rem, 11.5px);
+        }
+        &.money {
+            background-image: url(../../../public/assets/img/input-money.svg);
+            background-size: max(1.82rem, 21px) max(1.44rem, 19px);
+        }
+        &.coupon {
+            background-image: url(../../../public/assets/img/input-coupon.svg);
+            background-size: max(1.44rem, 19px);
+        }
+        &.count {
+            background-image: url(../../../public/assets/img/input-count.svg);
+            background-size: max(1.46rem, 18.7px);
+        }
+        &.btc {
+            background-image: url(../../../public/assets/img/pay-btc.svg);
+        } 
+        &.bnb {
+            background-image: url(../../../public/assets/img/pay-bnb.svg);
+        } 
+        &.usdc {
+            background-image: url(../../../public/assets/img/pay-usdc.svg);
+        } 
+        &.usdt {
+            background-image: url(../../../public/assets/img/pay-usdt.svg);
+        }
+        &.btc, .bnb, .usdc, .usdt {
+            background-size: max(1.44rem, 16.76px) auto;
+        }
+        &.etc {
+            background-image: url(../../../public/assets/img/pay-etc.svg);
+            background-size: max(1.12rem, 13.93px) max(1.86rem, 23px);
+        } 
+        &.doge {
+            background-image: url(../../../public/assets/img/pay-doge.svg);
+            background-size: max(1.23rem, 15px) max(1.33rem, 16px);
+        }
+        &.search {
+            background-image: url(../../../public/assets/img/input-search.svg);
+            background-size: max(1.5rem, 19px);
+        }
+        &.sharp {
+            background-image: url(../../../public/assets/img/input-sharp.svg);
+            background-size: max(1.22rem, 16px) max(1.37rem, 18px);
+        }
+        &.plus {
+            background-image: url(../../../public/assets/img/input-plus.svg);
+            background-size: max(1.62rem, 19px);
+        }
+        &.type {
+            background-image: url(../../../public/assets/img/input-type.svg);
+            background-size: max(1.44rem, 19.09px) max(1.05rem, 14px);
+        }
+        &.social {
+            background-image: url(../../../public/assets/img/input-social.svg);
+            background-size: max(1.62rem, 19.09px);
+        }
+        &.ruble {
+            background-image: url(../../../public/assets/img/input-ruble.svg);
+            background-size: max(1.29rem, 16px) max(1.44rem, 19.09px);
+        }
+        &::-webkit-input-placeholder {
+            color: rgba(255, 255, 255, 0.53);
+        }
+        &:focus, &.active {
+            border: 2px solid @ColorTextWhite;
+            &.ref {
+                background-image: url(../../../public/assets/img/input-link-ref-white.svg);
+            }
+            &.pass {
+                background-image: url(../../../public/assets/img/input-pass-white.svg);
+            }
+            &.phone {
+                background-image: url(../../../public/assets/img/input-phone-white.svg);
+            }
+            &.enter {
+                background-image: url(../../../public/assets/img/input-enter-white.svg);
+            }
+            &.mail {
+                background-image: url(../../../public/assets/img/input-mail-white.svg);
+            }
+            &.world {
+                background-image: url(../../../public/assets/img/input-world-white.svg);
+            }
+            &.wallet {
+                background-image: url(../../../public/assets/img/input-wallet-white.svg);
+            }
+            &.chat {
+                background-image: url(../../../public/assets/img/input-chat-white.svg);
+            }
+            &.money {
+                background-image: url(../../../public/assets/img/input-money-white.svg);
+            }
+            &.coupon {
+                background-image: url(../../../public/assets/img/input-coupon-white.svg);
+            }
+            &.btc {
+                background-image: url(../../../public/assets/img/pay-btc-white.svg);
+            } 
+            &.bnb {
+                background-image: url(../../../public/assets/img/pay-bnb-white.svg);
+            } 
+            &.usdc {
+                background-image: url(../../../public/assets/img/pay-usdc-white.svg);
+            } 
+            &.usdt {
+                background-image: url(../../../public/assets/img/pay-usdt-white.svg);
+            }
+            &.etc {
+                background-image: url(../../../public/assets/img/pay-etc-white.svg);
+            } 
+            &.doge {
+                background-image: url(../../../public/assets/img/pay-doge-white.svg);
+            }
+            &.count {
+                background-image: url(../../../public/assets/img/input-count-white.svg);
+            }
+            &.search {
+                background-image: url(../../../public/assets/img/input-search-white.svg);
+            }
+            &.sharp {
+                background-image: url(../../../public/assets/img/input-sharp-white.svg);
+            }
+            &.plus {
+                background-image: url(../../../public/assets/img/input-plus-white.svg);
+            }
+            &.type {
+                background-image: url(../../../public/assets/img/input-type-white.svg);
+            }
+            &.social {
+                background-image: url(../../../public/assets/img/input-social-white.svg);
+            }
+            &.ruble {
+                background-image: url(../../../public/assets/img/input-ruble-white.svg);
+            }
+        }
+    }
+    textarea {
+        background-image: url(../../../public/assets/img/input-chat.svg);
+        background-size: max(1.63rem, 13.4px) max(1.4rem, 11.5px);
+        background-position: 1.9em 1.1em;
+        resize: none;
+        min-height: 11.19rem;
+        .custom-scroll;
+        &.active {
+            background-image: unset;
+            padding-left: 2.19em;
+        }
+    }
+    .view-pass {
+        transform: translateY(-50%);
+        top: 50%;
+    }
+    &.admin-search {
+        margin: unset;
+    }
+}
+
+.for-input-error {
+    &:hover .for-error.view {
+        visibility: visible;
+        opacity: 1;
+    }
+    .for-error {
+        padding: 0.38em 1.31em;
+        z-index: 4;
+        top: 3.7em; left: .7em;
+        background-color: #CFB6D1;
+        visibility: hidden;
+        color: @ColorTextInputError;
+        opacity: 0;
+        .triangle {
+            bottom: 1.25em;
+            width: 1em;
+            height: 1em;
+            clip-path: polygon(0 0, 100% 20%, 20% 100%);
+            background-color: #CFB6D1;
+            border-radius: 3px;
+            transform: rotate(45deg);
+        }
+        .error {
+            margin: unset !important;
+            font-size: @15px;
+        }
+        &.view {
+            & + div input, + input, & + div textarea {
+                border: 2px solid @ColorBorderInputError;
+            }
+        }
+    }
+}
+
+.radio {
+    > div {
+        border: 1px solid #AF4EC0;
+        width: 18.46px;
+        height: 18.46px;
+        > div {
+            width: 12.46px;
+            height: 12.46px;
+            background-color: #AF4EC0;
+            opacity: 0;
+        }
+    }
+    input {
+        z-index: 1;
+        opacity: 0;
+        width: 18.46px;
+        height: 18.46px;
+    }
+    input:checked + div > div {
+        opacity: 1;
+    }
+    label {
+        padding-left: 14px;
+        font-size: @20px;
+        &:hover {
+            color: #AF4EC0;
+        }
+    }
+}
+
+.copy-input, .main-dark-input {
+    min-width: 29.69em;
+    img {
+        right: 2.88rem; top: 0; bottom: 0;
+        margin: auto 0;
+        filter: brightness(50%);
+        &:hover {
+            animation: unset;
+            filter: unset;
+        }
+        &:not(:hover) {
+            animation: unset;
+        }
+    }
+    input, textarea {
+        background-color: @ColorMainBGInput !important;
+        border: 2px solid @ColorMainBorderInput;
+        font-size: @20px;
+        padding: max(1.094rem, 12px) max(5rem, 40px) max(1.094rem, 12px) max(5rem, 50px);
+        border-radius: @Border16px;
+    }
+}
+
+.main-dark-input {
+    input, textarea {
+        background-image: unset;
+        padding: max(1.151rem, 13.7px) 2rem  max(1.151rem, 13.7px) max(5rem, 50px);
+        font-size: @18px;
+    }
+    textarea {
+        min-height: max(8.5rem, 136px);
+        padding:  max(1.151rem, 13.7px) 2rem 1.151rem 1.9rem !important;
+        border: 2px solid @ColorTextWhite !important;
+    }
+}
+
+.last {
+    margin-bottom: 0;
+}
+
+.admin-search {
+    width: 15.56em;
+    input {
+        padding: max(.98rem, 14px) 2rem  max(.98rem, 14px) max(5rem, 50px);
+        background-color: @ColorMainBGInput;
+        border: 2px solid @ColorBorderDialog;
+        font-size: @14px;
+    }
+}
+
+.admin-search-popup {
+    width: 57%;
+    .for-input {
+        margin-bottom: unset;
+    }
+    input {
+        border-radius: @Border16px;
+        padding: max(1.151rem, 13.7px) max(1.69rem, 19px) max(1.151rem, 13.7px) max(4.63rem, 40px);
+        background-color: @ColorBGMainInput;
+        border: 2px solid @ColorBorderLogo;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .for-search {
+        > div {
+            input {
+                padding: 0.47rem 10px;
+            }
+        }
+    }
+    .triangle {
+        bottom: 1.15em !important;
+    }
+}
+
+@media screen and (max-width: 604px) {
+    .admin-search {
+        min-width: 170px;
+    }
+}
+
+@media screen and (max-width: 428px) {
+    .for-input {
+        input, textarea {
+            background-position: 15px center;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        textarea {
+            background-position: 15px 14px;
+            padding-left: 40px !important;
+            &.active {
+                background-image: unset;
+                padding-left: 15px !important;
+            }
+        }
+    }
+    .main-dark-input textarea {
+        padding-left: 15px !important;
+    }
+    .view-pass {
+        right: 10px !important;
+    }
+    .admin-search {
+        width: 100%;
+        input {
+            padding-left: 40px !important;
+        }
+    }
+    .copy-input, .main-dark-input { 
+        img {
+            right: 20px;
+        }
+        input {
+            padding-left: 40px;
+        }
+    }
+    .copy-input input {
+        padding-right: 40px;
+    }
+    .admin-search-popup input {
+        padding-left: 40px;
+    }
+    .main-input {
+        padding-left: 40px !important;
+    }
+}
+
+@media screen and (max-width:342px) {
+    .admin-search-popup {
+        margin-bottom: .81em;
+    }
+    .copy-input, .main-dark-input {
+        min-width: 100% !important;
+    }
+}

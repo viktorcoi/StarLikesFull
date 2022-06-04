@@ -1,0 +1,101 @@
+@import "../../../public/assets/css/vars";
+
+.info-support {
+    font-weight: 700 !important;
+    margin-bottom: .5rem;
+    font-size: @15px !important;
+    text-align: center;
+    span {
+        margin-left: 1rem;
+        color: @ColorTextPurple;
+        font-weight: 500;
+    }
+}
+
+.header-dialog {
+    margin-top: 2.63em;
+    background-color: @ColorBGHeaderDialog;
+    border: 2px solid @ColorBorderHeaderDialog;
+    border-bottom: unset;
+    border-radius: @Border16px @Border16px 0 0;
+    padding: 1.916em 2.38em;
+    p {
+        font-size: @15px !important;
+        font-weight: 700 !important;
+    }
+    .status {
+        margin-right: max(1rem, 14px);
+    }
+    .last-message {
+        p:not(:last-child) {
+            margin-right: max(1rem, 14px);
+        }
+        img {
+            filter: brightness(200%);
+            width: 17px;
+            height: 14.83px;
+            margin-right: .84rem;
+        }
+    }
+    .date {
+        font-weight: 500 !important;
+    }
+}
+
+.message {
+    transition: 5s;
+    opacity: 0;
+    margin-top: 1.4rem;
+    p {
+        text-align: unset !important;
+    }
+    .name {
+        font-weight: 700;
+        font-size: @20px;
+        margin-right: .92rem;
+    }
+    .pen {
+        margin-right: 8px;
+    }
+    .time {
+        font-weight: 400;
+        color: #CBCBCB;
+        font-size: @16px;
+        margin-right: .92rem;
+    }
+    .img-profile {
+        width: max(2.61em, 31px);
+        height: max(2.61em, 31px);
+        margin-right: 10px;
+    }
+    .text-message {
+        font-weight: 400;
+        font-size: @18px;
+        margin-top: 10px;
+        word-wrap: break-word;
+    }
+    &.view {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width:864px) {
+    .header-dialog {
+        flex-direction: column;
+        .last-message {
+            margin-top: 9px;
+        }
+    }
+}
+
+@media screen and (max-width:399px) {
+    .last-message {
+        flex-direction: column;
+        p {
+            margin: unset !important;
+            &:first-child {
+                margin-bottom: 6px !important;
+            }
+        }
+    }
+}

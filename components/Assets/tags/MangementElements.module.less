@@ -1,0 +1,38 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.recycle {
+    width: 11px;
+    height: 17px;
+    &:hover {
+        animation: hover-in .3s ease-out;
+        animation-fill-mode: forwards
+    }
+    &:not(:hover) {
+        animation: hover-out .3s ease-out;
+    }
+}
+
+.copy {
+    width: max(1.19em, 16.52px);
+    height: max(1.44em, 20px);
+    &:hover {
+        animation: hover-in .3s ease-out;
+        animation-fill-mode: forwards
+    }
+    &:not(:hover) {
+        animation: hover-out .3s ease-out;
+    }
+}
+
+.edit {
+    width: 13.58px;
+    height: 13.58px;
+    &:hover {
+        animation: hover-in .3s ease-out;
+        animation-fill-mode: forwards
+    }
+    &:not(:hover) {
+        animation: hover-out .3s ease-out;
+    }
+}

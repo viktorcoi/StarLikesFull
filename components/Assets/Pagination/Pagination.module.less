@@ -1,0 +1,72 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.pagination {
+    > div {
+        margin: 0 1.87em;
+    }
+    button {
+        border: unset;
+        background-color: unset;
+        img {
+            width: max(3.94rem, 33.57px);
+            height: max(3.94rem, 33.57px);
+        }
+        &:hover {
+            img {
+                animation: hover-in .4s ease-out;
+                animation-fill-mode: forwards  
+            }
+        }
+        &:not(:hover) {
+            img {
+                animation: hover-out .4s ease-out;
+            }
+            .animation_purple_img_gray
+        }
+        &:disabled {
+            img {
+                filter: brightness(10%) contrast(60%);
+            }
+            &:hover {
+                img {
+                    animation: unset;
+                }
+            }
+            &:not(:hover) {
+                img {
+                    animation: unset;
+                }
+            }
+        }
+    }
+} 
+
+.number-page {
+    font-size: @15px;
+    margin: 0 1.87em;
+    &:hover {
+        color: @ColorTextPurple;
+    }
+    &.select {
+        color: @ColorTextPurple
+    }
+    .right_left_0;
+    p {
+        font-size: @15px;
+    }
+    &:nth-child(4):hover {
+        cursor: unset;
+        color: unset;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .number-page {
+        font-size: 8.45px;
+    }
+    .pagination button img {
+        width: 34px;
+        height: 34px;
+    }
+}

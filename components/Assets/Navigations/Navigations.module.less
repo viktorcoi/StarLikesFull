@@ -1,0 +1,97 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.navigation {
+    a {
+        margin: 2.38rem 0 !important;
+        .top_bottom_0 !important;
+        color: @ColorTextNavMenu !important;
+        font-weight: 500 !important;
+        font-size: @20px !important;
+        &:hover {
+            color: @ColorTextWhite !important;
+            img {
+                filter: brightness(250%) !important;
+            }
+        }
+        &.select {
+            font-weight: 700 !important;
+            color: aliceblue !important;
+            text-shadow: 0px 0px 27px #D5A0FF !important;
+            img {
+                filter: brightness(250%) drop-shadow(0px 0px 8px #D5A0FF) !important;
+            }
+        }
+        img {
+            width: 1.66rem !important;
+            height: auto !important;
+            margin-right: 1.71rem !important;
+        }
+    }
+}
+
+.navigation-mini {
+    display: none;
+}
+
+@media screen and (max-width:834px) {
+    .navigation {
+        z-index: 3;
+        background-color: @ColorLogo;
+        padding: 3rem 2.5rem;
+        position: absolute;
+        left: 0;
+        border-radius: 0 @Border16px @Border16px 0;
+        border: 1px solid #A282AD;
+        border-left: unset;
+        transform: translateX(-90%);
+        transition: .3s;
+        a {
+            filter: brightness(150%);
+        }
+        &:hover {
+            transform: unset;
+        }
+    }
+}
+
+@media screen and (max-width:604px) {
+    .navigation {
+        display: none;
+    }
+    .navigation-mini {
+        z-index: 3;
+        background-color: @ColorLogo;
+        padding: 10px 0;
+        left: 0; right: 0; bottom: 0;
+        border-top: 1px solid #A282AD;
+        display: flex;
+        position: fixed;
+        a {
+            filter: brightness(150%);
+            margin: auto !important;
+            color: @ColorTextNavMenu !important;
+            display: flex;
+            flex-direction: column;
+            img {
+                margin: 0 0 4.57px 0 !important;
+                width: auto !important;
+                height: 26.43px !important;
+            }
+            &.select {
+                font-weight: 700 !important;
+                color: aliceblue !important;
+                text-shadow: 0px 0px 27px #D5A0FF !important;
+                img {
+                    filter: brightness(250%) drop-shadow(0px 0px 8px #D5A0FF) !important;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width:428px) {
+    .navigation-mini a {
+        font-size: 12px;
+    }
+}

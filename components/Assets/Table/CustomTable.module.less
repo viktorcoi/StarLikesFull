@@ -1,0 +1,258 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.scroll {
+    padding: 0 0 .5em 0;
+    overflow-y: hidden;
+    overflow-x: auto;
+    width: 100%;
+    .custom-scroll;
+}
+
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    text-align: center;
+    th {
+        border-top: solid 2px @ColorBorderHeaderDialog;
+        background: @ColorBGHeaderDialog;
+        font-size: @15px;
+    }
+    tr {
+        width: 100%;
+    }
+    td {
+        background: @ColorMainBGInput;
+        font-size: @14px;
+        color: rgba(255, 255, 255, 0.69);
+        a {
+            font-size: @14px;
+            &:hover {
+                color: @ColorTextWhite;
+            }
+        }
+        &.purple {
+            color: @ColorTextPurple;
+            display: table-cell;
+            border-radius: unset;
+        }
+        > p {
+            text-decoration: underline;
+            font-size: @14px;
+        }
+        span {
+            font-weight: 300;
+            display: block;
+        }
+        &:hover .info-date {
+            opacity: 1;
+        }
+    }
+    th {
+        height: max(5.75rem, 52px) !important;
+        &:first-child {
+            text-align: left;
+            border-left: 2px solid @ColorBorderHeaderDialog;
+            padding-left: 2rem;
+        }
+        border-bottom: 2px solid @ColorBorderDialog;
+        &:last-child {
+            border-right: 2px solid @ColorBorderHeaderDialog;
+        }
+    }
+    th, td {
+        height: max(3.95rem, 46px);
+        &:first-child {
+            text-align: left;
+            border-left: 2px solid @ColorBorderDialog;
+            padding-left: 2rem;
+        }
+        border-bottom: 2px solid @ColorBorderDialog;
+        &:last-child {
+            border-right: 2px solid @ColorBorderDialog;
+        }
+        &.hide {
+            color: #645F66;
+        }
+    }
+    tr:last-child {
+        th:first-child {
+            border-top-left-radius: 6px;
+        }
+        th:last-child {
+            border-top-right-radius: 6px;
+        }
+        td:first-child {
+            border-bottom-left-radius: 6px;
+        }
+        td:last-child {
+            border-bottom-right-radius: 6px;
+        }
+    }
+    .notifications {
+        background-color: @ColorTextPurple;
+        padding: unset;
+        width: max(1.56em, 20px);
+        height: max(1.56em, 20px);
+        p {
+            font-size: 11px;
+            font-weight: 700;
+        }
+    }
+    .management {
+        img:not(:last-child) {
+            margin-right: 11.42px;
+        }
+    }
+}
+
+.purple, .green, .red {
+    padding: .3rem .7rem;
+    min-width: max(8.44rem, 95px);
+    display: table;
+    border-radius: @Border7px;
+    p {
+        text-align: center;
+        color: @ColorTextWhite !important;
+        font-size: 12px !important;
+        white-space: nowrap;
+        font-weight: 500 !important;
+        line-height: 15px;
+    }
+}
+
+.purple {
+    background-color: @ColorTextPurple;
+}
+
+.green {
+    background-color: #09B261;
+}
+
+&.red {
+    background-color: @ColorBorderInputError;
+}
+
+.service-table {
+    th, td {
+        &:last-child {
+            padding-right: 2rem;
+        }
+    }
+}
+
+.balance-table {
+    th, td {
+        width: 20%;
+        &:last-child {
+            padding-right: 2rem;
+        }
+    }
+}
+
+.my-service-table {
+    th, td {
+        width: 20%;
+        &:nth-child(3) {
+            width: 25%;
+        }
+        &:last-child {
+            padding-right: 1rem;
+        }
+    }
+}
+
+.table-support {
+    th, td {
+        &:first-child {
+            width: 8%;
+        } 
+        width: 27%;
+        &:last-child {
+            padding-right: 2rem;
+        }
+    }
+}
+
+.table-referrals {
+    th, td {
+        width: 25%;
+        &:last-child {
+            padding-right: 2rem;
+        }
+    }
+}
+
+.table-notifications {
+    th, td {
+        width: 15%;
+        &:first-child {
+            width: 30%;
+        }
+    }
+}
+
+.table-crypto {
+    th, td {
+        width: 23%;
+        &:last-child {
+            width: 31%;
+            padding-right: 2rem;
+        }
+    }
+}
+
+.order-info-table {
+    th, td {
+        width: 22%;
+        &:last-child {
+            width: 31%;
+            padding-right: 2rem;
+        }
+    }
+}
+
+.admin-table {
+    th, td {
+        min-width: max(10.5rem, 150px);
+        &:first-child {
+            min-width: max(5rem, 40px) !important;
+        }
+    }
+}
+
+.admin-table-coupons {
+    th, td {
+        width: 15%;
+        &:first-child {
+            width: 10%;
+        }
+        &:last-child {
+            width: 25%;
+        }
+    }
+}
+
+@media screen and (max-width:999px) {
+    .custom-table {
+        td, th {
+            min-width: 150px;
+        }
+    }
+    .admin-table-coupons {
+        th, td {
+            &:first-child {
+                min-width: 40px !important;
+            }
+        }
+    }
+
+    .table-support {
+        th, td {
+            &:first-child {
+                min-width: 40px;
+            } 
+        }
+    }
+}

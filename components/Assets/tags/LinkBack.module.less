@@ -1,0 +1,43 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.link-back {
+    color: #717171 !important;
+    left: 0; top: 0;
+    font-size: @20px !important;
+    font-weight: 700 !important;
+    &:hover {
+        color: @ColorTextWhite !important;
+        img {
+            filter: brightness(200%);
+        }
+    }
+    img {
+        width: max(1.65rem, 19.52px);
+        height: max(1.65rem, 19.52px);
+        margin-right: max(.63rem, 8px);
+    }
+}
+
+.white-link {
+    position: unset;
+    color: @ColorTextWhite !important;
+    margin: unset !important;
+    margin-right: 1.69rem !important;
+    img {
+        filter: brightness(200%);
+    }
+    &:hover {
+        color: @ColorTextPurple !important;
+        .animation_purple_img_filter_white;
+        img {
+            animation: hover-in .3s ease-out;
+            animation-fill-mode: forwards  
+        }
+    }
+    &:not(:hover) {
+        img {
+            animation: hover-out .3s ease-out;
+        }
+    }
+}

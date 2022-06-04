@@ -1,0 +1,121 @@
+.for-radio {
+    margin-bottom: 2.35em;
+    .radio {
+        margin-right: 3.81em;
+    }
+}
+
+.online {
+    display: none;
+    &.open {
+        display: block;
+    }
+    p {
+        margin: 0 0 1rem .7rem;
+    }
+}
+
+.for-coupon {
+    margin-top: 2em;
+    .for-input-coupon {
+        a {
+            width: 27.25%;
+        }
+        > div {
+            width: 69.4%;
+        }
+    }
+}
+
+.choose-pay {
+    margin: 0 0 2rem .7rem;
+}
+
+.mini-button {
+    margin-top: 1.56em;
+    width: min-content;
+}
+
+.for-pays {
+    margin-bottom: 2.13em;
+}
+
+.cryptocurrency {
+    display: none;
+    p {
+        margin: 0 0 1rem .7rem;
+    }
+    &.open {
+        display: block;
+    }
+}
+
+.pay-crypto, .pay-online {
+    img {
+        margin-right: max(1em, 11px) !important;
+    }
+    p {
+        margin: unset;
+    }
+}
+
+.pay-online {
+    margin: .32em !important;
+    > div {
+        min-width: 16em !important;
+    }
+}
+
+.pay-crypto {
+    margin: .32em .38em !important;
+    > div {
+        min-width: max(7.56em, 85px) !important;
+    }
+}
+
+@media screen and (max-width: 910px) {
+    .pay-online > div, .pay-crypto > div {
+        margin: unset !important;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .pay-online {
+        width: 48%;
+        > div {
+            padding: 0 14px !important;
+            min-width: unset !important;
+        }
+    }
+}
+
+@media screen and (max-width: 604px) {
+    .online {
+        .for-pays {
+            justify-content: center;
+        }
+    }
+    .choose-pay, .online p, .cryptocurrency p {
+        margin-left: unset;
+    }
+}
+
+@media screen and (max-width:570px) {
+    .for-input-coupon {
+        flex-direction: column;
+        align-items: center;
+        > div {
+            width: 100% !important;
+            margin-bottom: 19px;
+        }
+    }
+}
+
+@media screen and (max-width:350px) {
+    .for-radio {
+        flex-direction: column;
+        > div:first-child {
+            margin-bottom: 20px;
+        }
+    }
+}

@@ -1,0 +1,419 @@
+@import "../../../public/assets/css/vars";
+@import "../../../public/assets/css/mixing";
+
+.header {
+    width: min(92vw, 1170px);
+}
+
+.logo {
+    padding: max(2.2rem, 13.15px) max(1.95rem, 17.78px)  max(2.8rem, 17.28px) max(1.95rem, 16.92px);
+    background-color: @ColorLogo;
+    box-shadow: 0px 20.24px 85.36px @ShadowLogo;
+    border: 2px solid @ColorBorderLogo;
+    font-size: unset;
+    border-top: unset;
+    border-radius: 0 0 max(1.2rem, 9.46px) max(1.2rem, 9.46px);
+    span {
+        font-size: @25px;
+        text-transform: uppercase;
+        font-weight: 800;
+        width: 5ch;
+        line-height: 102.9%;
+        margin: 0.3rem 0.7rem 0 0;
+    }
+    img {
+        width: max(3.52rem, 32.7px);
+        height: max(3.52rem, 32.7px);
+    }
+    &:hover {
+        background-color: @ColorHoverLogo;
+    }
+}
+
+.language {
+    font-weight: 700;
+    min-height: max(3.94rem, 48.74px);
+    padding: 0 1.34rem;
+    color: @ColorTextWhite;
+    background-color: @ColorLanguageHeader;
+    border: 2px solid @ColorBorderLogo;
+    box-shadow: 0px 0px 37px @ShadowLanguageHeader;
+    min-width: max(6.63rem, 82px);
+    border-radius: max(1.05rem, 12.93px);
+    p {
+        text-transform: uppercase;
+        font-size: @20px;
+    }
+    &.two-language {
+        padding: 0 0.5rem;
+        border: 2px solid transparent;
+        border-top: unset;
+        background-color: @ColorBGDropProfile;
+        box-shadow: unset;
+        transform: translateX(-50%);
+        left: 50%;
+        border-radius: 0 0 7px 7px;
+        min-height: 0em;
+        max-height: 0em;
+        overflow: hidden;
+        visibility: hidden;
+        min-width: 75%;
+        &:hover {
+            border: 2px solid @ColorBorderLogo; 
+            border-top: unset;
+        }
+        &.open {
+            min-height: 3rem;
+            max-height: 3rem;
+            visibility: visible;
+        }
+    }
+    &:hover {
+        background-color: unset;
+        box-shadow: unset;
+    }
+}
+.language img {
+    width: max(1.33rem, 17.46px);
+    height: max(1.11rem, 13.71px);
+    box-shadow: 0 0 15px 3px @ShadowIMGLanguageHeader;
+} 
+
+.balance {
+    a {
+        line-height: 0;
+        font-size: unset;
+    }
+    p {
+        font-size: @20px;
+        font-weight: 700;
+        line-height: 100%;
+    }
+    .your-balance {
+        margin-left: .5rem;
+        font-weight: 500;
+        color: @ColorTextPurple;
+    }
+    img {
+        margin-left: 1.06em;
+        width: 1.84em;
+        height: 1.84em;
+        &:hover {
+            animation: hover-in .3s ease-out;
+            animation-fill-mode: forwards
+        }
+        &:not(:hover) {
+            animation: hover-out .3s ease-out;
+        }
+        .animation_purple_img_white;
+    }
+}
+
+.alert {
+    font-size: unset;
+    div p {
+        display: none;
+    }
+    .count-alert {
+        top: .95em;
+        left: 1.2em;
+        background-color: #9B92A3;
+        p {
+            display: unset;
+            font-weight: 700;
+            font-size: 11px;
+        }
+        width: 18px;
+        height: 18px;
+        &.new-alert {
+            background-color: @ColorBorderInputError;
+        }
+    }
+    img {
+        width: max(1.65rem, 17.02px);
+        height: max(1.84rem, 19px);
+    }
+    &:hover {
+        img {
+            filter: brightness(300%) contrast(80%);
+        }
+    }
+}
+
+.navigation {
+    a {
+        font-weight: 400;
+        margin: 0 2.25rem;
+        .right_left_0;
+        &:hover {
+            color: @ColorTextPurple;
+        }
+        &.you-here {
+            font-weight: 700;
+        }
+    }
+}
+
+.menu-auth {
+    width: 60.5%;
+}
+
+.menu-main {
+    width: max(66.6%, 450px);
+}
+
+.menu-admin {
+    width: max(42.15%, 350px);
+}
+
+.profile {
+    .main-profile {
+        img {
+            width: 3.31em;
+            height: 3.31em;
+        }
+        p {
+            font-weight: 700;
+            margin: 0 1rem 0 1rem;
+            white-space: nowrap;
+        }
+        .arrow {
+            width: .91em;
+            height: .5em;
+            
+            &.open {
+                transform: rotate(180deg);
+            }
+        }
+        &:hover {
+            .arrow {
+                animation: hover-in .3s ease-out;
+                animation-fill-mode: forwards
+            }
+            p {
+                color: @ColorTextPurple;
+            }
+        }
+        &:not(:hover) .arrow {
+            animation: hover-out .3s ease-out;
+        }
+    }
+    .drop-profile {
+        top: 4.8em;
+        background-color: @ColorBGDropProfile;
+        border: 1px solid @BorderPurpleBlock;
+        border-radius: 0 0 @Border16px @Border16px;
+        padding: 0 1.5em;
+        flex-direction: column;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        z-index: 1;
+        &.open {
+            opacity: 1;
+            padding: 1.19em 1.5em;
+            max-height: 200px;
+        }
+        a {
+            margin: .75rem 0;
+            .top_bottom_0;
+            p {
+                font-size: @15px;
+                line-height: 128%;
+                img {
+                    margin-right: 1.1rem;
+                    width: max(1.18rem, 12px);
+                    height: auto;
+                }
+            }
+            &:hover {
+                color: @ColorTextPurple;
+                img {
+                    animation: hover-in .3s ease-out;
+                    animation-fill-mode: forwards
+                }
+            }
+            &:not(:hover) {
+                img {
+                    animation: hover-out .3s ease-out;
+                }
+            }
+        }
+    }
+}
+
+.bg-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: @BGPopup;
+    z-index: 4;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.burger {
+    display: none;
+    width: 6.42px;
+    height: 26.58px;
+    flex-direction: column;
+    > div {
+        border-radius: 100%;
+        width: 6.42px;
+        height: 6.42px;
+        background-color: @ColorTextWhite;
+    }
+    &.open {
+        opacity: 0;
+    }
+}
+
+.head-menu, .element-exit, .balance p img, 
+.element-edit, .element-change, .menu-admin .balance,
+.menu-auth nav a img {
+    display: none !important;
+}
+
+.head-menu {
+    margin-bottom: 52px !important;
+    .menu-close {
+        width: 18.34px;
+        height: 18.34px;
+    }
+}
+
+@media screen and (max-width:834px) {
+    .header {
+        width: 85vw;
+    }
+}
+
+@media screen and (max-width:749px) {
+    .bg-menu, .burger, .head-menu, .element-exit,
+    .balance p img, .balance p, .element-edit, .for-language, 
+    .element-change, .menu-admin .balance, .menu-auth nav a img {
+        display: flex !important;
+    }
+    .menu-auth, .menu-main, .menu-admin {
+        justify-content: flex-start !important;
+        position: fixed;
+        z-index: 4;
+        background-color: @ColorTextWhite;
+        flex-direction: column;
+        top: 0; left: 0; bottom: 0;
+        width: max(60%, 233px);
+        padding: 15px 25px;
+        transform: translateX(-110%);
+        .main-profile p, .alert div:first-child p,
+        .balance p:not(.your-balance), .element-exit a, .element-edit a,
+        .element-change a, nav a {
+            font-weight: 500 !important;
+            font-size: 15px;
+            color: #202020 !important;
+        }
+        .your-balance {
+            font-size: 15px;
+        }
+    }
+    .bg-menu {
+        opacity: 0;
+        visibility: hidden;
+        &.open {
+            opacity: 1;
+            visibility: visible;
+            & ~ .menu-main, & ~ .menu-auth, & ~ .menu-admin {
+                transform: translateX(0);
+            }
+        }
+    }
+    .main-profile .arrow, .drop-profile {
+        display: none !important;
+    }
+    .alert p {
+        display: unset !important;
+    }
+    .main-profile {
+        cursor: unset !important;
+        p {
+            font-weight: 700 !important;
+            margin: 0 0 0 10px !important;
+        }
+    }
+    .alert, .element-change {
+        .count-alert {
+            position: unset !important;
+        }
+        img {
+            filter: brightness(30%) !important;
+        }
+    }
+    .balance {
+        a {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            height: 100%;
+        }
+        p img {
+            margin: unset;
+            &:hover, &:not(:hover) {
+                animation: unset;
+            }
+        }
+    }
+    .alert img, .element-edit img, .element-exit img,
+    .balance p img, .element-change img, .menu-auth nav a img {
+        width: 19px;
+        height: auto;
+        margin-right: 12px;
+    }
+    .head-menu, .profile, .alert, .element-edit, .element-exit, .balance, .element-change {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 22px;
+    }
+    .for-language {
+        position: absolute !important;
+        left: 25px;
+        bottom: 70px;
+    }
+    .language {
+        min-height: max(3.94rem, 48.74px) !important;
+        padding: 0 1.34rem !important;
+        background-color: rgba(154, 119, 182, 0.75) !important;
+        border: 1.5px solid #8C70A3 !important;
+        box-shadow: unset !important;
+        min-width: max(6.63rem, 82px) !important;
+        border-radius: @Border16px !important;
+        &.two-language {
+            position: unset !important;
+            visibility: visible;
+            transform: translateX(0);
+            margin-left: 12px;
+            background-color: rgba(154, 119, 182, 0.44) !important;
+            border: 1.5px solid #B399C8 !important;
+        }
+    }
+    .language img {
+        box-shadow: unset;
+    } 
+    .menu-auth nav {
+        width: 100%;
+        flex-direction: column;
+        a {
+            margin: 0 0 22px 0;
+        }
+    }
+}
+
+@media screen and (max-width:604px) {
+    .header {
+        width: 92vw;
+    }
+}
+
+@media screen and (max-width:499px) {
+    .menu-auth, .menu-main, .menu-admin {
+        width: 85%;
+    }
+}
