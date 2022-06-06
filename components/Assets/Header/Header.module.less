@@ -209,6 +209,9 @@
         overflow: hidden;
         opacity: 0;
         z-index: 1;
+        transform: translateX(-50%);
+        left: 50%;
+        min-width: 100%;
         &.open {
             opacity: 1;
             padding: 1.19em 1.5em;
@@ -280,6 +283,10 @@
         width: 18.34px;
         height: 18.34px;
     }
+}
+
+.admin-arrow {
+    transform: rotate(180deg);
 }
 
 @media screen and (max-width:834px) {

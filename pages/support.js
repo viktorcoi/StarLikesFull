@@ -32,7 +32,7 @@ class Support extends Component {
         this.state = {
             activeClasses: [false, false, false, false],
             addFile: [],
-            linkPage: ""
+            linkPage: "",
         };
         this.addClass = this.addClass.bind(this);
     }
@@ -143,14 +143,14 @@ class Support extends Component {
                                         <tr>
                                             <TableData>#2</TableData>
                                             <TableDataLink color="purple" href="/dialog_support">Выведение средств</TableDataLink>
-                                            <TableDataStatus ColorStatus="green">решенные</TableDataStatus>
+                                            <TableDataStatus ColorStatus="green">решен</TableDataStatus>
                                             <TableData>01.04.2022 @ 02:14:21</TableData>
                                             
                                         </tr>
                                         <tr>
                                             <TableData>#6</TableData>
                                             <TableDataLink color="purple" href="/dialog_support">Проблема с подключением</TableDataLink>
-                                            <TableDataStatus ColorStatus="green">решенные</TableDataStatus>
+                                            <TableDataStatus ColorStatus="green">решен</TableDataStatus>
                                             <TableData>01.04.2022 @ 02:14:21</TableData>
                                         </tr>
                                     </tbody>

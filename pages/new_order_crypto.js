@@ -49,7 +49,7 @@ class NewOrderCrypto extends Component {
                                             <TableData color="purple">#2003</TableData>
                                             <TableData>33.00₽</TableData>
                                             <TableData>20.02.2022</TableData>
-                                            <TableDataStatus ColorStatus="green">решенные</TableDataStatus>
+                                            <TableDataStatus ColorStatus="green">решен</TableDataStatus>
                                         </tr>
                                     </tbody>
                                 </CustomTable>

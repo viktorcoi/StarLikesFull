@@ -5,7 +5,7 @@ const HeaderLink = (props) => {
     return (
         <div className={styles[props.className]}>
             <LinkA {...props} className="d-flex items-center" href={props.href}>
-                <img src={`/assets/img/${props.img}.svg`} alt="image link" />
+                <img className={styles[props.classIMG]} src={`/assets/img/${props.img}.svg`} alt="image link" />
                 {props.children}
             </LinkA>
         </div>

@@ -79,18 +79,18 @@ export function Header() {
                         <>
                             <HeaderLogo href="/"/>
                             <BetweenBlock className={`${styles["menu-admin"]} d-flex items-center transition_0_3`}>
-                                <HeadMobileMenu clickClose={() => OpenFunction(open_menu, menu)}/>
+                                <HeadMobileMenu href="/admin/users" clickClose={() => OpenFunction(open_menu, menu)}/>
                                 <ProfileDrop img="admin" className={profile ? "open" : ""} name="vladisadmin" 
                                     clickClose={() => OpenFunction(open_profile, profile)}
                                     imgClass={profile ? "open" : ""} wallet="100 000₽" onClick={() => OpenFunction(open_profile, profile)}>
                                     <LinkA onClick={() => OpenFunction(open_profile, profile)} href="/">
                                         <p className='d-flex items-center'>
-                                            <img alt='main page' src='/assets/img/circle-arrow.svg'></img>
-                                            На главную
+                                            <img className={styles["admin-arrow"]} alt='main page' src='/assets/img/circle-arrow.svg'></img>
+                                            Режим Пользователя
                                         </p>
                                     </LinkA>
                                 </ProfileDrop>
-                                <HeaderLink onClick={() => OpenFunction(open_menu, menu)} className="element-change" href="/" img="circle-arrow">На главную</HeaderLink>
+                                <HeaderLink onClick={() => OpenFunction(open_menu, menu)} className="element-change" href="/" classIMG="admin-arrow" img="circle-arrow">Режим Пользователя</HeaderLink>
                                 <HeaderBalance onClick={() => OpenFunction(open_menu, menu)} balance="0.00"/>
                                 <HeaderAlert onClick={() => OpenFunction(open_menu, menu)} countAlert={alert} statusAlert={alert ? "new-alert" : ""}/>
                                 <HeaderLink onClick={() => OpenFunction(open_menu, menu)} className="element-exit" href="/authorization" img="exit-menu">Выйти</HeaderLink>
@@ -103,7 +103,7 @@ export function Header() {
                         <>
                             <HeaderLogo href="/authorization"/> 
                             <BetweenBlock className={`${styles["menu-auth"]} d-flex items-center transition_0_3`}>
-                                <HeadMobileMenu clickClose={() => OpenFunction(open_menu, menu)}/>
+                                <HeadMobileMenu href="/authorization" clickClose={() => OpenFunction(open_menu, menu)}/>
                                 <HeaderNavigation clickClose={() => OpenFunction(open_menu, menu)}>
                                     {
                                         RoutesNavigation.slice(0, 2).map(v => {
@@ -125,18 +125,18 @@ export function Header() {
                         <>
                             <HeaderLogo href="/"/>
                             <BetweenBlock className={`${styles["menu-main"]} d-flex items-center transition_0_3`}>
-                                <HeadMobileMenu clickClose={() => OpenFunction(open_menu, menu)}/>
+                                <HeadMobileMenu href="/" clickClose={() => OpenFunction(open_menu, menu)}/>
                                 <ProfileDrop img="user" className={profile ? "open" : ""} name="vladislove" 
                                     clickClose={() => OpenFunction(open_profile, profile)}
                                     imgClass={profile ? "open" : ""} wallet="100 000₽" onClick={() => OpenFunction(open_profile, profile)}>
                                     <LinkA onClick={() => OpenFunction(open_profile, profile)} href="/admin/users">
                                         <p className='d-flex items-center'>
                                             <img alt='main page' src='/assets/img/circle-arrow.svg'></img>
-                                            Админ - доступ
+                                            Режим Администратора
                                         </p>
                                     </LinkA>
                                 </ProfileDrop>
-                                    <HeaderLink onClick={() => OpenFunction(open_menu, menu)} className="element-change" href="/admin/users" img="circle-arrow">Админ - доступ</HeaderLink>
+                                    <HeaderLink onClick={() => OpenFunction(open_menu, menu)} className="element-change" href="/admin/users" img="circle-arrow">Режим Администратора</HeaderLink>
                                     <Media>
                                         {({ breakpoints, currentBreakpoint }) =>
                                             breakpoints[currentBreakpoint] < breakpoints.menuMobile ? (
