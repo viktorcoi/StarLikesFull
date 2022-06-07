@@ -29,6 +29,7 @@ import HTitle from '../components/Assets/tags/HTitle';
 import ButtonWithArrow from '../components/Assets/Buttons/ButtonWithArrow';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import { Media } from 'react-breakpoints'
+import DataReferral from '../components/Assets/Context/UserContext/DataReferral';
 
 class Referrals extends Component {
 
@@ -37,6 +38,16 @@ class Referrals extends Component {
         this.state = {
             activeClasses: [false, false, false, false],
             addFile: [],
+
+            filter: ["подтвержденные", "не подтвержденные", "все записи"],
+            id: "",
+            date: "",
+            login: "",
+            summ: "",
+            status: "",
+            color: "",
+            statusFilter: "",
+            Data: [...DataReferral]
         };
         this.addClass = this.addClass.bind(this);
     }
@@ -59,7 +70,29 @@ class Referrals extends Component {
         })
     }
 
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
+                filter[0] = "подтвержден"
+                filter[1] = "не подтвержден"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
+
     render() {
+
+        const tableReferral = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
+            return (
+            <tr key={`v-${idx}`}>
+                    <TableData>{v.date}</TableData>
+                    <TableData>{v.login}</TableData>
+                    <TableData>{v.summ}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+            </tr>
+        )});
 
         const schema = Yup.object({
             summ: Yup.string().test('', 'Минимальная сумма для вывода 300₽', value => value > 299 ),
@@ -72,7 +105,6 @@ class Referrals extends Component {
 
         const activeClasses = this.state.activeClasses.slice();
         let type  = ["Технический", "Не технический", "Гипер технический"];
-        let filter  = ["подтвержденные", "неподтвержденные", "все записи"];
 
         return (
             <>
@@ -159,7 +191,6 @@ class Referrals extends Component {
                         );}}
                     </Formik>
                 </Popup>
-
                 <Popup namePopup="popup-text" clickClose={() => this.addClass(1)} className={activeClasses[1]? "open" : ""} title="Выведение средств">
                     <div>
                         <p>Чтобы вывести средства на платежную систему, необходимо 
@@ -168,7 +199,6 @@ class Referrals extends Component {
                     </div>
                     <MainButton onMouseUp={() => this.addClass(1)} onClick={() => this.addClass(3)} classButton="link-button">Создать обращение</MainButton>
                 </Popup>
-
                 <Popup namePopup="popup-text" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""} title="Выведение средств">
                     <div>
                         <p>Вы можете <span onMouseUp={() => this.addClass(2)} onClick={() => this.addClass(0)} className='transition_0_3 cursor-pointer'>
@@ -225,15 +255,6 @@ class Referrals extends Component {
                                         )
                                     }
                                 </Media>
-
-
-                                
-
-
-
-
-
-
                                 <div className={styles["for-copy"]}>
                                     <p><strong>Реферальная ссылка</strong></p>
                                     <CopyInput className="ref" value="357a3So9CbsNfBBgFYACGvxxS6tMaDoa1P"
@@ -259,7 +280,8 @@ class Referrals extends Component {
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]} ${styles["for-double-title"]}`}>
                                     <HTitle>История</HTitle>
-                                    <FilterSelector title="подтвержденные" items={filter}/>
+                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
+                                    title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
                                 <CustomTable className="table-referrals">
                                     <HeadTable>
@@ -269,19 +291,7 @@ class Referrals extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableData>20.02.2022</TableData>
-                                            <TableData>vladikmadik</TableData>
-                                            <TableData>500.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <TableData>15.02.2022</TableData>
-                                            <TableData>anastasiagord</TableData>
-                                            <TableData>200.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                        </tr>
+                                        {tableReferral}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

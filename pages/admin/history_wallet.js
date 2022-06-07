@@ -14,13 +14,50 @@ import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkBack from '../../components/Assets/tags/LinkBack';
+import DataHistoryWallets from '../../components/Assets/Context/AdminContext.js/DataHistoryWallets';
 
 class HistoryWallet extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            filter: ["подтвержденные", "не подтвержденные", "все записи"],
+            id: "",
+            date: "",
+            method: "",
+            summ: "",
+            number: "",
+            status: "",
+            color: "",
+            statusFilter: "",
+            Data: [...DataHistoryWallets]
+        };
+    }
+
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
+                filter[0] = "подтвержден"
+                filter[1] = "не подтвержден"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
 
     render() {
 
-        let filterStatus  = ["подтвержденные", "не подтвержденные", "все записи"];
+        const tableHistoryWallets = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
+            return (
+            <tr key={`v-${idx}`}>
+                <TableData>{v.numberOrder}</TableData>
+                <TableData>{v.login}</TableData>
+                <TableData>{v.method}</TableData>
+                <TableData>{v.summ}</TableData>
+                <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+            </tr>
+        )});
 
         return (
             <>  
@@ -36,7 +73,8 @@ class HistoryWallet extends Component {
                                 </div>
                                 <BetweenBlock className={`${styles["for-search"]} items-center`}>
                                     <MainTitle className={styles["margin-left"]}>История счетов</MainTitle>
-                                    <FilterSelector title="подтвержденные" items={filterStatus}/>
+                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)} 
+                                        title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
                                 <CustomTable className="admin-table">
                                     <HeadTable>
@@ -47,20 +85,7 @@ class HistoryWallet extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableData>#1</TableData>
-                                            <TableData>karapuz</TableData>
-                                            <TableData>Онлайн-касса</TableData>
-                                            <TableData>330.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                        </tr>
-                                        <tr>
-                                            <TableData>#2</TableData>
-                                            <TableData>bigkarapuz</TableData>
-                                            <TableData>Онлайн-касса</TableData>
-                                            <TableData>200.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                        </tr>
+                                        {tableHistoryWallets}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

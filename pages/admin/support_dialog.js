@@ -54,7 +54,7 @@ class SupportDialog extends Component {
                             <div className={`pos-relative ${styles["right-side"]}`}>
                             <LinkBack/>
                                 <MainTitle className={styles.title}>Обращение <span>vladislove</span></MainTitle>
-                                <InformationSupport theme="Выведение средств" type="Выведение средств на платежную систему мяу система точка кек" service="[#2] Test"/>
+                                <InformationSupport theme="Выведение средств" type="Выведение средств на платежную систему" service="[#2] Test"/>
                                 <HeaderDialog ColorStatus="red" status="активен" date="01.04.2022 @ 02:14:21"/>
                                 <DarkPurpleBlock className={`d-flex ${styles["for-dialog"]} pos-relative`}>
                                     <p className={`pos-absolute ${styles.date}`}>21 августа</p>
@@ -78,7 +78,6 @@ class SupportDialog extends Component {
                                                     currDate: new Date().toLocaleTimeString()
                                                 })}
                                             }, 1);
-                                            
                                         }
 
                                         const RemoveMessage = (id) => {

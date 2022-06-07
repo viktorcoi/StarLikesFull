@@ -24,6 +24,7 @@ import LinkButton from '../components/Assets/Buttons/LinkButton';
 import FilterSelector from '../components/Assets/tags/FilterSelector';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
+import DataSupport from '../components/Assets/Context/UserContext/DataSupport';
 
 class Support extends Component {
 
@@ -33,6 +34,15 @@ class Support extends Component {
             activeClasses: [false, false, false, false],
             addFile: [],
             linkPage: "",
+            filter: ["активные", "решенные", "все записи"],
+            id: "",
+            index: "",
+            theme: "",
+            status: "",
+            lastUpdate: '',
+            color: "",
+            statusFilter: "",
+            Data: [...DataSupport]
         };
         this.addClass = this.addClass.bind(this);
     }
@@ -55,6 +65,18 @@ class Support extends Component {
         })
     }
 
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
+                filter[0] = "активен"
+                filter[1] = "решен"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
+
     render() {
 
         const schemaSupport = Yup.object({
@@ -64,7 +86,16 @@ class Support extends Component {
 
         const activeClasses = this.state.activeClasses.slice();
         let type  = ["Технический", "Не технический", "Гипер технический"];
-        let filter  = ["нерешенные", "решенные", "все записи"];
+
+        const tableSupport = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
+            return (
+            <tr key={`v-${idx}`}>
+                    <TableData>{v.index}</TableData>
+                    <TableDataLink color="purple" href="/dialog_support">{v.theme}</TableDataLink>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                    <TableData>{v.lastUpdate}</TableData>
+            </tr>
+        )});
 
         return (
             <>
@@ -101,7 +132,7 @@ class Support extends Component {
                                     placeholder='Тема обращения' type="text"
                                     classError={errors.theme ? "view" : ""} addClassInput="main-input"
                                     textError={errors.theme || "ОК"} value={values.theme}/>
-                                <TextArea name="message" onChange={handleChange}  onKeyUp={ChangeLink()} 
+                                <TextArea name="message" onChange={handleChange} onKeyUp={ChangeLink()} 
                                     placeholder='Напишите сообщение' type="text"
                                     classError={errors.message ? "view" : ""} addClassInput="main-input"
                                     textError={errors.message || "ОК"} value={values.message}/>
@@ -130,7 +161,9 @@ class Support extends Component {
                                     <ButtonWithArrow onClick={() => this.addClass(0)}>Создать обращение</ButtonWithArrow>
                                 </BetweenBlock>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]}`}>
-                                    <FilterSelector addClassName={styles["for-filter"]} title="нерешенные" items={filter}/>
+                                    <FilterSelector addClassName={styles["for-filter"]}
+                                    onClick={(e)=> this.changeClickStatus(e)}
+                                    title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
                                 <CustomTable className="table-support">
                                     <HeadTable>
@@ -140,19 +173,7 @@ class Support extends Component {
                                         <TitleHead>Последнее обновление</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableData>#2</TableData>
-                                            <TableDataLink color="purple" href="/dialog_support">Выведение средств</TableDataLink>
-                                            <TableDataStatus ColorStatus="green">решен</TableDataStatus>
-                                            <TableData>01.04.2022 @ 02:14:21</TableData>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <TableData>#6</TableData>
-                                            <TableDataLink color="purple" href="/dialog_support">Проблема с подключением</TableDataLink>
-                                            <TableDataStatus ColorStatus="green">решен</TableDataStatus>
-                                            <TableData>01.04.2022 @ 02:14:21</TableData>
-                                        </tr>
+                                        {tableSupport}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

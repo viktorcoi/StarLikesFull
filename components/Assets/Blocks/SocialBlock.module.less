@@ -12,16 +12,25 @@
     justify-content: center;
     color: rgba(255, 255, 255, 0.33);
     min-height: max(3.94em, 46px);
+    &:hover {
+        background: #9B92A3 !important;
+        border: 2px solid #C3BEC8 !important;
+        color: @ColorTextWhite;
+        box-shadow: 0px 0px 2.31em @ShadowLanguageHeader;
+        img {
+            filter: brightness(200%);
+        }
+    }
     p {
         font-size: @16px;
     }
     img {
-        margin-right: max(.38em, 4.37px)
+        margin-right: max(.38em, 4.37px);
     }
     &.select {
         font-weight: 700;
-        background-color: @ColorLanguageHeader;
-        border: 2px solid @ColorBorderLogo;
+        background-color: @ColorLanguageHeader !important;
+        border: 2px solid @ColorBorderLogo !important;
         box-shadow: 0px 0px 2.31em @ShadowLanguageHeader;
         color: @ColorTextWhite;
         img {

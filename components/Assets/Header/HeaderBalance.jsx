@@ -5,7 +5,7 @@ import { Media } from 'react-breakpoints'
 const HeaderBalance = (props) => {
     return (
         <div className={`${styles.balance} d-flex pos-relative items-center`}>
-            <p className="items-center">
+            <p className="items-center none-select">
                 <img alt='balance' src='/assets/img/wallet.svg'></img>
                 <Media>
                     {({ breakpoints, currentBreakpoint }) =>
@@ -14,7 +14,7 @@ const HeaderBalance = (props) => {
                     }
                 </Media>
             </p>
-            <p className={styles["your-balance"]}>{`${props.balance}₽`}</p>
+            <p className={`${styles["your-balance"]} none-select`}>{`${props.balance}₽`}</p>
             <LinkA {...props} href="/balance_insert">
                 <img className='cursor-pointer' alt='add money' src='/assets/img/plus-money.svg'></img>
             </LinkA>

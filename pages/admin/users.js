@@ -26,18 +26,42 @@ import AlertBlock from '../../components/Assets/Blocks/AlertBlock';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkA from '../../components/Assets/tags/LinkA';
 import LinkBack from '../../components/Assets/tags/LinkBack';
+import DataUsers from '../../components/Assets/Context/AdminContext.js/DataUsers';
 
 class Users extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            activeClasses: [false, false, false]};
+            activeClasses: [false, false, false],
+            id: "",
+            numberAcc: "",
+            login: "",
+            balance: "",
+            mail: "",
+            phone: "",
+            country: "",
+            status: "",
+            filter: "Сортировка",
+            Data: [...DataUsers],
+            statusSelector: ["Избранный", "Обычный", "Мяу"],
+            filterSelector: ["По логину", "По почте", "По номеру", "По балансу", "По стране", "По статусу", "По телефону"],
+        };
+        this.addClass = this.addClass.bind(this);
     }
 
-    addClass(index) {
+    addClass(index, v) {
         const activeClasses = [...this.state.activeClasses.slice(0, index), !this.state.activeClasses[index], this.state.activeClasses.slice(index + 1)].flat();
-        this.setState({activeClasses});
+        this.setState({ 
+            activeClasses, 
+            id: v?.id,
+            numberAcc: v?.numberAcc, 
+            login: v?.login, 
+            mail: v?.mail, 
+            phone: v?.phone,
+            country: v?.country,
+            status: v?.status,
+        });
         document.body.style.overflow = activeClasses[0] || activeClasses[1] ? 'hidden' : 'overlay';
     }
 
@@ -49,10 +73,22 @@ class Users extends Component {
 
     render() {
 
+        const tableUsers = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
+            return (
+            <tr key={`v-${idx}`}>
+                <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => {this.addClass(0, v), console.log(v)}}/>
+                <TableData color="purple">{v.numberAcc}</TableData>
+                <TableData>{v.login}</TableData>
+                <TableData>{v.balance}</TableData>
+                <TableData>{v.mail}</TableData>
+                <TableData>{v.phone}</TableData>
+                <TableData>{v.country}</TableData>
+                <TableData>{v.status}</TableData>
+            </tr>
+        )});
+
         const activeClasses = this.state.activeClasses.slice();
         let  search  = ["Вот это нашлось", "Вот это нашлось 2", "Вот это нашлось 3", "Вот это нашлось 4"];
-        let  filter  = ["По логину", "По почте", "По номеру", "По балансу", "По стране", "По статусу", "По телефону"];
-        let  status  = ["Избранный", "Обычный", "Мяу"];
 
         const schema = Yup.object({
             login: Yup.string().required("Поле не может быть пустым!"),
@@ -69,12 +105,13 @@ class Users extends Component {
                 <Popup clickClose={() => this.addClass(1)} className={activeClasses[1]? "open" : ""}
                     title="Изменить пользователя">
                     <Formik
+                        enableReinitialize={true}
                         initialValues={{ 
-                            login: 'vladislove',
-                            email: 'vladislove@yandex.ru',
-                            phone: '',
-                            country: '',
-                            status: ''
+                            login: this.state.login,
+                            email: this.state.mail,
+                            phone: this.state.phone,
+                            country: this.state.country,
+                            status: this.state.status
                         }}
                         validationSchema={schema}
                         onSubmit = {(values) => {console.log(values)}}>
@@ -83,12 +120,14 @@ class Users extends Component {
                         const ChangeUser = () => {
                             if (((values.login.length && values.email.length) != 0)) {
                                 if (errors.email == undefined) {
-                                    this.addClass(1)
-                                    this.state.changeAlert = true
+                                    setTimeout(() => {
+                                        this.state.changeAlert = true
+                                        this.addClass(1)
+                                    }, 1);
                                 }
                             }
                         } 
-
+                        
                         return (
                         <>
                             <InputWithError onChange={handleChange} addClassInput="main-input"
@@ -105,11 +144,13 @@ class Users extends Component {
                             <Input onChange={handleChange} addClassInput="main-input"
                                 className="world" placeholder='Страна' name='country'
                                 value={values.country}/>
-                            <CustomSelector addIMG="status" title="По телефону" items={status}/>
-                            <MainButton onMouseUp={ChangeUser} className={styles["button-popup-admin"]} 
+                            <CustomSelector onChange={handleChange} value={values.status} 
+                            onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))}
+                            addIMG="status" title={values.status} items={this.state.statusSelector}/>
+                            <MainButton  className={styles["button-popup-admin"]} 
                                 classButton="link-button" 
                                 type="submit" 
-                                onClick={handleSubmit}>
+                                onClick={()=>{handleSubmit(), ChangeUser()}}>
                                 Сохранить изменения
                             </MainButton>
                         </>
@@ -119,7 +160,7 @@ class Users extends Component {
                 <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""}
                     title="Вы уверены, что хотите удалить пользователя?">
                     <BetweenBlock>
-                        <ButtonYes/>
+                        <ButtonYes onClick={(v) => this.DeleteData(v)}/>
                         <ButtonNo onClick={() => this.addClass(0)}/>
                     </BetweenBlock>
                 </Popup>
@@ -152,7 +193,9 @@ class Users extends Component {
                                 </div>
                                 <div className={`${styles["for-search"]} d-flex`}>
                                     <SearchInput classOption="for-dark-selector" classDiv="admin-search" items={search}/>
-                                    <CustomSelector className="admin-selector" title="По телефону" items={filter}/>
+                                    <CustomSelector className="admin-selector"
+                                        onClick={(e)=> (this.setState({ ...this.state, filter: e.target.innerText}))} 
+                                        title={this.state.filter} items={this.state.filterSelector}/>
                                 </div>
                                 <CustomTable className="admin-table">
                                     <HeadTable>
@@ -166,26 +209,7 @@ class Users extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableDataManagement clickEdit={() => this.addClass(1)}  clickDelete={() => this.addClass(0)}/>
-                                            <TableData color="purple">#1</TableData>
-                                            <TableData>karapuz</TableData>
-                                            <TableData>1000.88₽</TableData>
-                                            <TableData>karapuz@yandex.ru</TableData>
-                                            <TableData>+79822349201</TableData>
-                                            <TableData>Россия</TableData>
-                                            <TableData>Статусный</TableData>
-                                        </tr>
-                                        <tr>
-                                            <TableDataManagement clickEdit={() => this.addClass(1)}  clickDelete={() => this.addClass(0)}/>
-                                            <TableData color="purple">#2</TableData>
-                                            <TableData>bigkarapuz</TableData>
-                                            <TableData>4000.05₽</TableData>
-                                            <TableData>bigkarapuz@yandex.ru</TableData>
-                                            <TableData>+79111488228</TableData>
-                                            <TableData>Таджикистан</TableData>
-                                            <TableData>Таджик</TableData>
-                                        </tr>
+                                        {tableUsers}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

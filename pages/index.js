@@ -11,6 +11,7 @@ import TitleHead from '../components/Assets/Table/TitleHead';
 import TableDataLink from '../components/Assets/Table/TableDataLink';
 import TableData from '../components/Assets/Table/TableData';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
+import DataMyServices from '../components/Assets/Context/UserContext/DataMyServices';
 
 class MainPage extends Component {
 
@@ -18,11 +19,33 @@ class MainPage extends Component {
         super(props);
         this.state = {
             elementsSocial: 7,
+            id: "",
+            social: "",
+            type: "",
+            price: "",
+            socialFilter: "instagram",
+            Data: [...DataMyServices]
         };
+    }
+
+    ChooseSocial = (e) => {
+        this.setState({ ...this.state, socialFilter: e.target.innerText.toLowerCase()})
+        if (e.target.innerText.toLowerCase() == "") {
+            this.setState({...this.state, socialFilter: e.target.getAttribute("alt").toLowerCase()})
+        }
     }
 
     render() {
 
+        const tableMyServices = this.state.Data.filter(v => (v.social == this.state.socialFilter)).map((v, idx) => { 
+            return (
+                <tr key={`v-${idx}`}>
+                    <TableData>{v.social}</TableData>
+                    <TableDataLink href="/new_order_settings" color="purple">{v.type}</TableDataLink>
+                    <TableData>{v.price}</TableData>
+                </tr>
+        )});
+      
         return (
             <>
                 <Container>
@@ -35,7 +58,9 @@ class MainPage extends Component {
                                     {
                                         SocialRoutes.slice(0, this.state.elementsSocial).map(v => {
                                             return (
-                                                <SocialBlock className={v.select} img={v.img}>
+                                                <SocialBlock 
+                                                    onClick={this.ChooseSocial}
+                                                    className={v.select} img={v.img} alt={v.name}>
                                                     {v.name}
                                                 </SocialBlock>
                                             );
@@ -56,33 +81,7 @@ class MainPage extends Component {
                                         <TitleHead>Цена<br/>(за шт.)</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableData>instagram</TableData>
-                                            <TableDataLink href="/new_order_settings" color="purple">📺 Instagram Views - [BOT + SPEED 500k/D]</TableDataLink>
-                                            <TableData>00.11₽</TableData>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <TableData>instagram</TableData>
-                                            <TableDataLink href="/new_order_settings" color="purple">
-                                                👍 Instagram Likes - [REAL + IMPRESSION + NO DROP]
-                                            </TableDataLink>
-                                            <TableData>00.11₽</TableData>
-                                        </tr>
-                                        <tr>
-                                            <TableData>instagram</TableData>
-                                            <TableDataLink href="/new_order_settings" color="purple">
-                                                👥 Instagram Followers - [REAL+ AUTOREFILL 30D]
-                                            </TableDataLink>
-                                            <TableData>00.11₽</TableData>
-                                        </tr>
-                                        <tr>
-                                            <TableData>instagram</TableData>
-                                            <TableDataLink href="/new_order_settings" color="purple">
-                                                ✉️ Instagram Comments - [REAL + NO DROP + CUSTOM]
-                                            </TableDataLink>
-                                            <TableData>00.11₽</TableData>
-                                        </tr>
+                                        {tableMyServices}
                                     </tbody>
                                 </CustomTable>
                             </div>

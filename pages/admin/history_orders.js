@@ -17,15 +17,57 @@ import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkBack from '../../components/Assets/tags/LinkBack';
+import DataHistoryOrders from '../../components/Assets/Context/AdminContext.js/DataHistoryOrders';
 
 class HistoryOrders extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeClasses: [false, false, false, false],
+            addFile: [],
+
+            filterStatus: ["активные", "завершеные", "все записи"],
+            id: "",
+            date: "",
+            login: "",
+            summ: "",
+            status: "",
+            color: "",
+            statusFilter: "",
+            filter: 'Сортировка',
+            Data: [...DataHistoryOrders],
+            filterSelector: ["По логину", "По виду", "По сумме", "По соц. сети", "По номеру", "По статусу"],
+        };
+    }
+
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filterStatus[i]) {
+                filter[0] = "активен"
+                filter[1] = "завершен"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
 
     render() {
 
         let  search  = ["Вот это нашлось", "Вот это нашлось 2", "Вот это нашлось 3", "Вот это нашлось 4"];
-        let  filter  = ["По логину", "По виду", "По сумме", "По соц. сети", "По номеру", "по статусу"];
-        let filterStatus  = ["активные", "завершеные", "все записи"];
+
+        const tableOrders = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
+            return (
+            <tr key={`v-${idx}`}>
+                <TableDataLink href="/admin/history_orders_order" color="purple">{v.numberOrder}</TableDataLink>
+                <TableData>{v.login}</TableData>
+                <TableData>{v.social}</TableData>
+                <TableData>{v.type}</TableData>
+                <TableData>{v.summ}</TableData>
+                <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+            </tr>
+        )});
 
         return (
             <>  
@@ -45,9 +87,12 @@ class HistoryOrders extends Component {
                                 <BetweenBlock className={`${styles["for-search"]} items-center`}>
                                     <div className="d-flex">
                                         <SearchInput addClassDiv={styles["admin-search"]} classOption="for-dark-selector" classDiv="admin-search" items={search}/>
-                                        <CustomSelector className="admin-selector" title="По телефону" items={filter}/>
+                                        <CustomSelector className="admin-selector" 
+                                            onClick={(e)=> (this.setState({ ...this.state, filter: e.target.innerText}))} 
+                                            title={this.state.filter} items={this.state.filterSelector}/>
                                     </div>
-                                    <FilterSelector title="активные" items={filterStatus}/>
+                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
+                                    title={this.state.filterStatus[2]} items={this.state.filterStatus}/>
                                 </BetweenBlock>
                                 <CustomTable className="admin-table">
                                     <HeadTable>
@@ -59,22 +104,7 @@ class HistoryOrders extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableDataLink href="/admin/history_orders_order" color="purple">#1</TableDataLink>
-                                            <TableData>karapuz</TableData>
-                                            <TableData>Instagram</TableData>
-                                            <TableData>👥 Instagram Followers - [REAL+ AUTREFILL 30...</TableData>
-                                            <TableData>330.00₽</TableData>
-                                            <TableDataStatus ColorStatus="purple">активен</TableDataStatus>
-                                        </tr>
-                                        <tr>
-                                            <TableDataLink href="/admin/history_orders_order" color="purple">#2</TableDataLink>
-                                            <TableData>bigkarapuz</TableData>
-                                            <TableData>Instagram</TableData>
-                                            <TableData>👥 Instagram Followers - [REAL+ AUTREFILL 30...</TableData>
-                                            <TableData>330.00₽</TableData>
-                                            <TableDataStatus ColorStatus="purple">активен</TableDataStatus>
-                                        </tr>
+                                        {tableOrders}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

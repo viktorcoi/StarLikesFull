@@ -218,10 +218,6 @@
 }
 
 .for-input-error {
-    &:hover .for-error.view {
-        visibility: visible;
-        opacity: 1;
-    }
     .for-error {
         padding: 0.38em 1.31em;
         z-index: 4;
@@ -245,7 +241,11 @@
         }
         &.view {
             & + div input, + input, & + div textarea {
-                border: 2px solid @ColorBorderInputError;
+                border: 2px solid @ColorBorderInputError; 
+            }
+            &.view-ok {
+                visibility: visible;
+                opacity: 1;
             }
         }
     }

@@ -33,12 +33,12 @@ const Language = (props) => {
         <div tabIndex={0} onBlur={() => open_choose(false)} className={`${styles["for-language"] ?? ""} pos-relative`}>
             <BetweenBlock onClick={() => OpenChoose(choose)} className={`${props.className} d-flex items-center cursor-pointer transition_0_3`}>
                 <img alt='language' src={`/assets/img/${valueRU}.svg`}></img>
-                <p>{valueRU}</p>
+                <p className='none-select'>{valueRU}</p>
             </BetweenBlock>
             <BetweenBlock onClick={() => {handleClick(), OpenChoose(choose)}} 
                 className={`${props.className} d-flex pos-absolute items-center cursor-pointer transition_0_3 ${props.class} ${(choose ? props.addClass : "")}`}>
                 <img alt='language' src={`/assets/img/${valueEN}.svg`}></img>
-                <p>{valueEN}</p>     
+                <p className='none-select'>{valueEN}</p>     
             </BetweenBlock>
         </div>
     )

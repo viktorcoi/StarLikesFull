@@ -84,7 +84,7 @@ export function Header() {
                                     clickClose={() => OpenFunction(open_profile, profile)}
                                     imgClass={profile ? "open" : ""} wallet="100 000₽" onClick={() => OpenFunction(open_profile, profile)}>
                                     <LinkA onClick={() => OpenFunction(open_profile, profile)} href="/">
-                                        <p className='d-flex items-center'>
+                                        <p className='d-flex items-center none-select'>
                                             <img className={styles["admin-arrow"]} alt='main page' src='/assets/img/circle-arrow.svg'></img>
                                             Режим Пользователя
                                         </p>
@@ -130,7 +130,7 @@ export function Header() {
                                     clickClose={() => OpenFunction(open_profile, profile)}
                                     imgClass={profile ? "open" : ""} wallet="100 000₽" onClick={() => OpenFunction(open_profile, profile)}>
                                     <LinkA onClick={() => OpenFunction(open_profile, profile)} href="/admin/users">
-                                        <p className='d-flex items-center'>
+                                        <p className='d-flex items-center none-select'>
                                             <img alt='main page' src='/assets/img/circle-arrow.svg'></img>
                                             Режим Администратора
                                         </p>

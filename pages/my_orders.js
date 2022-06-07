@@ -15,12 +15,50 @@ import MainTitle from '../components/Assets/tags/MainTitle';
 import TableDataLink from '../components/Assets/Table/TableDataLink';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import LinkBack from '../components/Assets/tags/LinkBack';
+import DataMyOrders from "../components/Assets/Context/UserContext/DataMyOrders";
 
 class MyOrders extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            filter: ["активные", "завершенные", "все записи"],
+            id: "",
+            numberOrder: "",
+            social: "",
+            type: "",
+            price: "",
+            status: "",
+            color: "",
+            statusFilter: "",
+            Data: [...DataMyOrders]
+        };
+    }
+
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
+                filter[0] = "активен"
+                filter[1] = "завершен"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
+
     render() {
 
-        let filter  = ["активные", "завершеные", "все записи"];
+        const tableMyOrders = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
+            return (
+            <tr key={`v-${idx}`}>
+                <TableDataLink color="purple" href="my_orders_info">{v.numberOrder}</TableDataLink>
+                <TableData>{v.social}</TableData>
+                <TableData>{v.type}</TableData>
+                <TableData>{v.price}</TableData>
+                <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+            </tr>
+        )});
 
         return (
             <>
@@ -36,7 +74,8 @@ class MyOrders extends Component {
                                 </div>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]}`}>
                                     <MainTitle>Мои заказы</MainTitle>
-                                    <FilterSelector title="активные" items={filter}/>
+                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)} 
+                                        title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
                                 <CustomTable className="my-service-table">
                                     <HeadTable>
@@ -47,21 +86,7 @@ class MyOrders extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableDataLink color="purple" href="my_orders_info">#20033</TableDataLink>
-                                            <TableData>instagram</TableData>
-                                            <TableData>👥 Instagram Followers - [REAL+ AUTREFILL 30...</TableData>
-                                            <TableData>33.00₽</TableData>
-                                            <TableDataStatus ColorStatus="purple">активен</TableDataStatus>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <TableDataLink color="purple" href="my_orders_info">#21033</TableDataLink>
-                                            <TableData>instagram</TableData>
-                                            <TableData>👥 Instagram Followers - [REAL+ AUTREFILL 30...</TableData>
-                                            <TableData>200.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">завершен</TableDataStatus>
-                                        </tr>
+                                        {tableMyOrders}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

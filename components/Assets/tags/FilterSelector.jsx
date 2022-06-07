@@ -38,7 +38,7 @@ const FilterSelector = (props) => {
             {(
                 <CustomBlockOption addClass={open ? "open" : ""}>
                 {props.items.map(item => (
-                    <p className='transition_0_3 none-select' key={item} onMouseDown={() => {handleOnClick(item), addClass()}}>{item}</p>
+                    <p className='transition_0_3 none-select' key={item} onMouseDown={(e) => {handleOnClick(item), addClass(), props.onClick(e)}}>{item}</p>
                 ))}
                 </CustomBlockOption>
             )}

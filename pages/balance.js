@@ -16,12 +16,50 @@ import MainTitle from '../components/Assets/tags/MainTitle';
 import HTitle from '../components/Assets/tags/HTitle';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import LinkBack from '../components/Assets/tags/LinkBack';
+import DataBalance from '../components/Assets/Context/UserContext/DataBalance';
 
 class Balance extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            filter: ["подтвержденные", "не подтвержденные", "все записи"],
+            id: "",
+            date: "",
+            method: "",
+            summ: "",
+            number: "",
+            status: "",
+            color: "",
+            statusFilter: "",
+            Data: [...DataBalance]
+        };
+    }
+
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
+                filter[0] = "подтвержден"
+                filter[1] = "не подтвержден"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
+
     render() {
 
-        let filter  = ["подтвержденные", "не подтвержденные", "все записи"];
+        const tableBalance = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
+            return (
+            <tr key={`v-${idx}`}>
+                    <TableData>{v.date}</TableData>
+                    <TableData>{v.method}</TableData>
+                    <TableData>{v.summ}</TableData>
+                    <TableData color="purple">{v.number}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+            </tr>
+        )});
 
         return (
             <>
@@ -44,7 +82,8 @@ class Balance extends Component {
                                 </BetweenBlock>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]}`}>
                                     <HTitle>История пополнений</HTitle>
-                                    <FilterSelector title="подтвержденные" items={filter}/>
+                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
+                                    title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
                                 <CustomTable className="balance-table">
                                     <HeadTable>
@@ -55,21 +94,7 @@ class Balance extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableData>20.02.2022</TableData>
-                                            <TableData>Онлайн-касса</TableData>
-                                            <TableData>33.00₽</TableData>
-                                            <TableData color="purple">#20033</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <TableData>15.02.2022</TableData>
-                                            <TableData>Криптовалюта</TableData>
-                                            <TableData>200.00₽</TableData>
-                                            <TableData color="purple">#21033</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                        </tr>
+                                        {tableBalance}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
@@ -81,8 +106,6 @@ class Balance extends Component {
                                         <NumberPage>32</NumberPage>
                                     </Pagination>
                                 </BetweenBlock>
-                            
-
                             </div>
                         </BetweenBlock>
                     </section>
