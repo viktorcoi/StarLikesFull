@@ -26,18 +26,47 @@ import SocialBlock from '../../components/Assets/Blocks/SocialBlock';
 import SocialRoutes from '../../components/Assets/SocialRoutes';
 import TextArea from '../../components/Assets/Inputs/TextArea';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
+import DataService from '../../components/Assets/Context/AdminContext/DataService';
 
 class Services extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            activeClasses: [false, false, false, false]};
+            activeClasses: [false, false, false, false],
+            id: "",
+            number: "",
+            social: "",
+            type: "",
+            price: "",
+            status: "",
+            color: "",
+            hide: "",
+            changeAlert: false,
+            description: "",
+            socialFilter: "instagram",
+            statusCoupon: ["Скрыто", "Активен"],
+            filterStatus: ["активные", "скрытые", "все записи"],
+            Data: [...DataService],
+            tableData: [],
+        };
+        this.state.tableData = this.state.Data
     }
 
-    addClass(index) {
+    addClass(index, v) {
         const activeClasses = [...this.state.activeClasses.slice(0, index), !this.state.activeClasses[index], this.state.activeClasses.slice(index + 1)].flat();
-        this.setState({activeClasses});
+        this.setState({
+            activeClasses,
+            id: v?.id,
+            number: Number(v?.number.match(/\d+/)) ? Number(v?.number.match(/\d+/)) : "",
+            social: v?.social,
+            type: v?.type,
+            price: Number(v?.price.slice(0, -1)) ? Number(v?.price.slice(0, -1)) : "",
+            status: v?.status,
+            color: v?.color,
+            hide: v?.hide,
+            description: v?.description,
+        });
         document.body.style.overflow = activeClasses[0] || activeClasses[1] || activeClasses[2] ? 'hidden' : 'overlay';
     }
 
@@ -47,11 +76,28 @@ class Services extends Component {
         });
     }
 
+    ChooseSocial = (e) => {
+        this.setState({ ...this.state, socialFilter: e.target.innerText.toLowerCase()})
+        if (e.target.innerText.toLowerCase() == "") {
+            this.setState({...this.state, socialFilter: e.target.getAttribute("alt").toLowerCase()})
+        }
+    }
+
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filterStatus[i]) {
+                filter[0] = "активен"
+                filter[1] = "скрыто"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
+
     render() {
 
         const activeClasses = this.state.activeClasses.slice();
-        let filterStatus  = ["активные", "завершеные", "все записи"];
-        let statusCoupon  = ["Скрыто", "Активен"];
 
         const schema = Yup.object({
             number: Yup.string().required("Поле не может быть пустым!"),
@@ -61,61 +107,92 @@ class Services extends Component {
             description: Yup.string().required("Поле не может быть пустым!"),
         });
 
+        const renderTableWallet = (data) => {
+            return data.filter((v) => (((v.social == this.state.socialFilter && ((!this.state.statusFilter) || v.status == this.state.statusFilter))))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}>
+                            <img onClick={() => this.addClass(1)} className={`${activeClasses[3]? styles.hide : styles[v.hide]} ${styles["hide-service"]} cursor-pointer`} 
+                                alt='hide' src="/assets/img/view-table.svg"/>
+                            </TableDataManagement>
+                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.number}</TableData>
+                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.social}</TableData>
+                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.type}</TableData>
+                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.price}</TableData>
+                            <TableDataStatus ColorStatus={activeClasses[3] ? "red" : v.color}>{activeClasses[3] ? "скрыто" : v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
+
         return (
             <>  
-                <AlertBlock img="alert-success" clickClose={this.closeAlert} title="Готово!"  
-                    description="Услуга успешно изменена!" className={this.state.changeAlert ? "open" : ""}>
+                <AlertBlock Alert = {this.state.changeAlert} 
+                    callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
+                    img="alert-success" title="Готово!" description="Услуга успешно изменена!">
                 </AlertBlock>
                 <Popup clickClose={() => this.addClass(2)} className={activeClasses[2]? "open" : ""}
                     title="Изменение услуги">
                     <Formik
+                        enableReinitialize={true}
                         initialValues={{ 
-                            number: '1',
-                            social: 'Instagram',
-                            type: '👥 Instagram Followers - REAL+ AUTREFILL 30...',
-                            price: '00.33',
-                            description: `🔴 AFTER ORDERING, YOU NEED TO WRITE TO SUPPORT YOUR ORDER \nNUMBER AND WAIT FOR SUPPORT TO LAUNCH YOUR ORDER \n⏱ Start: 1-30 min \n⚡️ Speed: 10000/D \n✔ Quality : REAL AND NO DROP`,
-                            status: ''
+                            number: this.state.number,
+                            social: this.state.social,
+                            type: this.state.type,
+                            price: this.state.price,
+                            description: this.state.description,
+                            status: this.state.status,
                         }}
                         validationSchema={schema}
                         onSubmit = {(values) => {console.log(values)}}>
-                        {({ errors, handleSubmit, handleChange, values }) => {
+                        {({ errors, handleSubmit, values }) => {
 
                         const ChangeService = () => {
                             if (((values.number && values.price) > 0 && (values.social.length && values.type.length 
                                 && values.description.length ) != 0)) {
-                                this.addClass(2)
-                                this.state.changeAlert = true
+                                    this.state.changeAlert = true;
+                                    setTimeout(() => {
+                                        this.addClass(2)
+                                    }, 1);
+                                    this.setState({number: `#${values.number}`})
+                                    this.setState({price: `${values.price}₽`})
                             }
                         } 
 
                         return (
                         <>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> {this.setState({ number: e.target.value })}} 
+                                addClassInput="main-input"
                                 className="sharp" placeholder='Номер' name='number' type="number"
                                 classError={errors.number ? "view" : ""} 
                                 textError={errors.number || "ОК"} value={values.number}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> {this.setState({ social: e.target.value })}} 
+                                addClassInput="main-input"
                                 className="social" placeholder='Соц. сеть' name='social'
                                 classError={errors.social ? "view" : ""} 
                                 textError={errors.social || "ОК"} value={values.social}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> {this.setState({ type: e.target.value })}} 
+                                addClassInput="main-input"
                                 className="type" placeholder='Тип' name='type'
                                 classError={errors.type ? "view" : ""} 
                                 textError={errors.type || "ОК"} value={values.type}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> {this.setState({ price: e.target.value })}} 
+                                addClassInput="main-input"
                                 className="ruble" placeholder='Стоимость' name='price' type="number"
                                 classError={errors.price ? "view" : ""} 
                                 textError={errors.price || "ОК"} value={values.price}/>
-                            <TextArea name="description" onChange={handleChange}
+                            <TextArea name="description" onChange={(e)=> {this.setState({ description: e.target.value })}} 
                                 placeholder='Описание услуги' type="text"
                                 classError={errors.description ? "view" : ""} addClassInput="main-input"
                                 textError={errors.description || "ОК"} value={values.description}/>
-                            <CustomSelector addIMG="status" title="Статус" items={statusCoupon}/>
-                            <MainButton onMouseUp={ChangeService} className={styles["button-popup-admin"]} 
+                            <CustomSelector addIMG="status" onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))}
+                                title={values.status} items={this.state.statusCoupon}/>
+                            <MainButton className={styles["button-popup-admin"]} 
                                 classButton="link-button" 
                                 type="submit" 
-                                onClick={handleSubmit}>
+                                onClick={() => {handleSubmit(), ChangeService()}}>
                                 Сохранить
                             </MainButton>
                         </>
@@ -152,7 +229,8 @@ class Services extends Component {
                                     {
                                         SocialRoutes.slice(0, 13).map(v => {
                                             return (
-                                                <SocialBlock className={v.select} img={v.img}>
+                                                <SocialBlock onClick={this.ChooseSocial}
+                                                    className={v.select} img={v.img} alt={v.name}>
                                                     {v.name}
                                                 </SocialBlock>
                                             );
@@ -160,7 +238,8 @@ class Services extends Component {
                                     }
                                 </div>
                                 <div className={`${styles["for-title"]} d-flex`}>
-                                    <FilterSelector addClassName={styles["for-filter"]} title="активные" items={filterStatus}/>
+                                    <FilterSelector addClassName={styles["for-filter"]} onClick={(e)=> this.changeClickStatus(e)}
+                                        title={this.state.filterStatus[2]} items={this.state.filterStatus}/>
                                 </div>
                                 <CustomTable className="admin-table">
                                     <HeadTable>
@@ -172,28 +251,7 @@ class Services extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableDataManagement clickEdit={() => this.addClass(2)}  clickDelete={() => this.addClass(0)}>
-                                                <img onClick={() => this.addClass(1)} className={`${activeClasses[3]? styles.hide : ""} ${styles["hide-service"]} cursor-pointer`} 
-                                                    alt='hide' src="/assets/img/view-table.svg"/>
-                                            </TableDataManagement>
-                                            <TableData dataName={activeClasses[3] ? "hide" : ""}>#1</TableData>
-                                            <TableData dataName={activeClasses[3] ? "hide" : ""}>Instagram</TableData>
-                                            <TableData dataName={activeClasses[3] ? "hide" : ""}>👥 Instagram Followers - REAL+ AUTREFILL 30...</TableData>
-                                            <TableData dataName={activeClasses[3] ? "hide" : ""}>00.33₽</TableData>
-                                            <TableDataStatus ColorStatus={activeClasses[3] ? "red" : "green"}>{activeClasses[3] ? "скрыто" : "активен"}</TableDataStatus>
-                                        </tr>
-                                        <tr>
-                                            <TableDataManagement clickEdit={() => this.addClass(2)}  clickDelete={() => this.addClass(0)}>
-                                            <img className={`${styles.hide} ${styles["hide-service"]} cursor-pointer`} 
-                                                    alt='hide' src="/assets/img/view-table.svg"/>
-                                            </TableDataManagement>
-                                            <TableData dataName="hide">#2</TableData>
-                                            <TableData dataName="hide">Instagram</TableData>
-                                            <TableData dataName="hide">👥 Instagram Followers - REAL+ AUTREFILL 30...</TableData>
-                                            <TableData dataName="hide">00.33₽</TableData>
-                                            <TableDataStatus dataName="hide" ColorStatus="red">скрыто</TableDataStatus>
-                                        </tr>
+                                        {renderTableWallet(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

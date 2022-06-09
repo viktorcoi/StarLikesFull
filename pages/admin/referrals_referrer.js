@@ -16,13 +16,58 @@ import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import CopyInput from '../../components/Assets/Inputs/CopyInput';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
+import DataReferrer from '../../components/Assets/Context/AdminContext/DataReferrer';
 
 class ReferralsReferrer extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeClasses: [false, false, false, false],
+            addFile: [],
+
+            filter: ["подтвержденные", "не подтвержденные", "все записи"],
+            id: "",
+            date: "",
+            login: "",
+            summ: "",
+            status: "",
+            color: "",
+            statusFilter: "",
+            Data: [...DataReferrer],
+            tableData: [],
+        };
+        this.state.tableData = this.state.Data
+    }
+
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
+                filter[0] = "подтвержден"
+                filter[1] = "не подтвержден"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
 
     render() {
 
-        let filter  = ["подтвержденные", "неподтвержденные", "все записи"];
+        const renderTableReferrer = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableData>{v.date}</TableData>
+                            <TableData>{v.login}</TableData>
+                            <TableData>{v.summ}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>  
@@ -59,7 +104,8 @@ class ReferralsReferrer extends Component {
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]} ${styles["for-double-title"]}`}>
                                     <HTitle>История</HTitle>
-                                    <FilterSelector title="подтвержденные" items={filter}/>
+                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
+                                        title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
                                 <CustomTable className="admin-table">
                                     <HeadTable>
@@ -69,18 +115,7 @@ class ReferralsReferrer extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableData>20.02.2022</TableData>
-                                            <TableData>vladikmadik</TableData>
-                                            <TableData>500.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                        </tr>
-                                        <tr>
-                                            <TableData>15.02.2022</TableData>
-                                            <TableData>anastasiagord</TableData>
-                                            <TableData>200.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                        </tr>
+                                        {renderTableReferrer(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

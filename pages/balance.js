@@ -32,8 +32,10 @@ class Balance extends Component {
             status: "",
             color: "",
             statusFilter: "",
-            Data: [...DataBalance]
+            Data: [...DataBalance],
+            tableData: [],
         };
+        this.state.tableData = this.state.Data
     }
 
     changeClickStatus = (e) => {
@@ -50,16 +52,21 @@ class Balance extends Component {
 
     render() {
 
-        const tableBalance = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                    <TableData>{v.date}</TableData>
-                    <TableData>{v.method}</TableData>
-                    <TableData>{v.summ}</TableData>
-                    <TableData color="purple">{v.number}</TableData>
-                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-            </tr>
-        )});
+        const renderTableBalance = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableData>{v.date}</TableData>
+                            <TableData>{v.method}</TableData>
+                            <TableData>{v.summ}</TableData>
+                            <TableData color="purple">{v.number}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>
@@ -94,7 +101,7 @@ class Balance extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableBalance}
+                                        {renderTableBalance(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

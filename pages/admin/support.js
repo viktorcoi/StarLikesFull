@@ -28,7 +28,7 @@ import ButtonAddFile from '../../components/Assets/Buttons/ButtonAddFile';
 import AddFile from '../../components/Assets/Blocks/AddFile';
 import LinkButton from '../../components/Assets/Buttons/LinkButton';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
-import DataSupport from '../../components/Assets/Context/AdminContext.js/DataSupport';
+import DataSupport from '../../components/Assets/Context/AdminContext/DataSupport';
 
 class HistoryOrders extends Component {
 
@@ -39,26 +39,31 @@ class HistoryOrders extends Component {
             addFile: [],
             linkPage: "",
             id: "",
-            number: "",
+            numberSup: "",
             login: "",
             theme: "",
             status: "",
+            message: "",
             statusFilter: "",
-            type: "Выберите тип обращения",
+            type: "",
             typeSelector: ["Технический", "Не технический", "Гипер технический"],
-            filter: "Сортировка",
             Data: [...DataSupport],
             filterStatus: ["активные", "решенные", "все записи"],
-            filterSelector: ["По логину", "По теме", "По номеру", "По статусу"],
+            filterSelector: ["По логину", "По теме", "По номеру"],
+            tableData: [],
+            filterField: "По логину"
         };
         this.addClass = this.addClass.bind(this);
     }
     
     addClass(index, v) {
         const activeClasses = [...this.state.activeClasses.slice(0, index), !this.state.activeClasses[index], this.state.activeClasses.slice(index + 1)].flat();
-        this.setState({activeClasses,
+        this.setState({
+            activeClasses,
             id: v?.id,
+            type: v?.type,
             theme: v?.theme, 
+            message: v?.message
         });
         document.body.style.overflow = activeClasses[0] ? 'hidden' : 'overlay';
     }
@@ -90,70 +95,86 @@ class HistoryOrders extends Component {
     render() {
 
         const activeClasses = this.state.activeClasses.slice();
-        let search  = ["Вот это нашлось", "Вот это нашлось 2", "Вот это нашлось 3", "Вот это нашлось 4"];
 
         const schemaSupport = Yup.object({
             theme: Yup.string().required("Поле не может быть пустым!"),
             message: Yup.string().required("Поле не может быть пустым!"),
         });
 
-        const tableSupport = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => this.addClass(0, v)}/>
-                <TableDataLink color="purple" href="/admin/support_dialog">{v.number}</TableDataLink>
-                <TableData>{v.login}</TableData>
-                <TableData>{v.theme}</TableData>
-                <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-            </tr>
-        )});
+        const renderTableSupport = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => this.addClass(0, v)}/>
+                            <TableDataLink color="purple" href="/admin/support_dialog">{v.numberSup}</TableDataLink>
+                            <TableData>{v.login}</TableData>
+                            <TableData>{v.theme}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>  
-                <Popup clickClose={() => this.addClass(1)} className={activeClasses[1]? "open" : ""}
+                <Popup clickClose={() => {this.addClass(1), this.setState({})}} 
+                    className={activeClasses[1]? "open" : ""}
                     title="Создать обращение">
                     <Formik
                         enableReinitialize={true}
                         initialValues={{ 
-                            type: this.state.type,
+                            type: this.state.type ? this.state.type : "Выберете тип обращения",
                             theme: this.state.theme,
-                            message: '',
+                            message: this.state.message,
                         }}
                         validationSchema={schemaSupport}
                         onSubmit = {(values) => {console.log(values)}}>
-                        {({ errors, handleSubmit, handleChange, values }) => {
+                        {({ errors, handleSubmit, values }) => {
 
                         const ChangeLink = () => {
-                            if (values.theme && values.message.length > 0 ) {
-                                this.state.linkPage = "/admin/support_dialog";
+                            if (values.theme && values.message != undefined) {
+                                if (values.theme.length && values.message.length > 0) {
+                                    this.state.linkPage = "/admin/support_dialog";
+                                } else {
+                                    this.state.linkPage = "";
+                                }
                             } else {
                                 this.state.linkPage = "";
                             }
                         }
 
                         const sendSupport = () => {
-                            if (values.theme && values.message.length > 0 ) {
-                                this.addClass(1)
+                            if (values.theme && values.message != undefined) {
+                                if (values.theme.length && values.message.length > 0) {
+                                    setTimeout(() => {
+                                        this.addClass(1)
+                                    }, 1);
+                                }
                             } 
                         }
 
                         return (
                         <>
                             <CustomSelector addClassName={styles["margin-selector"]}  addIMG="pen" 
-                                onChange={handleChange}
                                 onClick={(e)=> (this.setState({ ...this.state, type: e.target.innerText}))}
                                 title={values.type} items={this.state.typeSelector}/>
-                            <InputWithError className="chat" name="theme" onChange={handleChange} onKeyUp={ChangeLink()} 
+                            <InputWithError className="chat" name="theme" 
+                                onChange={(e)=> {this.setState({ theme: e.target.value })}} 
+                                onKeyUp={ChangeLink()} 
                                 placeholder='Тема обращения' type="text"
                                 classError={errors.theme ? "view" : ""} addClassInput="main-input"
                                 textError={errors.theme || "ОК"} value={values.theme}/>
                             <BetweenBlock className={styles["for-search-popup"]}>
-                                <SearchInput classOption="selector-admin-popup" classSerach="admin-search-popup" items={search}/>
+                                <SearchInput classOption="selector-admin-popup" classSerach="admin-search-popup"/>
                                 <CustomSelector className="admin-selector-popup" items={this.state.filterSelector}
-                                    onClick={(e)=> (this.setState({ ...this.state, filter: e.target.innerText}))} 
-                                    title={this.state.filter}/>
+                                    onClick={(e)=> (this.setState({ ...this.state, filterField: e.target.innerText}))} 
+                                    title={this.state.filterField}/>
                             </BetweenBlock>
-                            <TextArea name="message" onChange={handleChange}  onKeyUp={ChangeLink()} 
+                            <TextArea name="message" 
+                                onChange={(e)=> this.setState({ message: e.target.value })} 
+                                onKeyUp={ChangeLink()} 
                                 placeholder='Напишите сообщение' type="text"
                                 classError={errors.message ? "view" : ""} addClassInput="main-input"
                                 textError={errors.message || "ОК"} value={values.message}/>
@@ -189,10 +210,13 @@ class HistoryOrders extends Component {
                                 </BetweenBlock>
                                 <BetweenBlock className={`${styles["for-search"]} items-center`}>
                                     <div className="d-flex">
-                                        <SearchInput addClassDiv={styles["admin-search"]} classOption="for-dark-selector" classDiv="admin-search" items={search}/>
+                                        <SearchInput filterField={this.state.filterField} data={this.state.Data} 
+                                            callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                            addClassDiv={styles["admin-search"]} 
+                                            classOption="for-dark-selector" classDiv="admin-search"/>
                                         <CustomSelector className="admin-selector" 
-                                            onClick={(e)=> (this.setState({ ...this.state, filter: e.target.innerText}))} 
-                                            title={this.state.filter} items={this.state.filterSelector}/>
+                                            onClick={(e)=> (this.setState({ ...this.state, filterField: e.target.innerText}))} 
+                                            title={this.state.filterField} items={this.state.filterSelector}/>
                                     </div>
                                     <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
                                         title={this.state.filterStatus[2]} items={this.state.filterStatus}/>
@@ -206,7 +230,7 @@ class HistoryOrders extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableSupport}
+                                        {renderTableSupport(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

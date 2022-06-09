@@ -33,12 +33,12 @@ class SettingProfile extends Component {
         document.body.style.overflow = activeClasses[0] ? 'hidden' : 'overlay';
     }
 
-    closeAlert = () => {
-        this.setState({
-            passAlert: false,
-            changeAlert: false
-        });
-    }
+    // closeAlert = () => {
+    //     this.setState({
+    //         passAlert: false,
+    //         changeAlert: false
+    //     });
+    // }
 
     render() {
 
@@ -59,11 +59,13 @@ class SettingProfile extends Component {
 
         return (
             <>
-                <AlertBlock img="alert-success" clickClose={this.closeAlert} title="Готово!"  
-                    description="Пароль успешно изменен!" className={this.state.passAlert ? "open" : ""}>
+                <AlertBlock Alert = {this.state.passAlert} 
+                    callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
+                    img="alert-success" title="Готово!" description="Пароль успешно изменен!">
                 </AlertBlock>
-                <AlertBlock img="alert-success" clickClose={this.closeAlert} title="Готово!"  
-                    description="Данные сохранены!" className={this.state.changeAlert ? "open" : ""}>
+                <AlertBlock Alert = {this.state.changeAlert} 
+                    callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
+                    img="alert-success" title="Готово!" description="Данные сохранены!">
                 </AlertBlock>
                 <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""} title="Изменение пароля">
                     <Formik
@@ -79,8 +81,11 @@ class SettingProfile extends Component {
                         const ChangePassrord = () => {
                             if (((values.oldPass.length && values.newPass.length && values.confirmNewPass.length) != 0)) {
                                 if (errors.confirmNewPass == undefined) {
+                                    this.state.passAlert = true;
+                                    setTimeout(() => {
+                                        this.setState({passAlert: false});
+                                    }, 3000); 
                                     this.addClass(0)
-                                    this.state.passAlert = true
                                 }
                             }
                         } 
@@ -129,8 +134,8 @@ class SettingProfile extends Component {
                                     const ChangeData = () => {
                                         if (((values.email.length && values.login.length) != 0)) {
                                             if (errors.email == undefined) {
+                                                this.state.changeAlert = true;
                                                 this.addClass(1)
-                                                this.state.changeAlert = true
                                             }
                                         }
                                     } 

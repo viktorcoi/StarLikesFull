@@ -47,8 +47,10 @@ class Referrals extends Component {
             status: "",
             color: "",
             statusFilter: "",
-            Data: [...DataReferral]
+            Data: [...DataReferral],
+            tableData: [],
         };
+        this.state.tableData = this.state.Data
         this.addClass = this.addClass.bind(this);
     }
     
@@ -84,15 +86,20 @@ class Referrals extends Component {
 
     render() {
 
-        const tableReferral = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                    <TableData>{v.date}</TableData>
-                    <TableData>{v.login}</TableData>
-                    <TableData>{v.summ}</TableData>
-                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-            </tr>
-        )});
+        const renderTableReferral = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableData>{v.date}</TableData>
+                            <TableData>{v.login}</TableData>
+                            <TableData>{v.summ}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         const schema = Yup.object({
             summ: Yup.string().test('', 'Минимальная сумма для вывода 300₽', value => value > 299 ),
@@ -281,7 +288,7 @@ class Referrals extends Component {
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]} ${styles["for-double-title"]}`}>
                                     <HTitle>История</HTitle>
                                     <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
-                                    title={this.state.filter[2]} items={this.state.filter}/>
+                                        title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
                                 <CustomTable className="table-referrals">
                                     <HeadTable>
@@ -291,7 +298,7 @@ class Referrals extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableReferral}
+                                        {renderTableReferral(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

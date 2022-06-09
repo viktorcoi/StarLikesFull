@@ -31,8 +31,10 @@ class MyOrders extends Component {
             status: "",
             color: "",
             statusFilter: "",
-            Data: [...DataMyOrders]
+            Data: [...DataMyOrders],
+            tableData: [],
         };
+        this.state.tableData = this.state.Data
     }
 
     changeClickStatus = (e) => {
@@ -49,16 +51,21 @@ class MyOrders extends Component {
 
     render() {
 
-        const tableMyOrders = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                <TableDataLink color="purple" href="my_orders_info">{v.numberOrder}</TableDataLink>
-                <TableData>{v.social}</TableData>
-                <TableData>{v.type}</TableData>
-                <TableData>{v.price}</TableData>
-                <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-            </tr>
-        )});
+        const renderTableMyOrders = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableDataLink color="purple" href="my_orders_info">{v.numberOrder}</TableDataLink>
+                            <TableData>{v.social}</TableData>
+                            <TableData>{v.type}</TableData>
+                            <TableData>{v.price}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>
@@ -86,7 +93,7 @@ class MyOrders extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableMyOrders}
+                                        {renderTableMyOrders(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

@@ -24,8 +24,10 @@ class MainPage extends Component {
             type: "",
             price: "",
             socialFilter: "instagram",
-            Data: [...DataMyServices]
+            Data: [...DataMyServices],
+            tableData: [],
         };
+        this.state.tableData = this.state.Data
     }
 
     ChooseSocial = (e) => {
@@ -36,6 +38,20 @@ class MainPage extends Component {
     }
 
     render() {
+
+        const renderTableMyService = (data) => {
+            return data.filter((v) => (v.social == this.state.socialFilter)).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableData>{v.social}</TableData>
+                            <TableDataLink href="/new_order_settings" color="purple">{v.type}</TableDataLink>
+                            <TableData>{v.price}</TableData>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         const tableMyServices = this.state.Data.filter(v => (v.social == this.state.socialFilter)).map((v, idx) => { 
             return (
@@ -81,7 +97,7 @@ class MainPage extends Component {
                                         <TitleHead>Цена<br/>(за шт.)</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableMyServices}
+                                        {renderTableMyService(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                             </div>

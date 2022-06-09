@@ -26,33 +26,83 @@ import TableDataStatus from '../../components/Assets/Table/TableDataStatus';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkA from '../../components/Assets/tags/LinkA';
 import LinkBack from '../../components/Assets/tags/LinkBack';
+import DataCoupons from '../../components/Assets/Context/AdminContext/DataCoupons';
 
 class Users extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            activeClasses: [false, false, false, false]};
+            activeClasses: [false, false, false, false],
+            Data: [...DataCoupons],
+            filterStatus: ["активные", "завершеные", "все записи"],
+            statusFilter: "",
+            id: "",
+            number: "",
+            name: "",
+            type: "",
+            action: '',
+            status: "",
+            color: "",
+            statusCoupon: ["Активен", "Завершен"],
+            tableData: [],
+        };
+        this.state.tableData = this.state.Data
     }
 
-    addClass(index) {
+    addClass(index, v) {
         const activeClasses = [...this.state.activeClasses.slice(0, index), !this.state.activeClasses[index], this.state.activeClasses.slice(index + 1)].flat();
-        this.setState({activeClasses});
+        this.setState({
+            activeClasses,
+            id: v?.id,
+            number: Number(v?.number.match(/\d+/)) ? Number(v?.number.match(/\d+/))  : "",
+            name: v?.name,
+            type: v?.type,
+            action: v?.action,
+            status: v?.status,
+            color: v?.color,
+        });
         document.body.style.overflow = activeClasses[0] || activeClasses[1] || activeClasses[2] ? 'hidden' : 'overlay';
     }
 
-    closeAlert = () => {
-        this.setState({
-            createAlert: false,
-            changeAlert: false
-        });
+    changeClickStatus = (e) => {
+        let filter = [];
+        for (var i = 0; i < 3; i++) {
+            if (e.target.innerText.toLowerCase() == this.state.filterStatus[i]) {
+                filter[0] = "активен"
+                filter[1] = "завершен"
+                filter[2] = ""
+                this.setState({ ...this.state, statusFilter: filter[i]});
+            }
+        }
+    }
+
+    resetPopupData = () => {
+        setTimeout(() => {
+            this.setState({number: "", name: "", type: "", action: "", status: ""})
+        }, 300);
     }
 
     render() {
 
+        const renderTableCoupons = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}/>
+                            <TableData>{v.number}</TableData>
+                            <TableData>{v.name}</TableData>
+                            <TableData>{v.type}</TableData>
+                            <TableData>{v.action}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
+
         const activeClasses = this.state.activeClasses.slice();
-        let filterStatus  = ["активные", "завершеные", "все записи"];
-        let statusCoupon  = ["Активен", "Завершен"];
 
         const schema = Yup.object({
             number: Yup.string().required("Поле не может быть пустым!"),
@@ -63,30 +113,37 @@ class Users extends Component {
 
         return (
             <>  
-                <AlertBlock img="alert-success" clickClose={this.closeAlert} title="Готово!"  
-                    description="Промокод успешно создан!" className={this.state.createAlert ? "open" : ""}>
+                <AlertBlock Alert = {this.state.createAlert} 
+                    callback = {(v) => {this.setState({...this.state, createAlert: v})}} 
+                    img="alert-success" clickClose={this.closeAlert} title="Готово!"  
+                    description="Промокод успешно создан!">
                 </AlertBlock>
-                <AlertBlock img="alert-success" clickClose={this.closeAlert} title="Готово!"  
-                    description="Промокод успешно изменен!" className={this.state.changeAlert ? "open" : ""}>
+                <AlertBlock Alert = {this.state.changeAlert} 
+                    callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
+                    img="alert-success" clickClose={this.closeAlert} title="Готово!"  
+                    description="Промокод успешно изменен!">
                 </AlertBlock>
-                <Popup clickClose={() => this.addClass(1)} className={activeClasses[1]? "open" : ""}
+                <Popup clickClose={() => {this.addClass(1)}} 
+                className={activeClasses[1]? "open" : ""}
                     title="Создание промокода">
                     <Formik
+                        enableReinitialize={true}
                         initialValues={{ 
-                            number: '',
-                            name: '',
-                            type: '',
-                            action: '',
-                            status: ''
+                            number: this.state.number,
+                            name: this.state.name,
+                            type: this.state.type,
+                            action: this.state.action,
+                            status: this.state.status ? this.state.status : "Статус"
                         }}
                         validationSchema={schema}
                         onSubmit = {(values) => {console.log(values)}}>
                         {({ errors, handleSubmit, handleChange, values }) => {
-
-                        const CreateCoupon = () => {
+                            const CreateCoupon = () => {
                             if ((values.number > 0 && (values.name.length && values.type.length && values.action.length) != 0)) {
-                                this.addClass(1)
-                                this.state.createAlert = true
+                                this.state.createAlert = true;
+                                setTimeout(() => {
+                                    this.addClass(1)
+                                }, 1);
                             }
                         } 
 
@@ -108,7 +165,9 @@ class Users extends Component {
                                 className="plus" placeholder='Действие' name='action'
                                 classError={errors.action ? "view" : ""} 
                                 textError={errors.action || "ОК"} value={values.action}/>
-                            <CustomSelector addIMG="status" title="Статус" items={statusCoupon}/>
+                            <CustomSelector onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))} 
+                                addIMG="status"
+                                title={values.status} items={this.state.statusCoupon}/>
                             <MainButton onMouseUp={CreateCoupon} className={styles["button-popup-admin"]} 
                                 classButton="link-button" 
                                 type="submit" 
@@ -119,50 +178,61 @@ class Users extends Component {
                         );}}
                     </Formik>    
                 </Popup>
-                <Popup clickClose={() => this.addClass(2)} className={activeClasses[2]? "open" : ""}
+                <Popup clickClose={() => {this.addClass(2), this.resetPopupData()}} 
+                    className={activeClasses[2]? "open" : ""}
                     title="Редактирование промокода">
                     <Formik
+                        enableReinitialize={true}
                         initialValues={{ 
-                            number: '1',
-                            name: 'NEW10',
-                            type: 'Баланс',
-                            action: '+200.00₽',
-                            status: ''
+                            number: this.state.number,
+                            name: this.state.name,
+                            type: this.state.type,
+                            action: this.state.action,
+                            status: this.state.status
                         }}
                         validationSchema={schema}
                         onSubmit = {(values) => {console.log(values)}}>
-                        {({ errors, handleSubmit, handleChange, values }) => {
+                        {({ errors, handleSubmit, values }) => {
 
                         const ChangeCoupon = () => {
                             if ((values.number > 0 && (values.name.length && values.type.length && values.action.length) != 0)) {
-                                this.addClass(2)
-                                this.state.changeAlert = true
+                                this.state.changeAlert = true;
+                                setTimeout(() => {
+                                    this.addClass(2)
+                                }, 1);
+                                this.setState({number: `#${values.number}`})
                             }
                         } 
 
                         return (
                         <>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> {this.setState({ number: e.target.value })}} 
+                                addClassInput="main-input"
                                 className="sharp" placeholder='Номер' name='number' type="number"
                                 classError={errors.number ? "view" : ""} 
                                 textError={errors.number || "ОК"} value={values.number}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> {this.setState({ name: e.target.value })}}  
+                                addClassInput="main-input"
                                 className="coupon" placeholder='Название' name='name'
                                 classError={errors.name ? "view" : ""} 
                                 textError={errors.name || "ОК"} value={values.name}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> {this.setState({ type: e.target.value })}} 
+                                addClassInput="main-input"
                                 className="type" placeholder='Тип' name='type'
                                 classError={errors.type ? "view" : ""} 
                                 textError={errors.type || "ОК"} value={values.type}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError  
+                                onChange={(e)=> {this.setState({ action: e.target.value })}} 
+                                addClassInput="main-input"
                                 className="plus" placeholder='Действие' name='action'
                                 classError={errors.action ? "view" : ""} 
                                 textError={errors.action || "ОК"} value={values.action}/>
-                            <CustomSelector addIMG="status" title="Статус" items={statusCoupon}/>
-                            <MainButton onMouseUp={ChangeCoupon} className={styles["button-popup-admin"]} 
+                            <CustomSelector onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))}
+                                addIMG="status" title={values.status} items={this.state.statusCoupon}/>
+                            <MainButton className={styles["button-popup-admin"]} 
                                 classButton="link-button" 
                                 type="submit" 
-                                onClick={handleSubmit}>
+                                onClick={()=>{handleSubmit(), ChangeCoupon(), this.resetPopupData()}}>
                                 Редактровать промокод
                             </MainButton>
                         </>
@@ -206,7 +276,9 @@ class Users extends Component {
                                         <ButtonWithArrow onClick={() => this.addClass(1)}>Создать промокод</ButtonWithArrow>
                                     </BetweenBlock>
                                     <div className={`${styles["for-title"]} d-flex`}>
-                                        <FilterSelector addClassName={styles["for-filter"]} title="активные" items={filterStatus}/>
+                                        <FilterSelector addClassName={styles["for-filter"]} 
+                                            onClick={(e)=> this.changeClickStatus(e)}
+                                            title={this.state.filterStatus[2]} items={this.state.filterStatus}/>
                                     </div>
                                 </div>
                                 <CustomTable className="admin-table-coupons">
@@ -219,22 +291,7 @@ class Users extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        <tr>
-                                            <TableDataManagement clickEdit={() => this.addClass(2)}  clickDelete={() => this.addClass(0)}/>
-                                            <TableData>#1</TableData>
-                                            <TableData>NEW10</TableData>
-                                            <TableData>Баланс</TableData>
-                                            <TableData>+200.00₽</TableData>
-                                            <TableDataStatus ColorStatus="green">активен</TableDataStatus>
-                                        </tr>
-                                        <tr>
-                                            <TableDataManagement clickEdit={() => this.addClass(2)}  clickDelete={() => this.addClass(0)}/>
-                                            <TableData>#2</TableData>
-                                            <TableData>STAR20</TableData>
-                                            <TableData>Скидка</TableData>
-                                            <TableData>-20%</TableData>
-                                            <TableDataStatus ColorStatus="green">активен</TableDataStatus>
-                                        </tr>
+                                        {renderTableCoupons(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

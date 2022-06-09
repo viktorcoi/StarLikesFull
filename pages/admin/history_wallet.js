@@ -14,7 +14,7 @@ import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkBack from '../../components/Assets/tags/LinkBack';
-import DataHistoryWallets from '../../components/Assets/Context/AdminContext.js/DataHistoryWallets';
+import DataHistoryWallets from '../../components/Assets/Context/AdminContext/DataHistoryWallets';
 
 class HistoryWallet extends Component {
 
@@ -30,8 +30,10 @@ class HistoryWallet extends Component {
             status: "",
             color: "",
             statusFilter: "",
-            Data: [...DataHistoryWallets]
+            Data: [...DataHistoryWallets],
+            tableData: [],
         };
+        this.state.tableData = this.state.Data
     }
 
     changeClickStatus = (e) => {
@@ -48,16 +50,21 @@ class HistoryWallet extends Component {
 
     render() {
 
-        const tableHistoryWallets = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                <TableData>{v.numberOrder}</TableData>
-                <TableData>{v.login}</TableData>
-                <TableData>{v.method}</TableData>
-                <TableData>{v.summ}</TableData>
-                <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-            </tr>
-        )});
+        const renderTableWallet = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableData>{v.numberOrder}</TableData>
+                            <TableData>{v.login}</TableData>
+                            <TableData>{v.method}</TableData>
+                            <TableData>{v.summ}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>  
@@ -85,7 +92,7 @@ class HistoryWallet extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableHistoryWallets}
+                                        {renderTableWallet(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

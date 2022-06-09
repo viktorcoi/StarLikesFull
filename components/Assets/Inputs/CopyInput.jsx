@@ -17,8 +17,8 @@ const CopyInput = (props) => {
 
     return (
         <>
-        
-            <AlertBlock img="alert-success" clickClose={()=>setAlert(false)} title="Готово!"  
+            <AlertBlock Alert={alert} callback = {(v) => {setAlert(v)}}
+                img="alert-success" title="Готово!"  
                 description={props.description} className={alert ? "open" : ""}>
             </AlertBlock>
             <div className={`pos-relative ${styles["copy-input"]}`}>

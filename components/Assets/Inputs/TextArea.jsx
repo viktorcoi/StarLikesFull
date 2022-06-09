@@ -18,7 +18,7 @@ const TextArea = (props) => {
                     </p>
                 </div>
                 <div className={`${styles["for-input"]} pos-relative d-flex ${styles[props.classDiv] ?? ""}`}>
-                    <textarea {...props} onBlur={() => setError(false)} onFocus={() => setError(true)} onKeyUp={(e) => set_value(e.target.value.length)} type={props.type}
+                    <textarea {...props} onBlur={() => setError(false)} onFocus={() => setError(true)} onKeyUp={(e) => {set_value(e.target.value.length), props.onKeyUp}} type={props.type}
                         className={`transition_0_3 border-8px ${value ? styles.active : ""} ${styles[props.className] ?? ""} ${styles[props.addClassInput] ?? ""}`}>
                         {props.none}
                     </textarea>

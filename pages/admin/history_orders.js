@@ -17,7 +17,7 @@ import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkBack from '../../components/Assets/tags/LinkBack';
-import DataHistoryOrders from '../../components/Assets/Context/AdminContext.js/DataHistoryOrders';
+import DataHistoryOrders from '../../components/Assets/Context/AdminContext/DataHistoryOrders';
 
 class HistoryOrders extends Component {
 
@@ -26,7 +26,6 @@ class HistoryOrders extends Component {
         this.state = {
             activeClasses: [false, false, false, false],
             addFile: [],
-
             filterStatus: ["активные", "завершеные", "все записи"],
             id: "",
             date: "",
@@ -35,9 +34,10 @@ class HistoryOrders extends Component {
             status: "",
             color: "",
             statusFilter: "",
-            filter: 'Сортировка',
             Data: [...DataHistoryOrders],
-            filterSelector: ["По логину", "По виду", "По сумме", "По соц. сети", "По номеру", "По статусу"],
+            filterSelector: ["По логину", "По виду", "По сумме", "По соц. сети", "По номеру"],
+            tableData: [],
+            filterField: "По логину"
         };
     }
 
@@ -55,19 +55,22 @@ class HistoryOrders extends Component {
 
     render() {
 
-        let  search  = ["Вот это нашлось", "Вот это нашлось 2", "Вот это нашлось 3", "Вот это нашлось 4"];
-
-        const tableOrders = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                <TableDataLink href="/admin/history_orders_order" color="purple">{v.numberOrder}</TableDataLink>
-                <TableData>{v.login}</TableData>
-                <TableData>{v.social}</TableData>
-                <TableData>{v.type}</TableData>
-                <TableData>{v.summ}</TableData>
-                <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-            </tr>
-        )});
+        const renderTableOrders = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableDataLink href="/admin/history_orders_order" color="purple">{v.numberOrder}</TableDataLink>
+                            <TableData>{v.login}</TableData>
+                            <TableData>{v.social}</TableData>
+                            <TableData>{v.type}</TableData>
+                            <TableData>{v.summ}</TableData>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>  
@@ -86,10 +89,14 @@ class HistoryOrders extends Component {
                                 </div>
                                 <BetweenBlock className={`${styles["for-search"]} items-center`}>
                                     <div className="d-flex">
-                                        <SearchInput addClassDiv={styles["admin-search"]} classOption="for-dark-selector" classDiv="admin-search" items={search}/>
+                                        <SearchInput addClassDiv={styles["admin-search"]} classOption="for-dark-selector" classDiv="admin-search"
+                                            filterField={this.state.filterField} data={this.state.Data} 
+                                            callback={(data) => {this.setState({...this.state, tableData: data})}}>
+                                        </SearchInput>
                                         <CustomSelector className="admin-selector" 
-                                            onClick={(e)=> (this.setState({ ...this.state, filter: e.target.innerText}))} 
-                                            title={this.state.filter} items={this.state.filterSelector}/>
+                                            onClick={(e)=> {this.setState({ ...this.state, filterField: e.target.innerText})}} 
+                                            title={this.state.filterField} items={this.state.filterSelector}>
+                                        </CustomSelector>
                                     </div>
                                     <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
                                     title={this.state.filterStatus[2]} items={this.state.filterStatus}/>
@@ -104,7 +111,7 @@ class HistoryOrders extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableOrders}
+                                        {renderTableOrders(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

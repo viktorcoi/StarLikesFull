@@ -26,7 +26,7 @@ import AlertBlock from '../../components/Assets/Blocks/AlertBlock';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkA from '../../components/Assets/tags/LinkA';
 import LinkBack from '../../components/Assets/tags/LinkBack';
-import DataUsers from '../../components/Assets/Context/AdminContext.js/DataUsers';
+import DataUsers from '../../components/Assets/Context/AdminContext/DataUsers';
 
 class Users extends Component {
 
@@ -42,10 +42,11 @@ class Users extends Component {
             phone: "",
             country: "",
             status: "",
-            filter: "Сортировка",
             Data: [...DataUsers],
             statusSelector: ["Избранный", "Обычный", "Мяу"],
             filterSelector: ["По логину", "По почте", "По номеру", "По балансу", "По стране", "По статусу", "По телефону"],
+            tableData: [],
+            filterField: "По логину"
         };
         this.addClass = this.addClass.bind(this);
     }
@@ -65,30 +66,28 @@ class Users extends Component {
         document.body.style.overflow = activeClasses[0] || activeClasses[1] ? 'hidden' : 'overlay';
     }
 
-    closeAlert = () => {
-        this.setState({
-            changeAlert: false
-        });
-    }
-
     render() {
 
-        const tableUsers = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => {this.addClass(0, v), console.log(v)}}/>
-                <TableData color="purple">{v.numberAcc}</TableData>
-                <TableData>{v.login}</TableData>
-                <TableData>{v.balance}</TableData>
-                <TableData>{v.mail}</TableData>
-                <TableData>{v.phone}</TableData>
-                <TableData>{v.country}</TableData>
-                <TableData>{v.status}</TableData>
-            </tr>
-        )});
+        const renderTableUsers = (data) => {
+            return data.map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => {this.addClass(0, v), console.log(v)}}/>
+                            <TableData color="purple">{v.numberAcc}</TableData>
+                            <TableData>{v.login}</TableData>
+                            <TableData>{v.balance}</TableData>
+                            <TableData>{v.mail}</TableData>
+                            <TableData>{v.phone}</TableData>
+                            <TableData>{v.country}</TableData>
+                            <TableData>{v.status}</TableData>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         const activeClasses = this.state.activeClasses.slice();
-        let  search  = ["Вот это нашлось", "Вот это нашлось 2", "Вот это нашлось 3", "Вот это нашлось 4"];
 
         const schema = Yup.object({
             login: Yup.string().required("Поле не может быть пустым!"),
@@ -99,8 +98,9 @@ class Users extends Component {
 
         return (
             <>  
-                <AlertBlock img="alert-success" clickClose={this.closeAlert} title="Готово!"  
-                    description="Изменения сохранены!" className={this.state.changeAlert ? "open" : ""}>
+                <AlertBlock Alert = {this.state.changeAlert} 
+                    callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
+                    img="alert-success"  title="Готово!" description="Изменения сохранены!">
                 </AlertBlock>
                 <Popup clickClose={() => this.addClass(1)} className={activeClasses[1]? "open" : ""}
                     title="Изменить пользователя">
@@ -115,13 +115,13 @@ class Users extends Component {
                         }}
                         validationSchema={schema}
                         onSubmit = {(values) => {console.log(values)}}>
-                        {({ errors, handleSubmit, handleChange, values }) => {
+                        {({ errors, handleSubmit, values }) => {
 
                         const ChangeUser = () => {
                             if (((values.login.length && values.email.length) != 0)) {
                                 if (errors.email == undefined) {
+                                    this.state.changeAlert = true;
                                     setTimeout(() => {
-                                        this.state.changeAlert = true
                                         this.addClass(1)
                                     }, 1);
                                 }
@@ -130,23 +130,23 @@ class Users extends Component {
                         
                         return (
                         <>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> this.setState({ login: e.target.value })} addClassInput="main-input"
                                 className="enter" placeholder='Логин' name='login'
                                 classError={errors.login ? "view" : ""} 
                                 textError={errors.login || "ОК"} value={values.login}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
+                            <InputWithError onChange={(e)=> this.setState({ mail: e.target.value })} addClassInput="main-input"
                                 className="mail" placeholder='E-mail' name='email'
                                 classError={errors.email ? "view" : ""} 
                                 textError={errors.email || "ОК"} value={values.email}/>
-                            <PhoneInput onChange={handleChange} 
+                            <PhoneInput onChange={(e)=> this.setState({ phone: e.target.value })} 
                                 className="phone" name="phone" placeholder="Телефон" 
                                 addClassInput="main-input" value={values.phone}/>
-                            <Input onChange={handleChange} addClassInput="main-input"
+                            <Input onChange={(e)=> this.setState({ country: e.target.value })} addClassInput="main-input"
                                 className="world" placeholder='Страна' name='country'
                                 value={values.country}/>
-                            <CustomSelector onChange={handleChange} value={values.status} 
-                            onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))}
-                            addIMG="status" title={values.status} items={this.state.statusSelector}/>
+                            <CustomSelector value={values.status} 
+                                onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))}
+                                addIMG="status" title={values.status} items={this.state.statusSelector}/>
                             <MainButton  className={styles["button-popup-admin"]} 
                                 classButton="link-button" 
                                 type="submit" 
@@ -192,10 +192,12 @@ class Users extends Component {
                                     <MainTitle>Пользователи</MainTitle>
                                 </div>
                                 <div className={`${styles["for-search"]} d-flex`}>
-                                    <SearchInput classOption="for-dark-selector" classDiv="admin-search" items={search}/>
+                                    <SearchInput filterField={this.state.filterField} 
+                                        data={this.state.Data} callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                        classOption="for-dark-selector" classDiv="admin-search"/>
                                     <CustomSelector className="admin-selector"
-                                        onClick={(e)=> (this.setState({ ...this.state, filter: e.target.innerText}))} 
-                                        title={this.state.filter} items={this.state.filterSelector}/>
+                                        onClick={(e)=> this.setState({ ...this.state, filterField: e.target.innerText})} 
+                                        title={this.state.filterField} items={this.state.filterSelector}/>
                                 </div>
                                 <CustomTable className="admin-table">
                                     <HeadTable>
@@ -209,7 +211,7 @@ class Users extends Component {
                                         <TitleHead>Статус</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableUsers}
+                                        {renderTableUsers(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

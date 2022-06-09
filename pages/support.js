@@ -40,10 +40,14 @@ class Support extends Component {
             theme: "",
             status: "",
             lastUpdate: '',
+            type: "",
             color: "",
             statusFilter: "",
-            Data: [...DataSupport]
+            Data: [...DataSupport],
+            tableData: [],
+            typeSelector: ["Технический", "Не технический", "Гипер технический"],
         };
+        this.state.tableData = this.state.Data
         this.addClass = this.addClass.bind(this);
     }
     
@@ -85,54 +89,71 @@ class Support extends Component {
         });
 
         const activeClasses = this.state.activeClasses.slice();
-        let type  = ["Технический", "Не технический", "Гипер технический"];
 
-        const tableSupport = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                    <TableData>{v.index}</TableData>
-                    <TableDataLink color="purple" href="/dialog_support">{v.theme}</TableDataLink>
-                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-                    <TableData>{v.lastUpdate}</TableData>
-            </tr>
-        )});
+        const renderTableSupport = (data) => {
+            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableData>{v.numberSup}</TableData>
+                            <TableDataLink color="purple" href="/dialog_support">{v.theme}</TableDataLink>
+                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                            <TableData>{v.lastUpdate}</TableData>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>
                 <Popup clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""} title="Создать обращение">
                     <Formik
+                    enableReinitialize={true}
                         initialValues={{
-                            type: '',
-                            theme: '',
-                            message: '',
+                            type: this.state.type ? this.state.type : "Выберете тип обращения",
+                            theme: this.state.theme,
+                            message: this.state.message,
                         }}
                         validationSchema={schemaSupport}
                         onSubmit = {(values) => {console.log(values)}}>
-                        {({ errors, handleSubmit, handleChange, values }) => {
+                        {({ errors, handleSubmit, values }) => {
 
                         const ChangeLink = () => {
-                            if (values.theme.length && values.message.length > 0 ) {
-                                this.state.linkPage = "/dialog_support";
+                            if (values.theme && values.message != undefined) {
+                                if (values.theme.length && values.message.length > 0) {
+                                    this.state.linkPage = "/dialog_support";
+                                } else {
+                                    this.state.linkPage = "";
+                                }
                             } else {
                                 this.state.linkPage = "";
                             }
                         }
 
                         const sendSupport = () => {
-                            if (values.theme.length && values.message.length > 0 ) {
-                                this.addClass(0)
+                            if (values.theme && values.message != undefined) {
+                                if (values.theme.length && values.message.length > 0) {
+                                    setTimeout(() => {
+                                        this.addClass(0)
+                                    }, 1);
+                                }
                             } 
                         }
 
                         return (
                         <>
                             <div>
-                                <CustomSelector addClassName={styles["margin-selector"]} addIMG="pen" title="Выберите тип обращения" items={type}/>
-                                <InputWithError className="chat" name="theme" onChange={handleChange} onKeyUp={ChangeLink()} 
+                                <CustomSelector onClick={(e)=> (this.setState({ ...this.state, type: e.target.innerText}))}
+                                    title={values.type} items={this.state.typeSelector}
+                                    addClassName={styles["margin-selector"]} addIMG="pen"/>
+                                <InputWithError onChange={(e)=> {this.setState({ theme: e.target.value })}} 
+                                    className="chat" name="theme" onKeyUp={ChangeLink()} 
                                     placeholder='Тема обращения' type="text"
                                     classError={errors.theme ? "view" : ""} addClassInput="main-input"
                                     textError={errors.theme || "ОК"} value={values.theme}/>
-                                <TextArea name="message" onChange={handleChange} onKeyUp={ChangeLink()} 
+                                <TextArea onChange={(e)=> this.setState({ message: e.target.value })} 
+                                    name="message" onKeyUp={ChangeLink()} 
                                     placeholder='Напишите сообщение' type="text"
                                     classError={errors.message ? "view" : ""} addClassInput="main-input"
                                     textError={errors.message || "ОК"} value={values.message}/>
@@ -173,7 +194,7 @@ class Support extends Component {
                                         <TitleHead>Последнее обновление</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableSupport}
+                                        {renderTableSupport(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>

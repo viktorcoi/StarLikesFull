@@ -14,7 +14,7 @@ import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import SearchInput from '../../components/Assets/Inputs/SearchInput';
 import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
-import DataReferrals from '../../components/Assets/Context/AdminContext.js/DataReferrals';
+import DataReferrals from '../../components/Assets/Context/AdminContext/DataReferrals';
 
 class Referrals extends Component {
 
@@ -30,25 +30,29 @@ class Referrals extends Component {
             status: "",
             color: "",
             statusFilter: "",
-            filter: "Сортировка",
-            Data: [...DataReferrals]
+            Data: [...DataReferrals],
+            tableData: [],
+            filterField: "По рефералу"
         };
     }
 
     render() {
 
-        let  search  = ["Вот это нашлось", "Вот это нашлось 2", "Вот это нашлось 3", "Вот это нашлось 4"];
-
-        const tableReferrals = this.state.Data.filter(v => ((!this.state.statusFilter) || v.status == this.state.statusFilter)).map((v, idx) => { 
-            return (
-            <tr key={`v-${idx}`}>
-                <TableDataLink href="/admin/referrals_referral" color="purple">{v.referral}</TableDataLink>
-                <TableDataLink href="/admin/referrals_referrer" color="purple">{v.referrer}</TableDataLink>
-                <TableData>{v.summ}</TableData>
-                <TableData>{v.count}</TableData>
-                <TableData>{v.dateLast}</TableData>
-            </tr>
-        )});
+        const renderTableReferrals = (data) => {
+            return data.map((v,idx) => {
+                return (
+                    <>
+                        <tr key={`v-${idx}`}>
+                            <TableDataLink href="/admin/referrals_referral" color="purple">{v.referral}</TableDataLink>
+                            <TableDataLink href="/admin/referrals_referrer" color="purple">{v.referrer}</TableDataLink>
+                            <TableData>{v.summ}</TableData>
+                            <TableData>{v.count}</TableData>
+                            <TableData>{v.dateLast}</TableData>
+                        </tr>
+                    </>
+                );
+            });
+        }
 
         return (
             <>  
@@ -62,10 +66,12 @@ class Referrals extends Component {
                                     <MainTitle>Рефералы</MainTitle>
                                 </div>
                                 <div className={`${styles["for-search"]} d-flex`}>
-                                    <SearchInput classOption="for-dark-selector" classDiv="admin-search" items={search}/>
+                                    <SearchInput filterField={this.state.filterField} 
+                                        data={this.state.Data} callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                        classOption="for-dark-selector" classDiv="admin-search"/>
                                     <CustomSelector className="admin-selector" 
-                                        onClick={(e)=> (this.setState({ ...this.state, filter: e.target.innerText}))} 
-                                        title={this.state.filter} items={this.state.filterSelector}/>
+                                        onClick={(e)=> (this.setState({ ...this.state, filterField: e.target.innerText}))} 
+                                        title={this.state.filterField} items={this.state.filterSelector}/>
                                 </div>
                                 <CustomTable className="admin-table">
                                     <HeadTable>
@@ -76,7 +82,7 @@ class Referrals extends Component {
                                         <TitleHead>Дата последнего<br/>пополнения</TitleHead>
                                     </HeadTable>
                                     <tbody>
-                                        {tableReferrals}
+                                        {renderTableReferrals(this.state.tableData)}
                                     </tbody>
                                 </CustomTable>
                                 <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
