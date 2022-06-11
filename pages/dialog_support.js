@@ -1,6 +1,6 @@
 import { Component } from 'react/cjs/react.production.min';
 import MainTitle from '../components/Assets/tags/MainTitle';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/MainPages.module.css'
 import LinkBack from '../components/Assets/tags/LinkBack';
 import InformationSupport from '../components/Assets/DialogSupport/InformationSuppot';
@@ -46,7 +46,7 @@ class DialogSupport extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={`${styles["dialog-support"]}`}>
                     <BetweenBlock>
                         <PanelNavigationMainMini/>
@@ -113,15 +113,14 @@ class DialogSupport extends Component {
                                                 <img className={`transition_0_3 cursor-pointer ${styles["send-message"]}`} 
                                                     alt="add file" src="/assets/img/send-message.svg" onMouseUp={AddMessage} onClick={handleSubmit}/>
                                             </BetweenBlock>
-
                                         </>
                                         );}}
-                                    </Formik>
+                                    </Formik> 
                                 </DarkPurpleBlock>
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

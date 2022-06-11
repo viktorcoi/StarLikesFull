@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import styles from '/public/assets/css/MainPages.module.css'
 import PaymentForBalance from '../components/Assets/Blocks/PaymentForBalance';
@@ -13,7 +13,7 @@ class BalanceInsert extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={styles["balance-insert"]}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -26,7 +26,7 @@ class BalanceInsert extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

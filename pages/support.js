@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
@@ -24,7 +24,7 @@ import LinkButton from '../components/Assets/Buttons/LinkButton';
 import FilterSelector from '../components/Assets/tags/FilterSelector';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
-import DataSupport from '../components/Assets/Context/UserContext/DataSupport';
+import DataSupport from '../components/Assets/Table/Data/Users/DataSupport';
 
 class Support extends Component {
 
@@ -171,7 +171,7 @@ class Support extends Component {
                         );}}
                     </Formik>
                 </Popup>
-                <Container>
+                <ContainerForPages>
                     <section className={styles["page-support"]}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -207,7 +207,7 @@ class Support extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

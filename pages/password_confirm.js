@@ -4,7 +4,7 @@ import PurpleBlock from "../components/Assets/Blocks/PurpleBlock";
 import MainButton from '../components/Assets/Buttons/MainButton';
 import LinkA from '../components/Assets/tags/LinkA';
 import MainTitle from '../components/Assets/tags/MainTitle';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AuthPages.module.css'
 import PasswordInput from '../components/Assets/Inputs/PasswordInput';
 import { Media } from 'react-breakpoints'
@@ -22,7 +22,7 @@ class PasswordConfirm extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={`${styles.main} ${styles["recovery-pass"]} d-flex`}>
                         <PurpleBlock className={`${styles["for-authorization"]} margin-auto d-flex`}>
                             <MainTitle>Восстановление пароля</MainTitle>
@@ -69,7 +69,7 @@ class PasswordConfirm extends Component {
                             </BetweenBlock>
                         </PurpleBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

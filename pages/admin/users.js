@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import CustomTable from '../../components/Assets/Table/CustomTable';
@@ -26,7 +26,10 @@ import AlertBlock from '../../components/Assets/Blocks/AlertBlock';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkA from '../../components/Assets/tags/LinkA';
 import LinkBack from '../../components/Assets/tags/LinkBack';
-import DataUsers from '../../components/Assets/Context/AdminContext/DataUsers';
+import DataUsers from '../../components/Assets/Table/Data/Admin/DataUsers';
+import DataTable from '../../components/Assets/Table/DataTable';
+import CPlaceholders from '../../models/Placeholders/Client/index';
+import DataTableColumn from '../../components/Assets/Table/DataTableColumn';
 
 class Users extends Component {
 
@@ -85,6 +88,21 @@ class Users extends Component {
                     </>
                 );
             });
+        }
+
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => {this.addClass(0, v), console.log(v)}}/>
+                    <TableData color="purple">{v.numberAcc}</TableData>
+                    <TableData>{v.login}</TableData>
+                    <TableData>{v.balance}</TableData>
+                    <TableData>{v.mail}</TableData>
+                    <TableData>{v.phone}</TableData>
+                    <TableData>{v.country}</TableData>
+                    <TableData>{v.status}</TableData>
+                </DataTableColumn>
+            );
         }
 
         const activeClasses = this.state.activeClasses.slice();
@@ -164,7 +182,7 @@ class Users extends Component {
                         <ButtonNo onClick={() => this.addClass(0)}/>
                     </BetweenBlock>
                 </Popup>
-               <Container>
+               <ContainerForPages>
                     <section className={`${styles["admins-page"]} ${styles["for-menu"]}`}>
                         <BetweenBlock>
                             <div className={`${styles["menu-navigation"]} ${activeClasses[2] ? styles.hide : ""}`}>
@@ -199,6 +217,14 @@ class Users extends Component {
                                         onClick={(e)=> this.setState({ ...this.state, filterField: e.target.innerText})} 
                                         title={this.state.filterField} items={this.state.filterSelector}/>
                                 </div>
+
+                                <DataTable classTable="my-service-table" emptyText={`Услуги не найдены`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.Dashboard["ru"]} render={renderData}>
+                                </DataTable>
+
+
+
                                 <CustomTable className="admin-table">
                                     <HeadTable>
                                         <TitleHead></TitleHead>
@@ -226,7 +252,7 @@ class Users extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

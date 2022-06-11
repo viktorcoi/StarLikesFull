@@ -55,10 +55,12 @@
             text-align: left;
             border-left: 2px solid @ColorBorderHeaderDialog !important;
             padding-left: 2rem;
+            border-top-left-radius: 6px;
         }
         border-bottom: 2px solid @ColorBorderDialog;
         &:last-child {
             border-right: 2px solid @ColorBorderHeaderDialog !important;
+            border-top-right-radius: 6px;
         }
     }
     th, td {
@@ -77,12 +79,6 @@
         }
     }
     tr:last-child {
-        th:first-child {
-            border-top-left-radius: 6px;
-        }
-        th:last-child {
-            border-top-right-radius: 6px;
-        }
         td:first-child {
             border-bottom-left-radius: 6px;
         }

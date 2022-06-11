@@ -1,5 +1,5 @@
 import { Component } from 'react/cjs/react.production.min';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/MainPages.module.css'
 import LinkBack from '../components/Assets/tags/LinkBack';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
@@ -21,7 +21,7 @@ class NewOrderCrypto extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={`${styles["payment-crypto"]}`}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -56,7 +56,7 @@ class NewOrderCrypto extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

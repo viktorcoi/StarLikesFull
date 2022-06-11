@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import CustomTable from '../../components/Assets/Table/CustomTable';
@@ -26,7 +26,7 @@ import SocialBlock from '../../components/Assets/Blocks/SocialBlock';
 import SocialRoutes from '../../components/Assets/SocialRoutes';
 import TextArea from '../../components/Assets/Inputs/TextArea';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
-import DataService from '../../components/Assets/Context/AdminContext/DataService';
+import DataService from '../../components/Assets/Table/Data/Admin/DataService';
 
 class Services extends Component {
 
@@ -216,7 +216,7 @@ class Services extends Component {
                     </BetweenBlock>
                 </Popup>
 
-               <Container>
+               <ContainerForPages>
                     <section>
                         <BetweenBlock>
                             <PanelNavigationAdminMini/>
@@ -266,7 +266,7 @@ class Services extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

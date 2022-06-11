@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import CustomTable from '../../components/Assets/Table/CustomTable';
@@ -17,7 +17,7 @@ import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkBack from '../../components/Assets/tags/LinkBack';
-import DataHistoryOrders from '../../components/Assets/Context/AdminContext/DataHistoryOrders';
+import DataHistoryOrders from '../../components/Assets/Table/Data/Admin/DataHistoryOrders';
 
 class HistoryOrders extends Component {
 
@@ -74,7 +74,7 @@ class HistoryOrders extends Component {
 
         return (
             <>  
-               <Container>
+               <ContainerForPages>
                     <section className={`${styles["history-ordres"]}`}>
                         <BetweenBlock>
                             <PanelNavigationAdminMini/>
@@ -126,7 +126,7 @@ class HistoryOrders extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

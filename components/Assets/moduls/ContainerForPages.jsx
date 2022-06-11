@@ -1,4 +1,4 @@
-const Container = (props) => {
+const ContainerForPages = (props) => {
     return (
         <div {...props} className={`container ${props.className ?? ""}`}>
             {props.children}
@@ -6,4 +6,4 @@ const Container = (props) => {
     )
 }
 
-export default Container;
+export default ContainerForPages;

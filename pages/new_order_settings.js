@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import styles from '/public/assets/css/MainPages.module.css'
 import { Formik } from "formik";
@@ -41,7 +41,7 @@ class NewOrderSettings extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={styles["order_settings"]}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -110,7 +110,7 @@ class NewOrderSettings extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

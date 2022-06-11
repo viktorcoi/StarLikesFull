@@ -1,5 +1,5 @@
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from '../components/Assets/moduls/Container';
+import ContainerForPages from '../components/Assets/moduls/ContainerForPages';
 import HTitle from '../components/Assets/tags/HTitle';
 import HThird from '../components/Assets/tags/HThird';
 import styles from '/public/assets/css/ErorresPages.module.css'
@@ -7,7 +7,7 @@ import LinkButton from '../components/Assets/Buttons/LinkButton';
 
 const Error500 = () => {
     return (
-        <Container>
+        <ContainerForPages>
             <BetweenBlock className={`items-center ${styles["error-page"]}`}>
                 <div>
                     <HTitle>Упс..</HTitle>
@@ -17,7 +17,7 @@ const Error500 = () => {
                 </div>
                 <img alt='error 500' src='/assets/img/500.png'></img>
             </BetweenBlock>
-        </Container>
+        </ContainerForPages>
     )
 }
 

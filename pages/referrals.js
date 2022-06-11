@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
@@ -29,7 +29,7 @@ import HTitle from '../components/Assets/tags/HTitle';
 import ButtonWithArrow from '../components/Assets/Buttons/ButtonWithArrow';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import { Media } from 'react-breakpoints'
-import DataReferral from '../components/Assets/Context/UserContext/DataReferral';
+import DataReferral from '../components/Assets/Table/Data/Users/DataReferral';
 
 class Referrals extends Component {
 
@@ -217,7 +217,7 @@ class Referrals extends Component {
                     </div>
                     <LinkButton onClick={() => this.addClass(0)} href="/my_orders">Перейти в мои заказы</LinkButton>
                 </Popup>
-                <Container>
+                <ContainerForPages>
                     <section className={styles["page-referral"]}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -313,7 +313,7 @@ class Referrals extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

@@ -3,7 +3,7 @@ import PurpleBlock from "../components/Assets/Blocks/PurpleBlock";
 import MainButton from '../components/Assets/Buttons/MainButton';
 import LinkA from '../components/Assets/tags/LinkA';
 import MainTitle from '../components/Assets/tags/MainTitle';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AuthPages.module.css'
 import PasswordInput from '../components/Assets/Inputs/PasswordInput';
 import InputWithError from '../components/Assets/Inputs/InputWithError';
@@ -25,7 +25,7 @@ class Registration extends Component {
         
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={`${styles.main} d-flex`}>
                         <PurpleBlock className={`${styles["for-authorization"]} margin-auto d-flex`}>
                             <MainTitle>Регистрация</MainTitle>
@@ -64,7 +64,7 @@ class Registration extends Component {
                             <p>У вас есть аккаунт? <LinkA href="/authorization">Войти</LinkA></p>
                         </PurpleBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

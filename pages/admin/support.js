@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import CustomTable from '../../components/Assets/Table/CustomTable';
@@ -28,7 +28,7 @@ import ButtonAddFile from '../../components/Assets/Buttons/ButtonAddFile';
 import AddFile from '../../components/Assets/Blocks/AddFile';
 import LinkButton from '../../components/Assets/Buttons/LinkButton';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
-import DataSupport from '../../components/Assets/Context/AdminContext/DataSupport';
+import DataSupport from '../../components/Assets/Table/Data/Admin/DataSupport';
 
 class HistoryOrders extends Component {
 
@@ -92,6 +92,14 @@ class HistoryOrders extends Component {
         }
     }
 
+    Remove = (id) => {
+        console.log(id)
+        this.setState({
+            tableData: this.state.Data.filter(v => v.id !== id)
+        })
+        console.log(this.state.tableData, this.state.tableData.id)
+    }
+
     render() {
 
         const activeClasses = this.state.activeClasses.slice();
@@ -106,7 +114,7 @@ class HistoryOrders extends Component {
                 return (
                     <>
                         <tr key={`v-${idx}`}>
-                            <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => this.addClass(0, v)}/>
+                            <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => this.addClass(0, v.id)}/>
                             <TableDataLink color="purple" href="/admin/support_dialog">{v.numberSup}</TableDataLink>
                             <TableData>{v.login}</TableData>
                             <TableData>{v.theme}</TableData>
@@ -194,11 +202,11 @@ class HistoryOrders extends Component {
                 <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""}
                     title="Вы уверены, что хотите удалить обращение?">
                     <BetweenBlock>
-                        <ButtonYes/>
+                        <ButtonYes onClick={(idx)=> this.Remove(idx)}/>
                         <ButtonNo onClick={() => this.addClass(0)}/>
                     </BetweenBlock>
                 </Popup>
-               <Container>
+               <ContainerForPages>
                     <section className={styles.support}>
                         <BetweenBlock>
                             <PanelNavigationAdminMini/>
@@ -245,7 +253,7 @@ class HistoryOrders extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

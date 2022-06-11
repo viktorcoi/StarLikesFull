@@ -1,7 +1,7 @@
 import { Component } from 'react/cjs/react.production.min';
 import styles from '/public/assets/css/AdminsPages.module.css'
 import MainTitle from '../../components/Assets/tags/MainTitle';
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import LinkBack from '../../components/Assets/tags/LinkBack';
 import InformationSupport from '../../components/Assets/DialogSupport/InformationSuppot';
 import DarkPurpleBlock from '../../components/Assets/Blocks/DarkPurpleBlock';
@@ -46,7 +46,7 @@ class SupportDialog extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={`${styles["dialog-support"]}`}>
                     <BetweenBlock>
                         <PanelNavigationAdminMini/>
@@ -121,7 +121,7 @@ class SupportDialog extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

@@ -19,8 +19,10 @@ const SearchInput = (props) => {
                 callback(data?.filter((v => v.mail.indexOf(value) != -1)));
             } else if (filterField == "По номеру") {
                 callback(data?.filter((v => v.numberAcc?.indexOf(value) != -1)));
-                callback(data?.filter((v => v.numberOrder?.indexOf(value) != -1)));
-                callback(data?.filter((v => v.numberSup?.indexOf(value) != -1)));
+            // } else if (filterField == "По номеру") {
+            //     callback(data?.filter((v => v.numberSup?.indexOf(value) != -1)));
+            // } else if (filterField == "По номеру") {
+            //     callback(data?.filter((v => v.numberOrder?.indexOf(value) != -1)));
             } else if (filterField == "По стране") {
                 callback(data?.filter((v => v.country.indexOf(value) != -1)));
             } else if (filterField == "По телефону") {

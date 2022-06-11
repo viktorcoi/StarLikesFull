@@ -1,7 +1,7 @@
 import { Component } from 'react/cjs/react.production.min';
 import LinkA from '../components/Assets/tags/LinkA';
 import MainTitle from '../components/Assets/tags/MainTitle';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AuthPages.module.css'
 import InputWithError from '../components/Assets/Inputs/InputWithError';
 import PasswordInput from '../components/Assets/Inputs/PasswordInput';
@@ -21,7 +21,7 @@ class Authorization extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={`${styles.main} d-flex`}>
                         <PurpleBlock className={`${styles["for-authorization"]} margin-auto d-flex`}>
                             <MainTitle>Авторизация</MainTitle>
@@ -51,7 +51,7 @@ class Authorization extends Component {
                             <LinkA href="/password_recovery">Забыли пароль?</LinkA>
                         </PurpleBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

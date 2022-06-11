@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import CustomTable from '../../components/Assets/Table/CustomTable';
@@ -26,7 +26,7 @@ import TableDataStatus from '../../components/Assets/Table/TableDataStatus';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkA from '../../components/Assets/tags/LinkA';
 import LinkBack from '../../components/Assets/tags/LinkBack';
-import DataCoupons from '../../components/Assets/Context/AdminContext/DataCoupons';
+import DataCoupons from '../../components/Assets/Table/Data/Admin/DataCoupons';
 
 class Users extends Component {
 
@@ -246,7 +246,7 @@ class Users extends Component {
                         <ButtonNo onClick={() => this.addClass(0)}/>
                     </BetweenBlock>
                 </Popup>
-               <Container>
+               <ContainerForPages>
                     <section className={`${styles.coupons} ${styles["for-menu"]}`}>
                         <BetweenBlock>
                             <div className={`${styles["menu-navigation"]} ${activeClasses[3] ? styles.hide : ""}`}>
@@ -306,7 +306,7 @@ class Users extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

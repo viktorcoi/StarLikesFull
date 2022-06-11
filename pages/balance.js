@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
@@ -16,7 +16,7 @@ import MainTitle from '../components/Assets/tags/MainTitle';
 import HTitle from '../components/Assets/tags/HTitle';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import LinkBack from '../components/Assets/tags/LinkBack';
-import DataBalance from '../components/Assets/Context/UserContext/DataBalance';
+import DataBalance from '../components/Assets/Table/Data/Users/DataBalance';
 
 class Balance extends Component {
 
@@ -70,7 +70,7 @@ class Balance extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={styles["page-balance"]}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -116,7 +116,7 @@ class Balance extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

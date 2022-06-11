@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import styles from '/public/assets/css/MainPages.module.css'
 import MainTitle from '../components/Assets/tags/MainTitle';
@@ -52,7 +52,7 @@ class NewOrderPay extends Component {
                     </div>
                     <LinkButton onClick={() => this.addClass(1)} href="/my_orders">Перейти в мои заказы</LinkButton>
                 </Popup>
-                <Container>
+                <ContainerForPages>
                     <section className={`${styles["order_settings"]} ${styles["order-pay"]}`}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -100,7 +100,7 @@ class NewOrderPay extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

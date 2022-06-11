@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
 import SocialBlock from '../components/Assets/Blocks/SocialBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import SocialRoutes from '../components/Assets/SocialRoutes';
 import CustomTable from '../components/Assets/Table/CustomTable';
@@ -11,7 +11,7 @@ import TitleHead from '../components/Assets/Table/TitleHead';
 import TableDataLink from '../components/Assets/Table/TableDataLink';
 import TableData from '../components/Assets/Table/TableData';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
-import DataMyServices from '../components/Assets/Context/UserContext/DataMyServices';
+import DataMyServices from '../components/Assets/Table/Data/Users/DataMyServices';
 
 class MainPage extends Component {
 
@@ -64,7 +64,7 @@ class MainPage extends Component {
       
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -103,7 +103,7 @@ class MainPage extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

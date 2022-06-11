@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import MainTitle from '../../components/Assets/tags/MainTitle'
@@ -16,7 +16,7 @@ import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import CopyInput from '../../components/Assets/Inputs/CopyInput';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
-import DataReferrer from '../../components/Assets/Context/AdminContext/DataReferrer';
+import DataReferrer from '../../components/Assets/Table/Data/Admin/DataReferrer';
 
 class ReferralsReferrer extends Component {
 
@@ -71,7 +71,7 @@ class ReferralsReferrer extends Component {
 
         return (
             <>  
-               <Container>
+               <ContainerForPages>
                     <section className={styles["referral-referrer"]}>
                         <BetweenBlock>
                             <PanelNavigationAdminMini/>
@@ -130,7 +130,7 @@ class ReferralsReferrer extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

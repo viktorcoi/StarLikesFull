@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import styles from '/public/assets/css/MainPages.module.css'
 import SocialBlock from '../components/Assets/Blocks/SocialBlock';
@@ -30,7 +30,7 @@ class NewOrder extends Component {
 
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={styles["for-menu"]}>
                         <BetweenBlock>
                             <div className={`${styles["menu-navigation"]} ${activeClasses[0] ? styles.hide : ""}`}>
@@ -73,7 +73,7 @@ class NewOrder extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

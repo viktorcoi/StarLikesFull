@@ -1,6 +1,50 @@
 @import "../../../public/assets/css/vars";
 @import "../../../public/assets/css/mixing";
 
+.choose-page {
+    height: 100%;
+    .button-close, .go-page {
+        width: max(0.75em, 7px);
+        height: max(0.75em, 7px);
+        transform: translateY(-50%);
+        top: 50%;
+        left: 2.1em;
+        opacity: 0;
+        visibility: hidden;
+        &:hover {
+            animation: hover-in .3s ease-out;
+            animation-fill-mode: forwards
+        }
+        &:not(:hover) {
+            animation: hover-out .3s ease-out;
+        }
+        &.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        &.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+    .go-page {
+        width: max(1.25em, 12px);
+        height: max(1.25em, 12px);
+        left: 1.85em;
+        visibility: hidden;
+        opacity: 0;
+        &.show {
+           visibility: visible;
+           opacity: 1; 
+        }
+    }
+}
+
+.for-pagination {
+    justify-content: center;
+    margin-top: 2.5em;
+}
+
 .pagination {
     > div {
         margin: 0 1.87em;
@@ -42,7 +86,7 @@
     }
 } 
 
-.number-page {
+.number-page, .three-dots {
     font-size: @15px;
     margin: 0 1.87em;
     &:hover {
@@ -55,10 +99,10 @@
     p {
         font-size: @15px;
     }
-    &:nth-child(4):hover {
-        cursor: unset;
-        color: unset;
-    }
+}
+
+.three-dots {
+    margin: auto;
 }
 
 @media screen and (max-width: 380px) {

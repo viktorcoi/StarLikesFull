@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import MainTitle from '../../components/Assets/tags/MainTitle'
@@ -18,7 +18,7 @@ class HistoryOrdersOrder extends Component {
 
         return (
             <>  
-               <Container>
+               <ContainerForPages>
                     <section>
                         <BetweenBlock>
                             <PanelNavigationAdminMini/>
@@ -61,7 +61,7 @@ class HistoryOrdersOrder extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

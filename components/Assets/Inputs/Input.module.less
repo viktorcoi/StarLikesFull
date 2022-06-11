@@ -281,7 +281,7 @@
     }
 }
 
-.copy-input, .main-dark-input {
+.copy-input, .main-dark-input, .page-input {
     min-width: 29.69em;
     img {
         right: 2.88rem; top: 0; bottom: 0;
@@ -315,6 +315,25 @@
         padding:  max(1.151rem, 13.7px) 2rem 1.151rem 1.9rem !important;
         border: 2px solid @ColorTextWhite !important;
     }
+}
+
+.page-input {
+    position: absolute;
+    transform: translate(-50%) translateY(-50%);
+    left: 50%; top: 50%;
+    min-width: 6.56em;
+    margin-bottom: unset !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+    &.open {
+        opacity: 1;
+        visibility: visible;
+    }
+    input {
+        font-size: max(.94rem, 9px) !important;
+        padding: max(.84rem, 8.5px) max(.69rem, 7px) !important;
+    }    
 }
 
 .last {

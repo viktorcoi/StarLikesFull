@@ -1,5 +1,5 @@
 import { Component } from 'react/cjs/react.production.min';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import CustomTable from '../components/Assets/Table/CustomTable';
 import HeadTable from '../components/Assets/Table/HeadTable';
 import TableData from '../components/Assets/Table/TableData';
@@ -18,7 +18,7 @@ class Notifications extends Component {
 
         return (
             <>
-                <Container> 
+                <ContainerForPages> 
                     <section className={`${styles.notifications}`}>
                     <BetweenBlock>
                         <PanelNavigationMainMini/>
@@ -42,7 +42,7 @@ class Notifications extends Component {
                         </div>
                     </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Container from "../../components/Assets/moduls/Container";
+import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
 import MainTitle from '../../components/Assets/tags/MainTitle'
@@ -16,7 +16,7 @@ class Prm4u extends Component {
 
         return (
             <>  
-               <Container>
+               <ContainerForPages>
                     <section className={`${styles["admins-page"]}`}>
                         <BetweenBlock>
                             <PanelNavigationAdminMini/>
@@ -44,7 +44,7 @@ class Prm4u extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-               </Container>
+               </ContainerForPages>
             </>
         ) 
     }

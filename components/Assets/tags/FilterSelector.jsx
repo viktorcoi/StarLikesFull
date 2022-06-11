@@ -29,16 +29,14 @@ const FilterSelector = (props) => {
             className={`pos-relative transition_0_3 d-flex items-center ${styles["filter-selector"]} 
             ${styles[props.addIMG]} ${(open ? styles.open : "")} ${(selected ? styles.open : "")}`}>
                 <img alt='filter' src='/assets/img/filter.svg'></img>
-                <p className='none-select transition_0_3'>
-                    <input style={{display: "none"}} value={text} name={props.name} />
+                <p className='none-select transition_0_3 none-select'>
                     {`Показать ${text}`}
                 </p>
-                
             </div>
             {(
                 <CustomBlockOption addClass={open ? "open" : ""}>
                 {props.items.map(item => (
-                    <p className='transition_0_3 none-select' key={item} onMouseDown={(e) => {handleOnClick(item), addClass(), props.onClick(e)}}>{item}</p>
+                    <p className='none-select transition_0_3 none-select' key={item} onMouseDown={(e) => {handleOnClick(item), addClass(), props.onClick(e)}}>{item}</p>
                 ))}
                 </CustomBlockOption>
             )}

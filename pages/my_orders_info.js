@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
@@ -23,7 +23,7 @@ class MyOrdersInfo extends Component {
         const price = "33.00₽"
         return (
             <>
-                <Container>
+                <ContainerForPages>
                     <section className={styles["order_settings"]}>
                         <BetweenBlock>
                             <PanelNavigationMainMini/>
@@ -92,7 +92,7 @@ class MyOrdersInfo extends Component {
                             </div>
                         </BetweenBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

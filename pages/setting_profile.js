@@ -1,5 +1,5 @@
 import { Component } from 'react/cjs/react.production.min';
-import Container from "../components/Assets/moduls/Container";
+import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/MainPages.module.css'
 import LinkBack from '../components/Assets/tags/LinkBack';
 import DarkPurpleBlock from '../components/Assets/Blocks/DarkPurpleBlock';
@@ -114,7 +114,7 @@ class SettingProfile extends Component {
                         );}}
                     </Formik>
                 </Popup>
-                <Container> 
+                <ContainerForPages> 
                     <section className={`${styles["setting-profile"]} pos-relative`}>
                         <LinkBack/>
                         <MainTitle className={styles.title}>Настройка профиля</MainTitle>
@@ -180,7 +180,7 @@ class SettingProfile extends Component {
                             </div>
                         </DarkPurpleBlock>
                     </section>
-                </Container>
+                </ContainerForPages>
             </>
         )
     }

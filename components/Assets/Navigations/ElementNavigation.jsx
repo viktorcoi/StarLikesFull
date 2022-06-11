@@ -3,7 +3,7 @@ import styles from './Navigations.module.css'
 
 const ElementNavigation = (props) => {
     return (
-        <LinkA href={props.href} className={`${styles[props.className] ?? ""} d-flex items-center`}>
+        <LinkA href={props.href} className={`${styles[props.className] ?? ""} d-flex items-center none-select`}>
             {props.children}
         </LinkA>
     )
