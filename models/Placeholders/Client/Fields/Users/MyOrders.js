@@ -1,4 +1,4 @@
-const CPlaceholderTablesDashboardFields = {
+const CPlaceholderTablesMyOrdersFields = {
     en: [
         "Name", "Status", "Price", "Active until"
     ],
@@ -7,4 +7,4 @@ const CPlaceholderTablesDashboardFields = {
     ]
 };
 
-export default CPlaceholderTablesDashboardFields;
+export default CPlaceholderTablesMyOrdersFields;

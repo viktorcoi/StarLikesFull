@@ -1,9 +1,6 @@
 import { Component } from 'react/cjs/react.production.min';
 import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
-import CustomTable from '../components/Assets/Table/CustomTable';
-import HeadTable from '../components/Assets/Table/HeadTable';
 import TableData from '../components/Assets/Table/TableData';
-import TitleHead from '../components/Assets/Table/TitleHead';
 import styles from '/public/assets/css/MainPages.module.css'
 import TableDataNotifications from '../components/Assets/Table/TableDataNotifications';
 import TableDataLink from '../components/Assets/Table/TableDataLink';
@@ -11,11 +8,32 @@ import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
-
+import DataNotifications from '../components/Assets/Table/Data/Users/DataNotifications';
+import DataTableColumn from '../components/Assets/Table/DataTableColumn';
+import DataTable from '../components/Assets/Table/DataTable';
+import CPlaceholders from '../models/Placeholders/Client/index';
 class Notifications extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            Data: [...DataNotifications],
+            tableData: [],
+        };
+        this.state.tableData = this.state.Data
+    }
 
     render() {
 
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableDataLink color="purple" href={v.link}>{v.theme}</TableDataLink>
+                    <TableData>{v.date}</TableData>
+                    <TableDataNotifications>{v.notification}</TableDataNotifications>
+                </DataTableColumn>
+            );
+        }
         return (
             <>
                 <ContainerForPages> 
@@ -25,20 +43,10 @@ class Notifications extends Component {
                         <PanelNavigationMain/>
                         <div className={styles["right-side"]}>
                             <MainTitle className={styles.title}>Уведомления</MainTitle>
-                            <CustomTable className="table-notifications">
-                                <HeadTable>
-                                    <TitleHead>Тема</TitleHead>
-                                    <TitleHead>Дата</TitleHead>
-                                    <TitleHead>Уведомление</TitleHead>
-                                </HeadTable>
-                                <tbody>
-                                    <tr>
-                                        <TableDataLink color="purple" href="/dialog_support">Новые сообщения от службы поддержки</TableDataLink>
-                                        <TableData>20.02.2000 @ 12:40</TableData>
-                                        <TableDataNotifications>2</TableDataNotifications>
-                                    </tr>
-                                </tbody>
-                            </CustomTable>
+                            <DataTable classTable={styles.notifications} emptyText={`Уведомления не найдены`} 
+                                linesLimit={5} data={this.state.tableData} 
+                                columns={CPlaceholders.Fields.Notification["ru"]} render={renderData}>
+                            </DataTable>
                         </div>
                     </BetweenBlock>
                     </section>

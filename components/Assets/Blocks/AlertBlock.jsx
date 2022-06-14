@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import styles from './AlertBlock.module.css'
 
 const AlertBlock = (props) => {
@@ -9,13 +8,11 @@ const AlertBlock = (props) => {
         callback(false)
     }
 
-    useEffect(() => {
-        if (callback && (Alert == true) ) {
-            setTimeout(() => {
-                callback(false)
-            }, 3000)
-        }
-    }, [Alert])
+    if (callback && (Alert == true) ) {
+        setTimeout(() => {
+            callback(false)
+        }, 3000)
+    }
 
     return (
         <div className={`border-7px transition_0_3 ${styles.alert} ${(Alert ? styles.open : "")}`}>

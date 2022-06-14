@@ -8,6 +8,7 @@ const FilterSelector = (props) => {
     const [selection, setSelection] = useState([]);
     const [text, setText] = useState(props.title);
     const [selected, setSelected] = useState(false);
+    const { callback, filterStatus, data } = props;
 
     const DropDown = () => setOpen(!open);
     const addClass = (selected) => setSelected(!selected)
@@ -16,6 +17,17 @@ const FilterSelector = (props) => {
         if (!selection.some(current => current === item)) {
             setSelection([item]);
             setText(item);
+        }
+    }
+
+    const changeClickStatus = (e) => {
+        if (callback) {
+            let filter = props.filter;
+            for (var i = 0; i < 3; i++) {
+                if (e.target.innerText.toLowerCase() == filterStatus[i]) {
+                    callback(data?.filter((v) => ((!filter[i]) || v.status == filter[i])), filter[i])
+                }
+            }
         }
     }
 
@@ -36,7 +48,7 @@ const FilterSelector = (props) => {
             {(
                 <CustomBlockOption addClass={open ? "open" : ""}>
                 {props.items.map(item => (
-                    <p className='none-select transition_0_3 none-select' key={item} onMouseDown={(e) => {handleOnClick(item), addClass(), props.onClick(e)}}>{item}</p>
+                    <p className='none-select transition_0_3 none-select' key={item} onMouseDown={(e) => {handleOnClick(item), addClass(), changeClickStatus(e)}}>{item}</p>
                 ))}
                 </CustomBlockOption>
             )}

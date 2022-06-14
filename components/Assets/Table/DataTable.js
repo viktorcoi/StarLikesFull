@@ -139,14 +139,19 @@ const DataTable = (props) => {
         if (!(pages) || pages.length < 1) {
             return (
                 <DataTableColumn>
-                    <td style={{textAlign: "center"}}>{props.emptyText || "Нет данных"}</td>
+                    <td style={{textAlign: "center", 
+                                borderTop: "2px solid #5C585F",
+                                borderTopLeftRadius: "6px",
+                                borderTopRightRadius: "6px"}}>
+                            {props.emptyText || "Нет данных"}
+                    </td>
                 </DataTableColumn>
             );
         }
         if (!(props.render)) {
             return;
         }
-        return pages.filter((props.filter) ?? (v => v)).map((v, i) => props.render(v, i, props.columns));
+        return pages.map((v, i) => props.render(v, i, props.columns));
         
     };
 
@@ -170,8 +175,9 @@ const DataTable = (props) => {
     const PageNumber = (props) => {
         const { number } = props;
         return (
-            <div {...props} className={`${styles["number-page"]} none-select d-flex cursor-pointer transition_0_3 ${currentPage == number ? styles.select : ""}`}>
-                <p onClick={(v) => changePage(v)} className='margin-auto'>{number}</p>
+            <div {...props} onClick={(v) => changePage(v)} 
+                className={`${styles["number-page"]} none-select d-flex cursor-pointer transition_0_3 ${currentPage == number ? styles.select : ""}`}>
+                <p className='margin-auto'>{number}</p>
             </div>
         )
     };
@@ -214,7 +220,8 @@ const DataTable = (props) => {
             <>
                 <div className={`d-flex pos-relative ${styles["choose-page"]}`}>
                     <div onClick={() => setInputState(!inputState)}
-                        className={`none-select cursor-pointer ${styles["three-dots"]}`}>{"..."}
+                        className={`none-select margin-auto d-flex cursor-pointer ${styles["three-dots"]} ${inputState ? styles.hide : ""}`}>
+                            <p className="margin-auto">{"..."}</p>
                     </div>
                     <div className={`${styles["for-input"]}`}>
                         <Input showPage={`${inputState ? "open" : ""}`}
@@ -262,10 +269,10 @@ const DataTable = (props) => {
                 </tbody>
             </CustomTable>
             <Container noSelect={true}>
-                <div className={`d-flex ${styles["for-pagination"]}`}>
+                <div className={`d-flex ${dataLimit == 1 ? styles.hide : ""} ${styles["for-pagination"]}`}>
                     <div className={`d-flex items-center ${styles.pagination}`}>
-                        <Container disabled={isFirstPage} cursor={!isFirstPage} margin={true}>
-                            <button {...props} onClick={() => goToPreviousPage()} className="d-flex items-center cursor-pointer transition_0_3">
+                        <Container cursor={!isFirstPage}>
+                            <button disabled={isFirstPage} onClick={() => goToPreviousPage()} className="d-flex items-center cursor-pointer transition_0_3">
                                 <img className={`margin-auto`} alt='next page' src='/assets/img/arrow-back.png'></img>
                             </button>
                         </Container>
@@ -279,8 +286,8 @@ const DataTable = (props) => {
                             }
                         </div>
                         <FastForward />
-                        <Container disabled={isLastPage} cursor={!isLastPage} margin={true}>
-                            <button {...props} onClick={() => goToNextPage()} className="d-flex items-center cursor-pointer transition_0_3">
+                        <Container cursor={!isLastPage}>
+                            <button disabled={isLastPage} onClick={() => goToNextPage()} className="d-flex items-center cursor-pointer transition_0_3">
                                 <img className={styles['arrow-next']} alt='back page' src='/assets/img/arrow-next.png'></img>
                             </button>
                         </Container>

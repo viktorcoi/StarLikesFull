@@ -3,12 +3,13 @@
 
 .choose-page {
     height: 100%;
+    margin: unset !important;
     .button-close, .go-page {
         width: max(0.75em, 7px);
         height: max(0.75em, 7px);
         transform: translateY(-50%);
         top: 50%;
-        left: 2.1em;
+        left: 4.1em;
         opacity: 0;
         visibility: hidden;
         &:hover {
@@ -30,7 +31,7 @@
     .go-page {
         width: max(1.25em, 12px);
         height: max(1.25em, 12px);
-        left: 1.85em;
+        left: 3.7em;
         visibility: hidden;
         opacity: 0;
         &.show {
@@ -43,11 +44,15 @@
 .for-pagination {
     justify-content: center;
     margin-top: 2.5em;
+    &.hide {
+        display: none;
+    }
 }
 
 .pagination {
-    > div {
-        margin: 0 1.87em;
+    > div:not(:nth-child(2)) {
+        margin: 0 max(.28rem, 2.5px);
+        .right_left_0
     }
     button {
         border: unset;
@@ -69,6 +74,7 @@
             .animation_purple_img_gray
         }
         &:disabled {
+            cursor: unset;
             img {
                 filter: brightness(10%) contrast(60%);
             }
@@ -87,30 +93,54 @@
 } 
 
 .number-page, .three-dots {
-    font-size: @15px;
-    margin: 0 1.87em;
+    width: max(4rem, 23px);
+    height: max(4rem, 23px);
+    margin: 0 max(.28rem, 2.5px) !important;
+    border-radius: 6px;
     &:hover {
-        color: @ColorTextPurple;
+        background-color: rgba(134, 72, 140, 0.17);
     }
     &.select {
-        color: @ColorTextPurple
+        cursor: unset;
+        color: @ColorTextPurple;
+        &:hover {
+            background-color: unset;
+        }
     }
-    .right_left_0;
     p {
         font-size: @15px;
     }
 }
 
-.three-dots {
-    margin: auto;
+.three-dots.hide {
+    visibility: hidden;
 }
 
 @media screen and (max-width: 380px) {
-    .number-page {
-        font-size: 8.45px;
+    .pagination {
+        > div:not(:nth-child(2)) {
+            margin: 0 2.5px;
+            .right_left_0
+        }
+    }
+    .number-page, .three-dots {
+        width: 34px;
+        height: 34px;
+        margin: 0 2.5px !important;
+    }
+    .number-page p, .three-dots p {
+        font-size: 10px;
     }
     .pagination button img {
         width: 34px;
         height: 34px;
+    }
+    .choose-page {
+        .button-close {
+            left: 38px;
+        }
+        .go-page {
+            left: 34px;
+        }
     }
 }

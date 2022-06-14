@@ -2,7 +2,7 @@ const DataSupport = [
     {
         id: 1,
         type: "Технический",
-        numberSup: "#1",
+        number: "1",
         login: "Popap",
         theme: "Пополнение средств",
         status: "активен",
@@ -12,7 +12,7 @@ const DataSupport = [
     {
         id: 2,
         type: "",
-        numberSup: "#2",
+        number: "2",
         login: "karapuz",
         theme: "Пополнение средств",
         status: "активен",
@@ -22,7 +22,7 @@ const DataSupport = [
     {
         id: 3,
         type: "Гипер технический",
-        numberSup: "#3",
+        number: "3",
         login: "Rocker",
         theme: "Возврат средств",
         status: "решен",

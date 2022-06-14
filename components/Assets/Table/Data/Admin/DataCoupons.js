@@ -1,7 +1,7 @@
 const DataCoupons = [
     {
         id: 1,
-        number: "#1",
+        number: "1",
         name: "NEW10",
         type: "Баланс",
         action: '+200.00₽',
@@ -10,7 +10,7 @@ const DataCoupons = [
     },
     {
         id: 2,
-        number: "#2",
+        number: "2",
         name: "STAR20",
         type: "Баланс",
         action: '+10.00₽',
@@ -19,7 +19,7 @@ const DataCoupons = [
     },
     {
         id: 3,
-        number: "#3",
+        number: "3",
         name: "FreeFolowers",
         type: "Баланс",
         action: '+10000000.00₽',
@@ -28,7 +28,7 @@ const DataCoupons = [
     },
     {
         id: 4,
-        number: "#4",
+        number: "4",
         name: "1TO2",
         type: "Скидка",
         action: '-20%',
@@ -37,7 +37,7 @@ const DataCoupons = [
     },
     {
         id: 5,
-        number: "#5",
+        number: "5",
         name: "LOLKEK!$**",
         type: "Скидка",
         action: '-1000%',

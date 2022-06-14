@@ -6,18 +6,39 @@ import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import CopyInput from '../components/Assets/Inputs/CopyInput';
 import BlockStatus from '../components/Assets/Table/BlockStatus';
-import CustomTable from '../components/Assets/Table/CustomTable';
-import HeadTable from '../components/Assets/Table/HeadTable';
-import TitleHead from '../components/Assets/Table/TitleHead';
 import TableData from '../components/Assets/Table/TableData';
 import TableDataStatus from '../components/Assets/Table/TableDataStatus';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
+import DataNewOrderCrypto from '../components/Assets/Table/Data/Users/DataNewOrderCrypto';
+import DataTable from '../components/Assets/Table/DataTable';
+import CPlaceholders from '../models/Placeholders/Client/index';
+import DataTableColumn from '../components/Assets/Table/DataTableColumn';
 
 
 class NewOrderCrypto extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            Data: [...DataNewOrderCrypto],
+            tableData: [],
+        };
+        this.state.tableData = this.state.Data
+    }
+
     render() {  
+
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableData color="purple">{`#${v.number}`}</TableData>
+                    <TableData>{`${v.summ}₽`}</TableData>
+                    <TableData>{v.date}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                </DataTableColumn>
+            );
+        }
 
         return (
             <>
@@ -37,22 +58,10 @@ class NewOrderCrypto extends Component {
                                     <p><strong>Последнее подтверждение:</strong></p>
                                     <p>01.03.2022 @ 02:14:21</p>
                                 </BetweenBlock> 
-                                <CustomTable className="table-crypto">
-                                    <HeadTable>
-                                        <TitleHead>Номер заказа</TitleHead>
-                                        <TitleHead>Сумма</TitleHead>
-                                        <TitleHead>Дата оплаты</TitleHead>
-                                        <TitleHead>Статус оплаты</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        <tr>
-                                            <TableData color="purple">#2003</TableData>
-                                            <TableData>33.00₽</TableData>
-                                            <TableData>20.02.2022</TableData>
-                                            <TableDataStatus ColorStatus="green">решен</TableDataStatus>
-                                        </tr>
-                                    </tbody>
-                                </CustomTable>
+                                <DataTable classTable="table-crypto" emptyText={`Нет подтверждения`} 
+                                    linesLimit={5} data={this.state.tableData} pagination="hide"
+                                    columns={CPlaceholders.Fields.PayCrypto["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

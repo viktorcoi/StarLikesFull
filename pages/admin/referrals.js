@@ -2,19 +2,17 @@ import { Component } from 'react'
 import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
-import CustomTable from '../../components/Assets/Table/CustomTable';
-import HeadTable from '../../components/Assets/Table/HeadTable';
-import TitleHead from '../../components/Assets/Table/TitleHead';
 import TableData from '../../components/Assets/Table/TableData';
 import TableDataLink from '../../components/Assets/Table/TableDataLink';
 import MainTitle from '../../components/Assets/tags/MainTitle'
 import PanelNavigationAdmin from '../../components/Assets/Navigations/PanelNavigationAdmin';
-import Pagination from '../../components/Assets/Pagination/Pagination';
-import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import SearchInput from '../../components/Assets/Inputs/SearchInput';
 import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import DataReferrals from '../../components/Assets/Table/Data/Admin/DataReferrals';
+import DataTable from '../../components/Assets/Table/DataTable';
+import CPlaceholders from '../../models/Placeholders/Client/index';
+import DataTableColumn from '../../components/Assets/Table/DataTableColumn';
 
 class Referrals extends Component {
 
@@ -22,13 +20,6 @@ class Referrals extends Component {
         super(props);
         this.state = {
             filterSelector: ["По рефералу", "По рефереру", "По сумме", "По кол-ву", "По дате"],
-            id: "",
-            numberOrder: "",
-            social: "",
-            type: "",
-            price: "",
-            status: "",
-            color: "",
             statusFilter: "",
             Data: [...DataReferrals],
             tableData: [],
@@ -38,20 +29,16 @@ class Referrals extends Component {
 
     render() {
 
-        const renderTableReferrals = (data) => {
-            return data.map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableDataLink href="/admin/referrals_referral" color="purple">{v.referral}</TableDataLink>
-                            <TableDataLink href="/admin/referrals_referrer" color="purple">{v.referrer}</TableDataLink>
-                            <TableData>{v.summ}</TableData>
-                            <TableData>{v.count}</TableData>
-                            <TableData>{v.dateLast}</TableData>
-                        </tr>
-                    </>
-                );
-            });
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableDataLink href="/admin/referrals_referral" color="purple">{v.referral}</TableDataLink>
+                    <TableDataLink href="/admin/referrals_referrer" color="purple">{v.referrer}</TableDataLink>
+                    <TableData>{`${v.summ}₽`}</TableData>
+                    <TableData>{v.count}</TableData>
+                    <TableData>{v.dateLast}</TableData>
+                </DataTableColumn>
+            );
         }
 
         return (
@@ -73,27 +60,10 @@ class Referrals extends Component {
                                         onClick={(e)=> (this.setState({ ...this.state, filterField: e.target.innerText}))} 
                                         title={this.state.filterField} items={this.state.filterSelector}/>
                                 </div>
-                                <CustomTable className="admin-table">
-                                    <HeadTable>
-                                        <TitleHead>Реферал</TitleHead>
-                                        <TitleHead>Реферер</TitleHead>
-                                        <TitleHead>Сумма<br/>реферала</TitleHead>
-                                        <TitleHead>Кол-во<br/>заказов</TitleHead>
-                                        <TitleHead>Дата последнего<br/>пополнения</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableReferrals(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
-                                <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination>
-                                        <NumberPage className="select">1</NumberPage>
-                                        <NumberPage>2</NumberPage>
-                                        <NumberPage>3</NumberPage>
-                                        <NumberPage>...</NumberPage>
-                                        <NumberPage>32</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock>
+                                <DataTable classTable="admin-table" emptyText={`Информация отсутсвует`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.AdminReferrals["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

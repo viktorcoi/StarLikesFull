@@ -5,8 +5,6 @@ import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigatio
 import styles from '/public/assets/css/MainPages.module.css'
 import TableData from '../components/Assets/Table/TableData';
 import TableDataStatus from '../components/Assets/Table/TableDataStatus';
-import Pagination from '../components/Assets/Pagination/Pagination';
-import NumberPage from '../components/Assets/Pagination/NumberPage';
 import FilterSelector from '../components/Assets/tags/FilterSelector';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import TableDataLink from '../components/Assets/Table/TableDataLink';
@@ -22,58 +20,22 @@ class MyOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filter: ["активные", "завершенные", "все записи"],
-            id: "",
-            numberOrder: "",
-            social: "",
-            type: "",
-            price: "",
-            status: "",
-            color: "",
-            statusFilter: "",
+            filterStatus: ["активные", "завершенные", "все записи"],
             Data: [...DataMyOrders],
             tableData: [],
         };
         this.state.tableData = this.state.Data
     }
 
-    changeClickStatus = (e) => {
-        let filter = [];
-        for (var i = 0; i < 3; i++) {
-            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
-                filter[0] = "активен"
-                filter[1] = "завершен"
-                filter[2] = ""
-                this.setState({ ...this.state, statusFilter: filter[i]});
-            }
-        }
-    }
-
     render() {
-
-        const renderTableMyOrders = (data) => {
-            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableDataLink color="purple" href="my_orders_info">{v.numberOrder}</TableDataLink>
-                            <TableData>{v.social}</TableData>
-                            <TableData>{v.type}</TableData>
-                            <TableData>{v.price}</TableData>
-                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-                        </tr>
-                    </>
-                );
-            });
-        }
 
         const renderData = (v, i) => {
             return (
                 <DataTableColumn key={i}>
-                    <TableDataLink color="purple" href="my_orders_info">{v.numberOrder}</TableDataLink>
+                    <TableDataLink color="purple" href="my_orders_info">{`#${v.number}`}</TableDataLink>
                     <TableData>{v.social}</TableData>
-                    <TableData>{v.type}</TableData>
-                    <TableData>{v.price}</TableData>
+                    <TableData>{v.type.substr(0, 44).concat(v.type.length > 44 ? "..." : "")}</TableData>
+                    <TableData>{`${v.price}₽`}</TableData>
                     <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
                 </DataTableColumn>
             );
@@ -93,35 +55,16 @@ class MyOrders extends Component {
                                 </div>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]}`}>
                                     <MainTitle>Мои заказы</MainTitle>
-                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)} 
-                                        title={this.state.filter[2]} items={this.state.filter}/>
+                                    <FilterSelector title={this.state.filterStatus[2]} items={this.state.filterStatus}
+                                        callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                        filter = {["активен", "завершен", ""]} filterStatus={this.state.filterStatus}
+                                        data={this.state.Data}>
+                                    </FilterSelector>
                                 </BetweenBlock>
-                                {/* <CustomTable className="my-service-table">
-                                    <HeadTable>
-                                        <TitleHead>Номер заказа</TitleHead>
-                                        <TitleHead>Соц. сеть</TitleHead>
-                                        <TitleHead>Вид накрутки</TitleHead>
-                                        <TitleHead>Цена</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableMyOrders(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable> */}
-
-
-                                <DataTable classTable="my-service-table" emptyText={`Услуги не найдены`} 
+                                <DataTable classTable="my-service-table" emptyText={`Заказы не найдены`} 
                                     linesLimit={5} data={this.state.tableData} 
-                                    columns={CPlaceholders.Fields.Dashboard["ru"]} render={renderData}
-                                    filter={v=>(!this.state.statusFilter) || v.status == this.state.statusFilter}>
+                                    columns={CPlaceholders.Fields.MyOrders["ru"]} render={renderData}>
                                 </DataTable>
-                                
-
-                                {/* <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination disabled>
-                                        <NumberPage className="select">1</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock> */}
                             </div>
                         </BetweenBlock>
                     </section>

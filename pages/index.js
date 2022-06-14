@@ -4,14 +4,14 @@ import SocialBlock from '../components/Assets/Blocks/SocialBlock';
 import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
 import SocialRoutes from '../components/Assets/SocialRoutes';
-import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
-import HeadTable from '../components/Assets/Table/HeadTable';
-import TitleHead from '../components/Assets/Table/TitleHead';
 import TableDataLink from '../components/Assets/Table/TableDataLink';
 import TableData from '../components/Assets/Table/TableData';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import DataMyServices from '../components/Assets/Table/Data/Users/DataMyServices';
+import DataTableColumn from '../components/Assets/Table/DataTableColumn';
+import DataTable from '../components/Assets/Table/DataTable';
+import CPlaceholders from '../models/Placeholders/Client/index';
 
 class MainPage extends Component {
 
@@ -19,19 +19,19 @@ class MainPage extends Component {
         super(props);
         this.state = {
             elementsSocial: 7,
-            id: "",
-            social: "",
-            type: "",
-            price: "",
             socialFilter: "instagram",
             Data: [...DataMyServices],
             tableData: [],
         };
-        this.state.tableData = this.state.Data
+        this.state.tableData = this.state.Data.filter((v) => (v.social == this.state.socialFilter)).map(v => v)
     }
 
     ChooseSocial = (e) => {
         this.setState({ ...this.state, socialFilter: e.target.innerText.toLowerCase()})
+        setTimeout(() => {
+            this.setState({ ...this.state, 
+                tableData: this.state.Data.filter((v) => (v.social == this.state.socialFilter)).map(v => v)})
+        }, 1);
         if (e.target.innerText.toLowerCase() == "") {
             this.setState({...this.state, socialFilter: e.target.getAttribute("alt").toLowerCase()})
         }
@@ -39,28 +39,15 @@ class MainPage extends Component {
 
     render() {
 
-        const renderTableMyService = (data) => {
-            return data.filter((v) => (v.social == this.state.socialFilter)).map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableData>{v.social}</TableData>
-                            <TableDataLink href="/new_order_settings" color="purple">{v.type}</TableDataLink>
-                            <TableData>{v.price}</TableData>
-                        </tr>
-                    </>
-                );
-            });
-        }
-
-        const tableMyServices = this.state.Data.filter(v => (v.social == this.state.socialFilter)).map((v, idx) => { 
+        const renderData = (v, i) => {
             return (
-                <tr key={`v-${idx}`}>
+                <DataTableColumn key={i}>
                     <TableData>{v.social}</TableData>
-                    <TableDataLink href="/new_order_settings" color="purple">{v.type}</TableDataLink>
+                    <TableDataLink href="/new_order_settings" color="purple">{v.type.substr(0, 50).concat(v.type.length > 50 ? "..." : "")}</TableDataLink>
                     <TableData>{v.price}</TableData>
-                </tr>
-        )});
+                </DataTableColumn>
+            );
+        }
       
         return (
             <>
@@ -89,17 +76,10 @@ class MainPage extends Component {
                                         <span>[+6]</span>
                                     </p>
                                 </div>
-
-                                <CustomTable className="service-table">
-                                    <HeadTable>
-                                        <TitleHead>Соц. сеть</TitleHead>
-                                        <TitleHead>Вид накрутки</TitleHead>
-                                        <TitleHead>Цена<br/>(за шт.)</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableMyService(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
+                                <DataTable classTable="service-table" emptyText={`Услуги не найдены`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.MyServices["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

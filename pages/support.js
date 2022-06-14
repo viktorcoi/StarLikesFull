@@ -2,14 +2,9 @@ import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
 import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
-import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
-import HeadTable from '../components/Assets/Table/HeadTable';
-import TitleHead from '../components/Assets/Table/TitleHead';
 import TableData from '../components/Assets/Table/TableData';
 import TableDataStatus from '../components/Assets/Table/TableDataStatus';
-import Pagination from '../components/Assets/Pagination/Pagination';
-import NumberPage from '../components/Assets/Pagination/NumberPage';
 import ButtonWithArrow from '../components/Assets/Buttons/ButtonWithArrow';
 import TableDataLink from '../components/Assets/Table/TableDataLink';
 import { Formik } from "formik";
@@ -25,6 +20,9 @@ import FilterSelector from '../components/Assets/tags/FilterSelector';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import DataSupport from '../components/Assets/Table/Data/Users/DataSupport';
+import DataTableColumn from '../components/Assets/Table/DataTableColumn';
+import DataTable from '../components/Assets/Table/DataTable';
+import CPlaceholders from '../models/Placeholders/Client/index';
 
 class Support extends Component {
 
@@ -77,6 +75,10 @@ class Support extends Component {
                 filter[1] = "решен"
                 filter[2] = ""
                 this.setState({ ...this.state, statusFilter: filter[i]});
+                setTimeout(() => {
+                    this.setState({ ...this.state, 
+                        tableData: this.state.Data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map(v => v)})
+                }, 1);
             }
         }
     }
@@ -90,19 +92,15 @@ class Support extends Component {
 
         const activeClasses = this.state.activeClasses.slice();
 
-        const renderTableSupport = (data) => {
-            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableData>{v.numberSup}</TableData>
-                            <TableDataLink color="purple" href="/dialog_support">{v.theme}</TableDataLink>
-                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-                            <TableData>{v.lastUpdate}</TableData>
-                        </tr>
-                    </>
-                );
-            });
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableData>{v.number}</TableData>
+                    <TableDataLink color="purple" href="/dialog_support">{v.theme.substr(0, 23).concat(v.theme.length > 23 ? "..." : "")}</TableDataLink>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                    <TableData>{v.lastUpdate}</TableData>
+                </DataTableColumn>
+            );
         }
 
         return (
@@ -186,24 +184,10 @@ class Support extends Component {
                                     onClick={(e)=> this.changeClickStatus(e)}
                                     title={this.state.filter[2]} items={this.state.filter}/>
                                 </BetweenBlock>
-                                <CustomTable className="table-support">
-                                    <HeadTable>
-                                        <TitleHead>ID</TitleHead>
-                                        <TitleHead>Тема</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                        <TitleHead>Последнее обновление</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableSupport(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
-                                <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination>
-                                        <NumberPage className="select">1</NumberPage>
-                                        <NumberPage>2</NumberPage>
-                                        <NumberPage>3</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock>
+                                <DataTable classTable="table-support" emptyText={`Обращения не найдены`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.Support["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

@@ -2,14 +2,9 @@ import { Component } from 'react'
 import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
-import CustomTable from '../../components/Assets/Table/CustomTable';
-import HeadTable from '../../components/Assets/Table/HeadTable';
-import TitleHead from '../../components/Assets/Table/TitleHead';
 import TableData from '../../components/Assets/Table/TableData';
 import MainTitle from '../../components/Assets/tags/MainTitle'
 import PanelNavigationAdmin from '../../components/Assets/Navigations/PanelNavigationAdmin';
-import Pagination from '../../components/Assets/Pagination/Pagination';
-import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import TableDataManagement from '../../components/Assets/Table/TableDataManagement';
 import Popup from '../../components/Assets/Popup/Popup';
@@ -27,6 +22,9 @@ import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelN
 import LinkA from '../../components/Assets/tags/LinkA';
 import LinkBack from '../../components/Assets/tags/LinkBack';
 import DataCoupons from '../../components/Assets/Table/Data/Admin/DataCoupons';
+import CPlaceholders from '../../models/Placeholders/Client/index';
+import DataTableColumn from '../../components/Assets/Table/DataTableColumn';
+import DataTable from '../../components/Assets/Table/DataTable';
 
 class Users extends Component {
 
@@ -36,7 +34,6 @@ class Users extends Component {
             activeClasses: [false, false, false, false],
             Data: [...DataCoupons],
             filterStatus: ["активные", "завершеные", "все записи"],
-            statusFilter: "",
             id: "",
             number: "",
             name: "",
@@ -55,7 +52,7 @@ class Users extends Component {
         this.setState({
             activeClasses,
             id: v?.id,
-            number: Number(v?.number.match(/\d+/)) ? Number(v?.number.match(/\d+/))  : "",
+            number: v?.number,
             name: v?.name,
             type: v?.type,
             action: v?.action,
@@ -65,41 +62,28 @@ class Users extends Component {
         document.body.style.overflow = activeClasses[0] || activeClasses[1] || activeClasses[2] ? 'hidden' : 'overlay';
     }
 
-    changeClickStatus = (e) => {
-        let filter = [];
-        for (var i = 0; i < 3; i++) {
-            if (e.target.innerText.toLowerCase() == this.state.filterStatus[i]) {
-                filter[0] = "активен"
-                filter[1] = "завершен"
-                filter[2] = ""
-                this.setState({ ...this.state, statusFilter: filter[i]});
-            }
-        }
-    }
-
     resetPopupData = () => {
-        setTimeout(() => {
-            this.setState({number: "", name: "", type: "", action: "", status: ""})
-        }, 300);
+        if ((this.state.number > 0 && (this.state.name.length && this.state.type.length && this.state.action.length) != 0)) {
+            this.state.changeAlert = true;
+            setTimeout(() => {
+                this.setState({number: "", name: "", type: "", action: "", status: ""})
+            }, 300);
+        }
     }
 
     render() {
 
-        const renderTableCoupons = (data) => {
-            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}/>
-                            <TableData>{v.number}</TableData>
-                            <TableData>{v.name}</TableData>
-                            <TableData>{v.type}</TableData>
-                            <TableData>{v.action}</TableData>
-                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-                        </tr>
-                    </>
-                );
-            });
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}/>
+                    <TableData>{`#${v.number}`}</TableData>
+                    <TableData>{v.name}</TableData>
+                    <TableData>{v.type}</TableData>
+                    <TableData>{v.action}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                </DataTableColumn>
+            );
         }
 
         const activeClasses = this.state.activeClasses.slice();
@@ -200,7 +184,6 @@ class Users extends Component {
                                 setTimeout(() => {
                                     this.addClass(2)
                                 }, 1);
-                                this.setState({number: `#${values.number}`})
                             }
                         } 
 
@@ -276,33 +259,17 @@ class Users extends Component {
                                         <ButtonWithArrow onClick={() => this.addClass(1)}>Создать промокод</ButtonWithArrow>
                                     </BetweenBlock>
                                     <div className={`${styles["for-title"]} d-flex`}>
-                                        <FilterSelector addClassName={styles["for-filter"]} 
-                                            onClick={(e)=> this.changeClickStatus(e)}
-                                            title={this.state.filterStatus[2]} items={this.state.filterStatus}/>
+                                        <FilterSelector title={this.state.filterStatus[2]} items={this.state.filterStatus}
+                                            callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                            filter = {["активен", "завершен", ""]} filterStatus={this.state.filterStatus}
+                                            data={this.state.Data} addClassName={styles["for-filter"]}> 
+                                        </FilterSelector>
                                     </div>
                                 </div>
-                                <CustomTable className="admin-table-coupons">
-                                    <HeadTable>
-                                        <TitleHead></TitleHead>
-                                        <TitleHead>Номер промокода</TitleHead>
-                                        <TitleHead>Имя</TitleHead>
-                                        <TitleHead>Тип</TitleHead>
-                                        <TitleHead>Действие</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableCoupons(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
-                                <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination>
-                                        <NumberPage className="select">1</NumberPage>
-                                        <NumberPage>2</NumberPage>
-                                        <NumberPage>3</NumberPage>
-                                        <NumberPage>...</NumberPage>
-                                        <NumberPage>32</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock>
+                                <DataTable classTable="admin-table-coupons" emptyText={`Купоны не найдены`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.AdminCoupons["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

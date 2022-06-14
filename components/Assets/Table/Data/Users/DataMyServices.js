@@ -53,6 +53,24 @@ const DataMyServices = [
         type: "👍 Telegram Likes - [REAL + IMPRESSION + NO DROP]",
         price: "00.11₽",
     },
+    {
+        id: 10,
+        social: "telegram",
+        type: "👍 Telegram Likes - [REAL + IMPRESSION + NO DROP]",
+        price: "00.11₽",
+    },
+    {
+        id: 11,
+        social: "telegram",
+        type: "👍 Telegram Likes - [REAL + IMPRESSION + NO DROP]",
+        price: "00.11₽",
+    },
+    {
+        id: 12,
+        social: "telegram",
+        type: "👍 Telegram Likes - [REAL + IMPRESSION + NO DROP]",
+        price: "00.11₽",
+    },
 ]
   
 export default DataMyServices;

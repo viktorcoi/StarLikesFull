@@ -2,10 +2,7 @@ import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
 import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
-import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
-import HeadTable from '../components/Assets/Table/HeadTable';
-import TitleHead from '../components/Assets/Table/TitleHead';
 import TableData from '../components/Assets/Table/TableData';
 import TableDataStatus from '../components/Assets/Table/TableDataStatus';
 import InfoOrder from '../components/Assets/Blocks/InfoOrder';
@@ -15,10 +12,35 @@ import ButtonWithArrow from '../components/Assets/Buttons/ButtonWithArrow';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import BlockStatus from '../components/Assets/Table/BlockStatus';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
+import DataInfoPayOrder from '../components/Assets/Table/Data/Users/DataInfoPayOrder';
+import DataTableColumn from '../components/Assets/Table/DataTableColumn';
+import DataTable from '../components/Assets/Table/DataTable';
+import CPlaceholders from '../models/Placeholders/Client/index';
 
 class MyOrdersInfo extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            Data: [...DataInfoPayOrder],
+            tableData: [],
+        };
+        this.state.tableData = this.state.Data
+    }
+
     render() {
+
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableData>{v.date}</TableData>
+                    <TableData>{v.method}</TableData>
+                    <TableData>{`${v.summ}₽`}</TableData>
+                    <TableData color={"purple"}>{`#${v.number}`}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                </DataTableColumn>
+            );
+        }
 
         const price = "33.00₽"
         return (
@@ -71,24 +93,10 @@ class MyOrdersInfo extends Component {
                                     </div>
                                 </BetweenBlock>
                                 <p className={`${styles["for-title"]} ${styles["title-margin-23"]}`}>Информация об оплате</p>
-                                <CustomTable className="order-info-table">
-                                    <HeadTable>
-                                        <TitleHead>Дата</TitleHead>
-                                        <TitleHead>Метод пополнения</TitleHead>
-                                        <TitleHead>Сумма</TitleHead>
-                                        <TitleHead>Номер заказа</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        <tr>
-                                            <TableData>22.02.2022</TableData>
-                                            <TableData>Онлайн-касса</TableData>
-                                            <TableData>33.00₽</TableData>
-                                            <TableData color="purple">#20033</TableData>
-                                            <TableDataStatus ColorStatus="green">подтвержден</TableDataStatus>
-                                        </tr>
-                                    </tbody>
-                                </CustomTable>
+                                <DataTable classTable="order-info-table" emptyText={`Информация отсутствует`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.InfoPayOrder["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

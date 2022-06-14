@@ -2,15 +2,10 @@ import { Component } from 'react';
 import BetweenBlock from '../components/Assets/Blocks/BetweenBlock';
 import ContainerForPages from "../components/Assets/moduls/ContainerForPages";
 import PanelNavigationMain from '../components/Assets/Navigations/PanelNavigationMain';
-import CustomTable from '../components/Assets/Table/CustomTable';
 import styles from '/public/assets/css/MainPages.module.css'
-import HeadTable from '../components/Assets/Table/HeadTable';
-import TitleHead from '../components/Assets/Table/TitleHead';
 import TableData from '../components/Assets/Table/TableData';
 import TableDataStatus from '../components/Assets/Table/TableDataStatus';
 import MainButton from '../components/Assets/Buttons/MainButton';
-import Pagination from '../components/Assets/Pagination/Pagination';
-import NumberPage from '../components/Assets/Pagination/NumberPage';
 import CopyInput from '../components/Assets/Inputs/CopyInput';
 import Popup from '../components/Assets/Popup/Popup';
 import LinkButton from '../components/Assets/Buttons/LinkButton';
@@ -30,6 +25,10 @@ import ButtonWithArrow from '../components/Assets/Buttons/ButtonWithArrow';
 import PanelNavigationMainMini from '../components/Assets/Navigations/PanelNavigationMainMini';
 import { Media } from 'react-breakpoints'
 import DataReferral from '../components/Assets/Table/Data/Users/DataReferral';
+import DataTable from '../components/Assets/Table/DataTable';
+import CPlaceholders from '../models/Placeholders/Client/index';
+import DataTableColumn from '../components/Assets/Table/DataTableColumn';
+import DataInfoRefferal from '../components/Assets/Table/Data/DataInfoRefferals';
 
 class Referrals extends Component {
 
@@ -38,18 +37,13 @@ class Referrals extends Component {
         this.state = {
             activeClasses: [false, false, false, false],
             addFile: [],
-
-            filter: ["подтвержденные", "не подтвержденные", "все записи"],
-            id: "",
-            date: "",
-            login: "",
-            summ: "",
-            status: "",
-            color: "",
-            statusFilter: "",
+            filterStatus: ["подтвержденные", "не подтвержденные", "все записи"],
             Data: [...DataReferral],
+            DataInfo: [...DataInfoRefferal],
             tableData: [],
+            tableDataInfo: []
         };
+        this.state.tableData = this.state.DataInfo
         this.state.tableData = this.state.Data
         this.addClass = this.addClass.bind(this);
     }
@@ -72,33 +66,29 @@ class Referrals extends Component {
         })
     }
 
-    changeClickStatus = (e) => {
-        let filter = [];
-        for (var i = 0; i < 3; i++) {
-            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
-                filter[0] = "подтвержден"
-                filter[1] = "не подтвержден"
-                filter[2] = ""
-                this.setState({ ...this.state, statusFilter: filter[i]});
-            }
-        }
-    }
-
     render() {
 
-        const renderTableReferral = (data) => {
-            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableData>{v.date}</TableData>
-                            <TableData>{v.login}</TableData>
-                            <TableData>{v.summ}</TableData>
-                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-                        </tr>
-                    </>
-                );
-            });
+        const renderDataInfo = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableData>{v.transitions}</TableData>
+                    <TableData>{v.registration}</TableData>
+                    <TableData>{v.active}</TableData>
+                    <TableData>{`${v.conversion}%`}</TableData>
+                    <TableData>{`${v.income}₽`}</TableData>
+                </DataTableColumn>
+            );
+        }
+
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableData>{v.date}</TableData>
+                    <TableData>{v.login}</TableData>
+                    <TableData>{v.summ}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                </DataTableColumn>
+            );
         }
 
         const schema = Yup.object({
@@ -267,49 +257,22 @@ class Referrals extends Component {
                                     <CopyInput className="ref" value="357a3So9CbsNfBBgFYACGvxxS6tMaDoa1P"
                                         description="Реферальная ссылка успешно скопирована"/>
                                 </div>
-                                <CustomTable className="table-statistics-ref">
-                                    <HeadTable>
-                                        <TitleHead>Всего<br/>переходов</TitleHead>
-                                        <TitleHead>Регистрации</TitleHead>
-                                        <TitleHead>Активные</TitleHead>
-                                        <TitleHead>Конверсия</TitleHead>
-                                        <TitleHead>Доход (общий)</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        <tr>
-                                            <TableData>17</TableData>
-                                            <TableData>10</TableData>
-                                            <TableData>2</TableData>
-                                            <TableData>3.00%</TableData>
-                                            <TableData>49.00₽</TableData>
-                                        </tr>
-                                    </tbody>
-                                </CustomTable>
+                                <DataTable classTable="table-statistics-ref" emptyText={`Информация отсутствует`} 
+                                    linesLimit={`5`} data={this.state.DataInfo} pagination="hide"
+                                    columns={CPlaceholders.Fields.InfoReferrals["ru"]} render={renderDataInfo}>
+                                </DataTable>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]} ${styles["for-double-title"]}`}>
                                     <HTitle>История</HTitle>
-                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)}
-                                        title={this.state.filter[2]} items={this.state.filter}/>
+                                    <FilterSelector title={this.state.filterStatus[2]} items={this.state.filterStatus}
+                                        callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                        filter = {["подтвержден", "не подтвержден", ""]} filterStatus={this.state.filterStatus}
+                                        data={this.state.Data}>
+                                    </FilterSelector>
                                 </BetweenBlock>
-                                <CustomTable className="table-referrals">
-                                    <HeadTable>
-                                        <TitleHead>Дата</TitleHead>
-                                        <TitleHead>Логин</TitleHead>
-                                        <TitleHead>Сумма</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableReferral(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
-                                <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination>
-                                        <NumberPage className="select">1</NumberPage>
-                                        <NumberPage>2</NumberPage>
-                                        <NumberPage>3</NumberPage>
-                                        <NumberPage>...</NumberPage>
-                                        <NumberPage>10</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock>
+                                <DataTable classTable="table-referrals" emptyText={`Информация отсутствует`} 
+                                    linesLimit={5} data={this.state.tableData} pagination="hide"
+                                    columns={CPlaceholders.Fields.Referrals["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

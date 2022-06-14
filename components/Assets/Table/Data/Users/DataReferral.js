@@ -39,6 +39,14 @@ const DataReferral = [
         status: "не подтвержден",
         color: "red",
     },
+    {
+        id: 6,
+        date: "21.05.2022",
+        login: "lover00",
+        summ: "50.00₽",
+        status: "не подтвержден",
+        color: "red",
+    },
 ]
   
 export default DataReferral;

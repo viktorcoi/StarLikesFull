@@ -2,14 +2,9 @@ import { Component } from 'react'
 import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
-import CustomTable from '../../components/Assets/Table/CustomTable';
-import HeadTable from '../../components/Assets/Table/HeadTable';
-import TitleHead from '../../components/Assets/Table/TitleHead';
 import TableData from '../../components/Assets/Table/TableData';
 import MainTitle from '../../components/Assets/tags/MainTitle'
 import PanelNavigationAdmin from '../../components/Assets/Navigations/PanelNavigationAdmin';
-import Pagination from '../../components/Assets/Pagination/Pagination';
-import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import TableDataManagement from '../../components/Assets/Table/TableDataManagement';
 import Popup from '../../components/Assets/Popup/Popup';
@@ -27,6 +22,9 @@ import SocialRoutes from '../../components/Assets/SocialRoutes';
 import TextArea from '../../components/Assets/Inputs/TextArea';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import DataService from '../../components/Assets/Table/Data/Admin/DataService';
+import CPlaceholders from '../../models/Placeholders/Client/index';
+import DataTableColumn from '../../components/Assets/Table/DataTableColumn';
+import DataTable from '../../components/Assets/Table/DataTable';
 
 class Services extends Component {
 
@@ -42,6 +40,7 @@ class Services extends Component {
             status: "",
             color: "",
             hide: "",
+            statusFilter: "",
             changeAlert: false,
             description: "",
             socialFilter: "instagram",
@@ -50,7 +49,7 @@ class Services extends Component {
             Data: [...DataService],
             tableData: [],
         };
-        this.state.tableData = this.state.Data
+        this.state.tableData = this.state.Data.filter((v) => (v.social == this.state.socialFilter)).map(v => v)
     }
 
     addClass(index, v) {
@@ -58,10 +57,10 @@ class Services extends Component {
         this.setState({
             activeClasses,
             id: v?.id,
-            number: Number(v?.number.match(/\d+/)) ? Number(v?.number.match(/\d+/)) : "",
+            number: v?.number,
             social: v?.social,
             type: v?.type,
-            price: Number(v?.price.slice(0, -1)) ? Number(v?.price.slice(0, -1)) : "",
+            price: v?.price,
             status: v?.status,
             color: v?.color,
             hide: v?.hide,
@@ -78,20 +77,12 @@ class Services extends Component {
 
     ChooseSocial = (e) => {
         this.setState({ ...this.state, socialFilter: e.target.innerText.toLowerCase()})
+        setTimeout(() => {
+            this.setState({ ...this.state, 
+                tableData: this.state.Data.filter((v) => (v.social == this.state.socialFilter && ((!this.state.statusFilter) || v.status == this.state.statusFilter))).map(v => v)})
+        }, 1);
         if (e.target.innerText.toLowerCase() == "") {
             this.setState({...this.state, socialFilter: e.target.getAttribute("alt").toLowerCase()})
-        }
-    }
-
-    changeClickStatus = (e) => {
-        let filter = [];
-        for (var i = 0; i < 3; i++) {
-            if (e.target.innerText.toLowerCase() == this.state.filterStatus[i]) {
-                filter[0] = "активен"
-                filter[1] = "скрыто"
-                filter[2] = ""
-                this.setState({ ...this.state, statusFilter: filter[i]});
-            }
         }
     }
 
@@ -107,24 +98,20 @@ class Services extends Component {
             description: Yup.string().required("Поле не может быть пустым!"),
         });
 
-        const renderTableWallet = (data) => {
-            return data.filter((v) => (((v.social == this.state.socialFilter && ((!this.state.statusFilter) || v.status == this.state.statusFilter))))).map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}>
-                            <img onClick={() => this.addClass(1)} className={`${activeClasses[3]? styles.hide : styles[v.hide]} ${styles["hide-service"]} cursor-pointer`} 
-                                alt='hide' src="/assets/img/view-table.svg"/>
-                            </TableDataManagement>
-                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.number}</TableData>
-                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.social}</TableData>
-                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.type}</TableData>
-                            <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.price}</TableData>
-                            <TableDataStatus ColorStatus={activeClasses[3] ? "red" : v.color}>{activeClasses[3] ? "скрыто" : v.status}</TableDataStatus>
-                        </tr>
-                    </>
-                );
-            });
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}>
+                    <img onClick={() => this.addClass(1)} className={`${activeClasses[3]? styles.hide : styles[v.hide]} ${styles["hide-service"]} cursor-pointer`} 
+                        alt='hide' src="/assets/img/view-table.svg"/>
+                    </TableDataManagement>
+                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{`#${v.number}`}</TableData>
+                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.social}</TableData>
+                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.type.substr(0, 44).concat(v.type.length > 44 ? "..." : "")}</TableData>
+                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{`${v.price}₽`}</TableData>
+                    <TableDataStatus ColorStatus={activeClasses[3] ? "red" : v.color}>{activeClasses[3] ? "скрыто" : v.status}</TableDataStatus>
+                </DataTableColumn>
+            );
         }
 
         return (
@@ -156,8 +143,6 @@ class Services extends Component {
                                     setTimeout(() => {
                                         this.addClass(2)
                                     }, 1);
-                                    this.setState({number: `#${values.number}`})
-                                    this.setState({price: `${values.price}₽`})
                             }
                         } 
 
@@ -238,31 +223,16 @@ class Services extends Component {
                                     }
                                 </div>
                                 <div className={`${styles["for-title"]} d-flex`}>
-                                    <FilterSelector addClassName={styles["for-filter"]} onClick={(e)=> this.changeClickStatus(e)}
-                                        title={this.state.filterStatus[2]} items={this.state.filterStatus}/>
+                                    <FilterSelector title={this.state.filterStatus[2]} items={this.state.filterStatus}
+                                        callback={(data, x) => {this.setState({...this.state, tableData: data.filter((v) => (v.social == this.state.socialFilter)), statusFilter: x})}}
+                                        filter = {["активен", "скрыто", ""]} filterStatus={this.state.filterStatus}
+                                        data={this.state.Data} addClassName={styles["for-filter"]}> 
+                                    </FilterSelector>
                                 </div>
-                                <CustomTable className="admin-table">
-                                    <HeadTable>
-                                        <TitleHead></TitleHead>
-                                        <TitleHead>Номер услуги</TitleHead>
-                                        <TitleHead>Соц. сеть</TitleHead>
-                                        <TitleHead>Вид накрутки</TitleHead>
-                                        <TitleHead>Цена за шт.</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableWallet(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
-                                <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination>
-                                        <NumberPage className="select">1</NumberPage>
-                                        <NumberPage>2</NumberPage>
-                                        <NumberPage>3</NumberPage>
-                                        <NumberPage>...</NumberPage>
-                                        <NumberPage>32</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock>
+                                <DataTable classTable="admin-table" emptyText={`Услуги не найдены`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.AdminServices["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>

@@ -2,14 +2,9 @@ import { Component } from 'react'
 import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
-import CustomTable from '../../components/Assets/Table/CustomTable';
-import HeadTable from '../../components/Assets/Table/HeadTable';
-import TitleHead from '../../components/Assets/Table/TitleHead';
 import TableData from '../../components/Assets/Table/TableData';
 import MainTitle from '../../components/Assets/tags/MainTitle'
 import PanelNavigationAdmin from '../../components/Assets/Navigations/PanelNavigationAdmin';
-import Pagination from '../../components/Assets/Pagination/Pagination';
-import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import SearchInput from '../../components/Assets/Inputs/SearchInput';
 import CustomSelector from '../../components/Assets/tags/CustomSelector';
 import TableDataManagement from '../../components/Assets/Table/TableDataManagement';
@@ -38,7 +33,7 @@ class Users extends Component {
         this.state = {
             activeClasses: [false, false, false],
             id: "",
-            numberAcc: "",
+            number: "",
             login: "",
             balance: "",
             mail: "",
@@ -59,7 +54,7 @@ class Users extends Component {
         this.setState({ 
             activeClasses, 
             id: v?.id,
-            numberAcc: v?.numberAcc, 
+            number: v?.number, 
             login: v?.login, 
             mail: v?.mail, 
             phone: v?.phone,
@@ -71,32 +66,13 @@ class Users extends Component {
 
     render() {
 
-        const renderTableUsers = (data) => {
-            return data.map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => {this.addClass(0, v), console.log(v)}}/>
-                            <TableData color="purple">{v.numberAcc}</TableData>
-                            <TableData>{v.login}</TableData>
-                            <TableData>{v.balance}</TableData>
-                            <TableData>{v.mail}</TableData>
-                            <TableData>{v.phone}</TableData>
-                            <TableData>{v.country}</TableData>
-                            <TableData>{v.status}</TableData>
-                        </tr>
-                    </>
-                );
-            });
-        }
-
         const renderData = (v, i) => {
             return (
                 <DataTableColumn key={i}>
                     <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => {this.addClass(0, v), console.log(v)}}/>
-                    <TableData color="purple">{v.numberAcc}</TableData>
+                    <TableData color="purple">{`#${v.number}`}</TableData>
                     <TableData>{v.login}</TableData>
-                    <TableData>{v.balance}</TableData>
+                    <TableData>{`${v.balance}₽`}</TableData>
                     <TableData>{v.mail}</TableData>
                     <TableData>{v.phone}</TableData>
                     <TableData>{v.country}</TableData>
@@ -217,38 +193,10 @@ class Users extends Component {
                                         onClick={(e)=> this.setState({ ...this.state, filterField: e.target.innerText})} 
                                         title={this.state.filterField} items={this.state.filterSelector}/>
                                 </div>
-
-                                <DataTable classTable="my-service-table" emptyText={`Услуги не найдены`} 
+                                <DataTable classTable="admin-table" emptyText={`Пользователи не найдены`} 
                                     linesLimit={5} data={this.state.tableData} 
-                                    columns={CPlaceholders.Fields.Dashboard["ru"]} render={renderData}>
+                                    columns={CPlaceholders.Fields.AdminUsers["ru"]} render={renderData}>
                                 </DataTable>
-
-
-
-                                <CustomTable className="admin-table">
-                                    <HeadTable>
-                                        <TitleHead></TitleHead>
-                                        <TitleHead>Номер аккаунта</TitleHead>
-                                        <TitleHead>Логин</TitleHead>
-                                        <TitleHead>Баланс</TitleHead>
-                                        <TitleHead>Почта</TitleHead>
-                                        <TitleHead>Телефон</TitleHead>
-                                        <TitleHead>Страна</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableUsers(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
-                                <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination>
-                                        <NumberPage className="select">1</NumberPage>
-                                        <NumberPage>2</NumberPage>
-                                        <NumberPage>3</NumberPage>
-                                        <NumberPage>...</NumberPage>
-                                        <NumberPage>32</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock>
                             </div>
                         </BetweenBlock>
                     </section>

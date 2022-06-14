@@ -2,68 +2,42 @@ import { Component } from 'react'
 import ContainerForPages from "../../components/Assets/moduls/ContainerForPages";
 import styles from '/public/assets/css/AdminsPages.module.css'
 import BetweenBlock from '../../components/Assets/Blocks/BetweenBlock';
-import CustomTable from '../../components/Assets/Table/CustomTable';
-import HeadTable from '../../components/Assets/Table/HeadTable';
-import TitleHead from '../../components/Assets/Table/TitleHead';
 import TableData from '../../components/Assets/Table/TableData';
 import TableDataStatus from '../../components/Assets/Table/TableDataStatus';
 import MainTitle from '../../components/Assets/tags/MainTitle'
 import PanelNavigationAdmin from '../../components/Assets/Navigations/PanelNavigationAdmin';
-import Pagination from '../../components/Assets/Pagination/Pagination';
-import NumberPage from '../../components/Assets/Pagination/NumberPage';
 import FilterSelector from '../../components/Assets/tags/FilterSelector';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import LinkBack from '../../components/Assets/tags/LinkBack';
 import DataHistoryWallets from '../../components/Assets/Table/Data/Admin/DataHistoryWallets';
+import CPlaceholders from '../../models/Placeholders/Client/index';
+import DataTableColumn from '../../components/Assets/Table/DataTableColumn';
+import DataTable from '../../components/Assets/Table/DataTable';
 
 class HistoryWallet extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            filter: ["подтвержденные", "не подтвержденные", "все записи"],
-            id: "",
-            date: "",
-            method: "",
-            summ: "",
-            number: "",
-            status: "",
-            color: "",
-            statusFilter: "",
+            filterStatus: ["подтвержденные", "не подтвержденные", "все записи"],
             Data: [...DataHistoryWallets],
             tableData: [],
         };
         this.state.tableData = this.state.Data
     }
 
-    changeClickStatus = (e) => {
-        let filter = [];
-        for (var i = 0; i < 3; i++) {
-            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
-                filter[0] = "подтвержден"
-                filter[1] = "не подтвержден"
-                filter[2] = ""
-                this.setState({ ...this.state, statusFilter: filter[i]});
-            }
-        }
-    }
-
     render() {
 
-        const renderTableWallet = (data) => {
-            return data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map((v,idx) => {
-                return (
-                    <>
-                        <tr key={`v-${idx}`}>
-                            <TableData>{v.numberOrder}</TableData>
-                            <TableData>{v.login}</TableData>
-                            <TableData>{v.method}</TableData>
-                            <TableData>{v.summ}</TableData>
-                            <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
-                        </tr>
-                    </>
-                );
-            });
+        const renderData = (v, i) => {
+            return (
+                <DataTableColumn key={i}>
+                    <TableData>{`#${v.number}`}</TableData>
+                    <TableData>{v.login}</TableData>
+                    <TableData>{v.method}</TableData>
+                    <TableData>{`${v.summ}₽`}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
+                </DataTableColumn>
+            );
         }
 
         return (
@@ -80,30 +54,16 @@ class HistoryWallet extends Component {
                                 </div>
                                 <BetweenBlock className={`${styles["for-search"]} items-center`}>
                                     <MainTitle className={styles["margin-left"]}>История счетов</MainTitle>
-                                    <FilterSelector onClick={(e)=> this.changeClickStatus(e)} 
-                                        title={this.state.filter[2]} items={this.state.filter}/>
+                                    <FilterSelector title={this.state.filterStatus[2]} items={this.state.filterStatus}
+                                        callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                        filter = {["подтвержден", "не подтвержден", ""]} filterStatus={this.state.filterStatus}
+                                        data={this.state.Data}>
+                                    </FilterSelector>
                                 </BetweenBlock>
-                                <CustomTable className="admin-table">
-                                    <HeadTable>
-                                        <TitleHead>Номер заказа</TitleHead>
-                                        <TitleHead>Логин</TitleHead>
-                                        <TitleHead>Метод пополнения</TitleHead>
-                                        <TitleHead>Сумма</TitleHead>
-                                        <TitleHead>Статус</TitleHead>
-                                    </HeadTable>
-                                    <tbody>
-                                        {renderTableWallet(this.state.tableData)}
-                                    </tbody>
-                                </CustomTable>
-                                <BetweenBlock className={`items-center ${styles["for-pagination"]}`}>
-                                    <Pagination>
-                                        <NumberPage className="select">1</NumberPage>
-                                        <NumberPage>2</NumberPage>
-                                        <NumberPage>3</NumberPage>
-                                        <NumberPage>...</NumberPage>
-                                        <NumberPage>32</NumberPage>
-                                    </Pagination>
-                                </BetweenBlock>
+                                <DataTable classTable="admin-table" emptyText={`Информация отсутсвует`} 
+                                    linesLimit={5} data={this.state.tableData} 
+                                    columns={CPlaceholders.Fields.AdminHistoryWallet["ru"]} render={renderData}>
+                                </DataTable>
                             </div>
                         </BetweenBlock>
                     </section>
