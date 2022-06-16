@@ -61,7 +61,7 @@ class MainPage extends Component {
                                     {
                                         SocialRoutes.slice(0, this.state.elementsSocial).map(v => {
                                             return (
-                                                <SocialBlock 
+                                                <SocialBlock key={v}
                                                     onClick={this.ChooseSocial}
                                                     className={v.select} img={v.img} alt={v.name}>
                                                     {v.name}

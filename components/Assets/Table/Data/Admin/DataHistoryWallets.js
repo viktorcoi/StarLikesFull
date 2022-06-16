@@ -1,6 +1,6 @@
 const DataHistoryWallets = [
     {
-        id: 1,
+        id: 0,
         number: "1",
         login: "karapuz",
         method: "Онлайн-касса",
@@ -9,7 +9,7 @@ const DataHistoryWallets = [
         color: "green",
     },
     {
-        id: 2,
+        id: 1,
         number: "2",
         login: "tadjiklove",
         method: "Криптовалюта",
@@ -18,7 +18,7 @@ const DataHistoryWallets = [
         color: "green",
     },
     {
-        id: 3,
+        id: 2,
         number: "3",
         login: "keker007",
         method: "Онлайн-касса",
@@ -27,7 +27,7 @@ const DataHistoryWallets = [
         color: "green",
     },
     {
-        id: 4,
+        id: 3,
         number: "4",
         login: "kotenok",
         method: "Криптовалюта",
@@ -36,7 +36,7 @@ const DataHistoryWallets = [
         color: "red",
     },
     {
-        id: 5,
+        id: 4,
         number: "5",
         login: "kotenok1488",
         method: "Онлайн-касса",

@@ -33,13 +33,6 @@ class SettingProfile extends Component {
         document.body.style.overflow = activeClasses[0] ? 'hidden' : 'overlay';
     }
 
-    // closeAlert = () => {
-    //     this.setState({
-    //         passAlert: false,
-    //         changeAlert: false
-    //     });
-    // }
-
     render() {
 
         const activeClasses = this.state.activeClasses.slice();
@@ -81,7 +74,7 @@ class SettingProfile extends Component {
                         const ChangePassrord = () => {
                             if (((values.oldPass.length && values.newPass.length && values.confirmNewPass.length) != 0)) {
                                 if (errors.confirmNewPass == undefined) {
-                                    this.state.passAlert = true;
+                                    this.setState({...this.state, passAlert: true})
                                     setTimeout(() => {
                                         this.setState({passAlert: false});
                                     }, 3000); 
@@ -134,7 +127,7 @@ class SettingProfile extends Component {
                                     const ChangeData = () => {
                                         if (((values.email.length && values.login.length) != 0)) {
                                             if (errors.email == undefined) {
-                                                this.state.changeAlert = true;
+                                                this.setState({...this.state, changeAlert: true})
                                                 this.addClass(1)
                                             }
                                         }

@@ -1,6 +1,6 @@
 const DataReferrals = [
     {
-        id: 1,
+        id: 0,
         referral: "MR.Sex",
         referrer: "Popap",
         summ: "890.00",
@@ -8,7 +8,7 @@ const DataReferrals = [
         dateLast: "20.02.2022",
     },
     {
-        id: 2,
+        id: 1,
         referral: "Cser",
         referrer: "karapuz",
         summ: "800.00",
@@ -16,7 +16,7 @@ const DataReferrals = [
         dateLast: "24.02.2022"
     },
     {
-        id: 3,
+        id: 2,
         referral: "Milaha",
         referrer: "Rocker",
         summ: "90.00",
@@ -24,7 +24,7 @@ const DataReferrals = [
         dateLast: "20.04.2022",
     },
     {
-        id: 4,
+        id: 3,
         referral: "Daun",
         referrer: "Metatel'339",
         summ: "100000.00",

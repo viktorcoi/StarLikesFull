@@ -69,12 +69,6 @@ class Services extends Component {
         document.body.style.overflow = activeClasses[0] || activeClasses[1] || activeClasses[2] ? 'hidden' : 'overlay';
     }
 
-    closeAlert = () => {
-        this.setState({
-            changeAlert: false
-        });
-    }
-
     ChooseSocial = (e) => {
         this.setState({ ...this.state, socialFilter: e.target.innerText.toLowerCase()})
         setTimeout(() => {
@@ -86,10 +80,31 @@ class Services extends Component {
         }
     }
 
+    DeleteData = () => {
+        this.setState({ 
+            Data: this.state.Data.filter((v) => this.state.id !== v.id),
+            tableData: this.state.tableData.filter((v) => this.state.id !== v.id)
+        })
+        this.addClass(0)
+        this.setState({...this.state, deleteAlert: true})
+    }
+
+    hideService = () => {
+        if (this.state.color == "green") {
+            this.state.tableData.find(x => x.id === this.state.id).hide = "hide"
+            this.state.tableData.find(x => x.id === this.state.id).status = "скрыто"
+            this.state.tableData.find(x => x.id === this.state.id).color = "red"
+        } else {
+            this.state.tableData.find(x => x.id === this.state.id).hide = ""
+            this.state.tableData.find(x => x.id === this.state.id).status = "активен"
+            this.state.tableData.find(x => x.id === this.state.id).color = "green"
+        }
+        this.addClass(1)
+        this.setState({...this.state, hideAlert: true})
+    }
+
     render() {
-
         const activeClasses = this.state.activeClasses.slice();
-
         const schema = Yup.object({
             number: Yup.string().required("Поле не может быть пустым!"),
             social: Yup.string().required("Поле не может быть пустым!"),
@@ -101,21 +116,29 @@ class Services extends Component {
         const renderData = (v, i) => {
             return (
                 <DataTableColumn key={i}>
-                    <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}>
-                    <img onClick={() => this.addClass(1)} className={`${activeClasses[3]? styles.hide : styles[v.hide]} ${styles["hide-service"]} cursor-pointer`} 
+                    <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0, v)}>
+                    <img onClick={() => this.addClass(1, v)} className={`${styles[v.hide]} ${styles["hide-service"]} cursor-pointer`} 
                         alt='hide' src="/assets/img/view-table.svg"/>
                     </TableDataManagement>
-                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{`#${v.number}`}</TableData>
-                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.social}</TableData>
-                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{v.type.substr(0, 44).concat(v.type.length > 44 ? "..." : "")}</TableData>
-                    <TableData dataName={activeClasses[3] ? "hide" : v.hide}>{`${v.price}₽`}</TableData>
-                    <TableDataStatus ColorStatus={activeClasses[3] ? "red" : v.color}>{activeClasses[3] ? "скрыто" : v.status}</TableDataStatus>
+                    <TableData dataName={v.hide}>{`#${v.number}`}</TableData>
+                    <TableData dataName={v.hide}>{v.social}</TableData>
+                    <TableData dataName={v.hide}>{v.type.substr(0, 44).concat(v.type.length > 44 ? "..." : "")}</TableData>
+                    <TableData dataName={v.hide}>{`${v.price}₽`}</TableData>
+                    <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
                 </DataTableColumn>
             );
         }
 
         return (
             <>  
+                <AlertBlock Alert = {this.state.hideAlert} 
+                    callback = {(v) => {this.setState({...this.state, hideAlert: v})}} 
+                    img="alert-success" title="Готово!" description="Статус услуги изменен!">
+                </AlertBlock>
+                <AlertBlock Alert = {this.state.deleteAlert} 
+                    callback = {(v) => {this.setState({...this.state, deleteAlert: v})}} 
+                    img="alert-success" title="Готово!" description="Услуга успешно изменена!">
+                </AlertBlock>
                 <AlertBlock Alert = {this.state.changeAlert} 
                     callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
                     img="alert-success" title="Готово!" description="Услуга успешно изменена!">
@@ -133,13 +156,26 @@ class Services extends Component {
                             status: this.state.status,
                         }}
                         validationSchema={schema}
-                        onSubmit = {(values) => {console.log(values)}}>
+                        onSubmit = {(values) => {
+                            let column = ["number", "social", "type", "price", "description", "status"]
+                            values.status = values.status.toLowerCase()
+                            for (var i = 0; i < 6; i++) {
+                            this.state.tableData.find(x => x.id === this.state.id)[column[i]] = values[column[i]]
+                        }
+                            if (values.status == "скрыто") {
+                                this.state.tableData.find(x => x.id === this.state.id).color = "red"
+                                this.state.tableData.find(x => x.id === this.state.id).hide = "hide"
+                            } else {
+                                this.state.tableData.find(x => x.id === this.state.id).color = "green"
+                                this.state.tableData.find(x => x.id === this.state.id).hide = ""
+                            }
+                        }}>
                         {({ errors, handleSubmit, values }) => {
 
                         const ChangeService = () => {
                             if (((values.number && values.price) > 0 && (values.social.length && values.type.length 
                                 && values.description.length ) != 0)) {
-                                    this.state.changeAlert = true;
+                                    this.setState({...this.state, changeAlert: true})
                                     setTimeout(() => {
                                         this.addClass(2)
                                     }, 1);
@@ -184,23 +220,25 @@ class Services extends Component {
                         );}}
                     </Formik>    
                 </Popup>
-
                 <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""}
                     title="Вы уверены, что хотите удалить услугу?">
                     <BetweenBlock>
-                        <ButtonYes/>
+                        <ButtonYes onClick={() => {this.DeleteData()}}/>
                         <ButtonNo onClick={() => this.addClass(0)}/>
                     </BetweenBlock>
                 </Popup>
-
                 <Popup namePopup="yes-no" clickClose={() => this.addClass(1)} className={activeClasses[1]? "open" : ""}
-                    title="Вы уверены, что хотите скрыть услугу?">
+                title={
+                    this.state.color == "red" ? 
+                    "Вы уверены, что хотите отобразить услугу?"
+                    :
+                    "Вы уверены, что хотите скрыть услугу?" 
+                }>
                     <BetweenBlock>
-                        <ButtonYes onMouseUp={() => this.addClass(3)} onClick={() => this.addClass(1)}/>
+                        <ButtonYes onMouseUp={() => this.hideService()}/>
                         <ButtonNo onClick={() => this.addClass(1)}/>
                     </BetweenBlock>
                 </Popup>
-
                <ContainerForPages>
                     <section>
                         <BetweenBlock>
@@ -214,7 +252,7 @@ class Services extends Component {
                                     {
                                         SocialRoutes.slice(0, 13).map(v => {
                                             return (
-                                                <SocialBlock onClick={this.ChooseSocial}
+                                                <SocialBlock key={v} onClick={this.ChooseSocial}
                                                     className={v.select} img={v.img} alt={v.name}>
                                                     {v.name}
                                                 </SocialBlock>

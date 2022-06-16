@@ -19,14 +19,16 @@ import ButtonYes from '../../components/Assets/Buttons/ButtonYes';
 import ButtonNo from '../../components/Assets/Buttons/ButtonNo';
 import TableDataManagement from '../../components/Assets/Table/TableDataManagement';
 import TextArea from '../../components/Assets/Inputs/TextArea';
-import ButtonAddFile from '../../components/Assets/Buttons/ButtonAddFile';
-import AddFile from '../../components/Assets/Blocks/AddFile';
 import LinkButton from '../../components/Assets/Buttons/LinkButton';
 import PanelNavigationAdminMini from '../../components/Assets/Navigations/PanelNavigationAdminMini';
 import DataSupport from '../../components/Assets/Table/Data/Admin/DataSupport';
 import DataTable from '../../components/Assets/Table/DataTable';
 import CPlaceholders from '../../models/Placeholders/Client/index';
 import DataTableColumn from '../../components/Assets/Table/DataTableColumn';
+import AddImageFromPopup from '../../components/Assets/Blocks/AddImageFromPopup';
+import MainButton from '../../components/Assets/Buttons/MainButton';
+import AlertBlock from '../../components/Assets/Blocks/AlertBlock';
+import SearchUser from '../../components/Assets/Inputs/SearchUser';
 
 class HistoryOrders extends Component {
 
@@ -35,9 +37,8 @@ class HistoryOrders extends Component {
         this.state = {
             activeClasses: [false, false, false, false],
             addFile: [],
-            linkPage: "",
             id: "",
-            numberSup: "",
+            number: "",
             login: "",
             theme: "",
             status: "",
@@ -52,6 +53,7 @@ class HistoryOrders extends Component {
             statusFilter: "",
             searchFilter: "",
             valueSearch: "",
+            statusRequest: ["Активен", "Решен"],
         };
         this.addClass = this.addClass.bind(this);
     }
@@ -60,6 +62,9 @@ class HistoryOrders extends Component {
         const activeClasses = [...this.state.activeClasses.slice(0, index), !this.state.activeClasses[index], this.state.activeClasses.slice(index + 1)].flat();
         this.setState({
             activeClasses,
+            number: v?.number,
+            login: v?.login,
+            status: v?.status,
             id: v?.id,
             type: v?.type,
             theme: v?.theme, 
@@ -68,24 +73,21 @@ class HistoryOrders extends Component {
         document.body.style.overflow = activeClasses[0] ? 'hidden' : 'overlay';
     }
 
-    onRemove = (id) => {
-        this.setState({
-            addFile: this.state.addFile.filter((item) => item.id !== id)
+    DeleteData = () => {
+        this.setState({ 
+            Data: this.state.Data.filter((v) => this.state.id !== v.id),
+            tableData: this.state.tableData.filter((v) => this.state.id !== v.id)
         })
+        this.addClass(0)
+        this.setState({...this.state, deleteAlert: true})
     }
 
-    addComponent = (index) => {
-        this.setState({
-            addFile:[...this.state.addFile, { id: index }],
-        })
-    }
-
-    Remove = (id) => {
-        console.log(id)
-        this.setState({
-            tableData: this.state.Data.filter(v => id !== id)
-        })
-        console.log(this.state.tableData, this.state.tableData.id)
+    resetPopupData = () => {
+        setTimeout(() => {
+            this.setState({
+                number: "", login: "", status: "", id: "", type: "", theme: "", message: ""
+            })
+        }, 300);
     }
 
     render() {
@@ -100,7 +102,7 @@ class HistoryOrders extends Component {
         const renderData = (v, i) => {
             return (
                 <DataTableColumn key={i}>
-                    <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => this.addClass(0, v.id)}/>
+                    <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => this.addClass(0, v)}/>
                     <TableDataLink color="purple" href="/admin/support_dialog">{`#${v.number}`}</TableDataLink>
                     <TableData>{v.login}</TableData>
                     <TableData>{v.theme.substr(0, 23).concat(v.theme.length > 23 ? "..." : "")}</TableData>
@@ -109,40 +111,70 @@ class HistoryOrders extends Component {
             );
         }
 
+        const linkPage = ""
+
         return (
             <>  
-                <Popup clickClose={() => {this.addClass(1), this.setState({})}} 
+                <AlertBlock Alert = {this.state.changeAlert} 
+                    callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
+                    img="alert-success" clickClose={this.closeAlert} title="Готово!"  
+                    description="Обращение успешно изменено!">
+                </AlertBlock>
+                <Popup clickClose={() => {this.addClass(1), this.resetPopupData()}} 
                     className={activeClasses[1]? "open" : ""}
-                    title="Создать обращение">
+                    title = {
+                        this.state.id > -1 ? "Редакировать обращение" : "Создать обращение"
+                    }>
                     <Formik
                         enableReinitialize={true}
                         initialValues={{ 
                             type: this.state.type ? this.state.type : "Выберете тип обращения",
                             theme: this.state.theme,
                             message: this.state.message,
+                            login: this.state.login,
+                            status: this.state.status ? this.state.status : "Статус"
                         }}
+
                         validationSchema={schemaSupport}
-                        onSubmit = {(values) => {console.log(values)}}>
+                        onSubmit = {(values) => {
+                            if (this.state.id > -1) {
+                                values.status = values.status.toLowerCase()
+                                let column = ["type", "theme", "message", "login", "status"]
+                                for (var i = 0; i < 5; i++) {
+                                this.state.tableData.find(x => x.id === this.state.id)[column[i]] = values[column[i]]
+                                if (values.status == "решен") {
+                                    this.state.tableData.find(x => x.id === this.state.id).color = "green"
+                                } else {
+                                    this.state.tableData.find(x => x.id === this.state.id).color = "red"
+                                }}
+                            } else {
+                                console.log(values)
+                            }
+                        }}>
                         {({ errors, handleSubmit, values }) => {
 
                         const ChangeLink = () => {
                             if (values.theme && values.message != undefined) {
                                 if (values.theme.length && values.message.length > 0) {
-                                    this.state.linkPage = "/admin/support_dialog";
+                                    linkPage = "/admin/support_dialog";
                                 } else {
-                                    this.state.linkPage = "";
+                                    linkPage = "";
                                 }
                             } else {
-                                this.state.linkPage = "";
+                                linkPage = "";
                             }
                         }
 
                         const sendSupport = () => {
                             if (values.theme && values.message != undefined) {
                                 if (values.theme.length && values.message.length > 0) {
+                                    if (this.state.id > -1) {
+                                        this.setState({...this.state, changeAlert: true})
+                                    }
                                     setTimeout(() => {
                                         this.addClass(1)
                                     }, 1);
+                                    this.resetPopupData()
                                 }
                             } 
                         }
@@ -159,10 +191,12 @@ class HistoryOrders extends Component {
                                 classError={errors.theme ? "view" : ""} addClassInput="main-input"
                                 textError={errors.theme || "ОК"} value={values.theme}/>
                             <BetweenBlock className={styles["for-search-popup"]}>
-                                <SearchInput classOption="selector-admin-popup" classSerach="admin-search-popup"/>
-                                <CustomSelector className="admin-selector-popup" items={this.state.filterSelector}
-                                    onClick={(e)=> (this.setState({ ...this.state, filterField: e.target.innerText}))} 
-                                    title={this.state.filterField}/>
+                                {
+                                    this.state.id > -1 ? 
+                                        <SearchInput value={values.login} classSerach="admin-search-popup"/>
+                                    : 
+                                    <SearchUser value={values.login} classSerach="admin-search-popup"/>
+                                }
                             </BetweenBlock>
                             <TextArea name="message" 
                                 onChange={(e)=> this.setState({ message: e.target.value })} 
@@ -170,15 +204,24 @@ class HistoryOrders extends Component {
                                 placeholder='Напишите сообщение' type="text"
                                 classError={errors.message ? "view" : ""} addClassInput="main-input"
                                 textError={errors.message || "ОК"} value={values.message}/>
-                            <ButtonAddFile onClick={this.addComponent}>Добавить файл</ButtonAddFile>
-                            <div className={`${styles["for-added"]} d-flex`}>
-                                {this.state.addFile.map((item)=>(
-                                    item ?
-                                        <AddFile nameFile="Название" clickDelete={()=>this.onRemove(item.id)}/>
-                                    : null
-                                ))}
-                            </div>
-                            <LinkButton onClick={()=>{handleSubmit(), sendSupport()}} href={this.state.linkPage}>Создать обращение</LinkButton> 
+                            {
+                                this.state.id > -1 ? 
+                                    <>
+                                        <CustomSelector addClassName={styles["margin-selector"]}
+                                            onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))}
+                                            addIMG="status" title={values.status} items={this.state.statusRequest}/>
+                                        <MainButton  onClick={()=>{handleSubmit(), sendSupport()}}  style={{marginTop: "0"}} className={styles["button-popup-admin"]} 
+                                            classButton="link-button">Редактировать обращение
+                                        </MainButton> 
+                                    </>
+                                : 
+                                <>
+                                    <AddImageFromPopup/>
+                                    <LinkButton onClick={()=>{handleSubmit(), sendSupport()}} 
+                                        href={linkPage}>Создать обращение
+                                    </LinkButton> 
+                                </>
+                            }
                         </>
                         );}}
                     </Formik>   
@@ -186,7 +229,7 @@ class HistoryOrders extends Component {
                 <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""}
                     title="Вы уверены, что хотите удалить обращение?">
                     <BetweenBlock>
-                        <ButtonYes onClick={(idx)=> this.Remove(idx)}/>
+                        <ButtonYes onClick={()=> {this.DeleteData(), this.resetPopupData()}}/>
                         <ButtonNo onClick={() => this.addClass(0)}/>
                     </BetweenBlock>
                 </Popup>

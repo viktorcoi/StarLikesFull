@@ -12,8 +12,6 @@ import * as Yup from "yup";
 import InputWithError from '../components/Assets/Inputs/InputWithError';
 import TextArea from '../components/Assets/Inputs/TextArea';
 import CustomSelector from '../components/Assets/tags/CustomSelector';
-import ButtonAddFile from '../components/Assets/Buttons/ButtonAddFile';
-import AddFile from '../components/Assets/Blocks/AddFile';
 import Popup from '../components/Assets/Popup/Popup';
 import LinkButton from '../components/Assets/Buttons/LinkButton';
 import FilterSelector from '../components/Assets/tags/FilterSelector';
@@ -23,6 +21,7 @@ import DataSupport from '../components/Assets/Table/Data/Users/DataSupport';
 import DataTableColumn from '../components/Assets/Table/DataTableColumn';
 import DataTable from '../components/Assets/Table/DataTable';
 import CPlaceholders from '../models/Placeholders/Client/index';
+import AddImageFromPopup from '../components/Assets/Blocks/AddImageFromPopup';
 
 class Support extends Component {
 
@@ -30,16 +29,10 @@ class Support extends Component {
         super(props);
         this.state = {
             activeClasses: [false, false, false, false],
-            addFile: [],
-            linkPage: "",
-            filter: ["активные", "решенные", "все записи"],
-            id: "",
-            index: "",
+            filterStatus: ["активные", "решенные", "все записи"],
             theme: "",
-            status: "",
-            lastUpdate: '',
             type: "",
-            color: "",
+            message: "",
             statusFilter: "",
             Data: [...DataSupport],
             tableData: [],
@@ -55,34 +48,6 @@ class Support extends Component {
         document.body.style.overflow = activeClasses[0] ? 'hidden' : 'overlay';
     }
 
-    onRemove = (id) => {
-        this.setState({
-            addFile: this.state.addFile.filter((item) => item.id !== id)
-        })
-    }
-
-    addComponent = (index) => {
-        this.setState({
-            addFile:[...this.state.addFile, { id: index }],
-        })
-    }
-
-    changeClickStatus = (e) => {
-        let filter = [];
-        for (var i = 0; i < 3; i++) {
-            if (e.target.innerText.toLowerCase() == this.state.filter[i]) {
-                filter[0] = "активен"
-                filter[1] = "решен"
-                filter[2] = ""
-                this.setState({ ...this.state, statusFilter: filter[i]});
-                setTimeout(() => {
-                    this.setState({ ...this.state, 
-                        tableData: this.state.Data.filter((v) => (((!this.state.statusFilter) || v.status == this.state.statusFilter))).map(v => v)})
-                }, 1);
-            }
-        }
-    }
-
     render() {
 
         const schemaSupport = Yup.object({
@@ -95,13 +60,15 @@ class Support extends Component {
         const renderData = (v, i) => {
             return (
                 <DataTableColumn key={i}>
-                    <TableData>{v.number}</TableData>
+                    <TableData>{`#${v.number}`}</TableData>
                     <TableDataLink color="purple" href="/dialog_support">{v.theme.substr(0, 23).concat(v.theme.length > 23 ? "..." : "")}</TableDataLink>
                     <TableDataStatus ColorStatus={v.color}>{v.status}</TableDataStatus>
                     <TableData>{v.lastUpdate}</TableData>
                 </DataTableColumn>
             );
         }
+
+        const linkPage = ""
 
         return (
             <>
@@ -120,12 +87,12 @@ class Support extends Component {
                         const ChangeLink = () => {
                             if (values.theme && values.message != undefined) {
                                 if (values.theme.length && values.message.length > 0) {
-                                    this.state.linkPage = "/dialog_support";
+                                    linkPage = "/dialog_support";
                                 } else {
-                                    this.state.linkPage = "";
+                                    linkPage = "";
                                 }
                             } else {
-                                this.state.linkPage = "";
+                                linkPage = "";
                             }
                         }
 
@@ -156,15 +123,8 @@ class Support extends Component {
                                     classError={errors.message ? "view" : ""} addClassInput="main-input"
                                     textError={errors.message || "ОК"} value={values.message}/>
                             </div>
-                            <ButtonAddFile onClick={this.addComponent}>Добавить файл</ButtonAddFile>
-                            <div className={`${styles["for-added"]} d-flex`}>
-                                {this.state.addFile.map((item)=>(
-                                    item ?
-                                        <AddFile nameFile="Название" clickDelete={()=>this.onRemove(item.id)}/>
-                                    : null
-                                ))}
-                            </div>
-                            <LinkButton onClick={()=>{handleSubmit(), sendSupport()}} href={this.state.linkPage}>Создать обращение</LinkButton> 
+                            <AddImageFromPopup/>
+                            <LinkButton onClick={()=>{handleSubmit(), sendSupport()}} href={linkPage}>Создать обращение</LinkButton> 
                         </>
                         );}}
                     </Formik>
@@ -180,9 +140,11 @@ class Support extends Component {
                                     <ButtonWithArrow onClick={() => this.addClass(0)}>Создать обращение</ButtonWithArrow>
                                 </BetweenBlock>
                                 <BetweenBlock className={`items-center ${styles["for-title-two"]}`}>
-                                    <FilterSelector addClassName={styles["for-filter"]}
-                                    onClick={(e)=> this.changeClickStatus(e)}
-                                    title={this.state.filter[2]} items={this.state.filter}/>
+                                    <FilterSelector title={this.state.filterStatus[2]} items={this.state.filterStatus}
+                                        callback={(data) => {this.setState({...this.state, tableData: data})}}
+                                        filter = {["активен", "решен", ""]} filterStatus={this.state.filterStatus}
+                                        data={this.state.Data} addClassName={styles["for-filter"]}>
+                                    </FilterSelector>
                                 </BetweenBlock>
                                 <DataTable classTable="table-support" emptyText={`Обращения не найдены`} 
                                     linesLimit={5} data={this.state.tableData} 

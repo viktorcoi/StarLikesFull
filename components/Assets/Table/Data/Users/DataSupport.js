@@ -1,6 +1,6 @@
 const DataSupport = [
     {
-        id: 1,
+        id: 0,
         number: "2",
         theme: "Выведение средств",
         status: "активен",
@@ -8,7 +8,7 @@ const DataSupport = [
         color: "purple",
     },
     {
-        id: 2,
+        id: 1,
         number: "6",
         theme: "Проблема с подключением",
         status: "решен",
@@ -16,7 +16,7 @@ const DataSupport = [
         color: "green",
     },
     {
-        id: 3,
+        id: 2,
         number: "9",
         theme: "У меня дед в афгане воевал, можно бонус?",
         status: "решен",

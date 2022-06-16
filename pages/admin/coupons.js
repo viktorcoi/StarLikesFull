@@ -43,6 +43,7 @@ class Users extends Component {
             color: "",
             statusCoupon: ["Активен", "Завершен"],
             tableData: [],
+            DataForAdded: [...DataCoupons],
         };
         this.state.tableData = this.state.Data
     }
@@ -59,16 +60,23 @@ class Users extends Component {
             status: v?.status,
             color: v?.color,
         });
-        document.body.style.overflow = activeClasses[0] || activeClasses[1] || activeClasses[2] ? 'hidden' : 'overlay';
+        document.body.style.overflow = activeClasses[0] || activeClasses[1] ? 'hidden' : 'overlay';
     }
 
     resetPopupData = () => {
-        if ((this.state.number > 0 && (this.state.name.length && this.state.type.length && this.state.action.length) != 0)) {
-            this.state.changeAlert = true;
-            setTimeout(() => {
-                this.setState({number: "", name: "", type: "", action: "", status: ""})
-            }, 300);
-        }
+        setTimeout(() => {
+            this.setState({number: "", name: "", type: "", action: "", status: ""})
+        }, 300);
+    }
+
+    DeleteData = () => {
+        this.setState({ 
+            Data: this.state.Data.filter((v) => this.state.id !== v.id),
+            tableData: this.state.tableData.filter((v) => this.state.id !== v.id),
+            DataForAdded: this.state.DataForAdded.filter((v) => this.state.id !== v.id)
+        })
+        this.addClass(0)
+        this.setState({...this.state, deleteAlert: true})
     }
 
     render() {
@@ -76,7 +84,7 @@ class Users extends Component {
         const renderData = (v, i) => {
             return (
                 <DataTableColumn key={i}>
-                    <TableDataManagement clickEdit={() => this.addClass(2, v)}  clickDelete={() => this.addClass(0)}/>
+                    <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => this.addClass(0, v)}/>
                     <TableData>{`#${v.number}`}</TableData>
                     <TableData>{v.name}</TableData>
                     <TableData>{v.type}</TableData>
@@ -107,9 +115,11 @@ class Users extends Component {
                     img="alert-success" clickClose={this.closeAlert} title="Готово!"  
                     description="Промокод успешно изменен!">
                 </AlertBlock>
-                <Popup clickClose={() => {this.addClass(1)}} 
-                className={activeClasses[1]? "open" : ""}
-                    title="Создание промокода">
+                <Popup clickClose={() => {this.addClass(1), this.resetPopupData()}} 
+                    className={activeClasses[1]? "open" : ""}
+                    title = {
+                        this.state.id > -1 ? "Редакирование промокода" : "Создание промокода"
+                    }>
                     <Formik
                         enableReinitialize={true}
                         initialValues={{ 
@@ -120,70 +130,48 @@ class Users extends Component {
                             status: this.state.status ? this.state.status : "Статус"
                         }}
                         validationSchema={schema}
-                        onSubmit = {(values) => {console.log(values)}}>
-                        {({ errors, handleSubmit, handleChange, values }) => {
-                            const CreateCoupon = () => {
-                            if ((values.number > 0 && (values.name.length && values.type.length && values.action.length) != 0)) {
-                                this.state.createAlert = true;
-                                setTimeout(() => {
-                                    this.addClass(1)
-                                }, 1);
+                        onSubmit = {(values) => {
+                            values.status = values.status.toLowerCase()
+                            if (this.state.id > -1) {
+                                let column = ["number", "name", "type", "action", "status"]
+                                for (var i = 0; i < 5; i++) {
+                                this.state.tableData.find(x => x.id === this.state.id)[column[i]] = values[column[i]]
+                                if (values.status == "завершен") {
+                                    this.state.tableData.find(x => x.id === this.state.id).color = "red"
+                                } else {
+                                    this.state.tableData.find(x => x.id === this.state.id).color = "green"
+                                }}
+                            } else {
+                                let a = this.state.DataForAdded.slice();
+                                a [this.state.DataForAdded.length] = {
+                                    id: this.state.DataForAdded[this.state.DataForAdded.length - 1].id + 1,
+                                    number: values.number,
+                                    type: values.type,
+                                    action: values.action,
+                                    status: values.status != "статус" ? values.status : "активен",
+                                    name: values.name,
+                                    color: values.status == "завершен" ? "red" : "green",
+                                };
+                                this.setState({DataForAdded: a});
+                                this.setState({Data: a})
+                                this.setState({tableData: a});
+                                console.log(a)
                             }
-                        } 
-
-                        return (
-                        <>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
-                                className="sharp" placeholder='Номер' name='number' type="number"
-                                classError={errors.number ? "view" : ""} 
-                                textError={errors.number || "ОК"} value={values.number}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
-                                className="coupon" placeholder='Название' name='name'
-                                classError={errors.name ? "view" : ""} 
-                                textError={errors.name || "ОК"} value={values.name}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
-                                className="type" placeholder='Тип' name='type'
-                                classError={errors.type ? "view" : ""} 
-                                textError={errors.type || "ОК"} value={values.type}/>
-                            <InputWithError onChange={handleChange} addClassInput="main-input"
-                                className="plus" placeholder='Действие' name='action'
-                                classError={errors.action ? "view" : ""} 
-                                textError={errors.action || "ОК"} value={values.action}/>
-                            <CustomSelector onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))} 
-                                addIMG="status"
-                                title={values.status} items={this.state.statusCoupon}/>
-                            <MainButton onMouseUp={CreateCoupon} className={styles["button-popup-admin"]} 
-                                classButton="link-button" 
-                                type="submit" 
-                                onClick={handleSubmit}>
-                                Создать промокод
-                            </MainButton>
-                        </>
-                        );}}
-                    </Formik>    
-                </Popup>
-                <Popup clickClose={() => {this.addClass(2), this.resetPopupData()}} 
-                    className={activeClasses[2]? "open" : ""}
-                    title="Редактирование промокода">
-                    <Formik
-                        enableReinitialize={true}
-                        initialValues={{ 
-                            number: this.state.number,
-                            name: this.state.name,
-                            type: this.state.type,
-                            action: this.state.action,
-                            status: this.state.status
-                        }}
-                        validationSchema={schema}
-                        onSubmit = {(values) => {console.log(values)}}>
+                        }}>
                         {({ errors, handleSubmit, values }) => {
-
-                        const ChangeCoupon = () => {
-                            if ((values.number > 0 && (values.name.length && values.type.length && values.action.length) != 0)) {
-                                this.state.changeAlert = true;
-                                setTimeout(() => {
-                                    this.addClass(2)
-                                }, 1);
+                            const CreateCoupon = () => {
+                                if (values.name && values.type && values.action != undefined) {
+                                    if ((values.number > 0 && (values.name.length && values.type.length && values.action.length) != 0)) {
+                                    if (this.state.id > -1) {
+                                        this.setState({...this.state, changeAlert: true})
+                                    } else {
+                                        this.setState({...this.state, createAlert: true})
+                                    }
+                                    setTimeout(() => {
+                                        this.addClass(1)
+                                    }, 1);
+                                    this.resetPopupData()
+                                }
                             }
                         } 
 
@@ -194,7 +182,7 @@ class Users extends Component {
                                 className="sharp" placeholder='Номер' name='number' type="number"
                                 classError={errors.number ? "view" : ""} 
                                 textError={errors.number || "ОК"} value={values.number}/>
-                            <InputWithError onChange={(e)=> {this.setState({ name: e.target.value })}}  
+                            <InputWithError onChange={(e)=> {this.setState({ name: e.target.value })}}
                                 addClassInput="main-input"
                                 className="coupon" placeholder='Название' name='name'
                                 classError={errors.name ? "view" : ""} 
@@ -204,19 +192,19 @@ class Users extends Component {
                                 className="type" placeholder='Тип' name='type'
                                 classError={errors.type ? "view" : ""} 
                                 textError={errors.type || "ОК"} value={values.type}/>
-                            <InputWithError  
-                                onChange={(e)=> {this.setState({ action: e.target.value })}} 
+                            <InputWithError onChange={(e)=> {this.setState({ action: e.target.value })}}  
                                 addClassInput="main-input"
                                 className="plus" placeholder='Действие' name='action'
                                 classError={errors.action ? "view" : ""} 
                                 textError={errors.action || "ОК"} value={values.action}/>
-                            <CustomSelector onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))}
-                                addIMG="status" title={values.status} items={this.state.statusCoupon}/>
-                            <MainButton className={styles["button-popup-admin"]} 
+                            <CustomSelector onClick={(e)=> (this.setState({ ...this.state, status: e.target.innerText}))} 
+                                addIMG="status"
+                                title={values.status} items={this.state.statusCoupon}/>
+                            <MainButton onMouseUp={CreateCoupon} className={styles["button-popup-admin"]} 
                                 classButton="link-button" 
                                 type="submit" 
-                                onClick={()=>{handleSubmit(), ChangeCoupon(), this.resetPopupData()}}>
-                                Редактровать промокод
+                                onClick={handleSubmit}>
+                                {this.state.id > -1 ? "Редактировать промокод" : "Создать промокод"}
                             </MainButton>
                         </>
                         );}}
@@ -225,7 +213,7 @@ class Users extends Component {
                 <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""}
                     title="Вы уверены, что хотите удалить промокод?">
                     <BetweenBlock>
-                        <ButtonYes/>
+                        <ButtonYes onClick={()=> {this.DeleteData(), this.resetPopupData()}}/>
                         <ButtonNo onClick={() => this.addClass(0)}/>
                     </BetweenBlock>
                 </Popup>

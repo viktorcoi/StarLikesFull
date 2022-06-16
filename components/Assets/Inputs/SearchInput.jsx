@@ -28,7 +28,7 @@ const SearchInput = (props) => {
         <>
             <div className={`pos-relative ${styles[props.classSerach] ?? ""} ${props.addClassDiv ?? ""}`}>
                 <Input value={value} placeholder={"Поиск"} {...props} className="search" 
-                onChange={(e) => {setValue(e.target.value), props.onChange}}>
+                onChange={(e) => {setValue(e.target.value)}}>
                     {props.none}
                 </Input>
             </div>

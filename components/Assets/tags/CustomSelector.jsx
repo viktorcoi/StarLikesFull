@@ -30,7 +30,7 @@ class CustomSelector extends Component {
 
     return (
         <div className={`pos-relative ${styles["for-selector"]} ${this.props.addClassName ?? ""} ${styles[this.props.className] ?? ""}`}>
-            <div tabindex={0} onClick={() => this.addClass(0)} onBlur={()=>this.CloseDropDown()}
+            <div tabIndex={0} onClick={() => this.addClass(0)} onBlur={()=>this.CloseDropDown()}
             className={`pos-relative transition_0_3 d-flex ${styles["custom-selector"]} 
             ${styles[this.props.addIMG] ?? ""} ${(this.state.activeClasses[0] ? styles.open : "")} ${(this.state.selected ? styles.open : "")}`}>
                 <p className='none-select transition_0_3'>

@@ -1,6 +1,6 @@
 const DataReferral = [
     {
-        id: 1,
+        id: 0,
         date: "20.02.2022",
         social: "Instagram",
         type: "👥 Instagram Followers - [REAL+ AUTREFILL 30 meow]",
@@ -9,7 +9,7 @@ const DataReferral = [
         color: "green",
     },
     {
-        id: 2,
+        id: 1,
         date: "15.02.2022",
         social: "Instagram",
         type: "👥 Instagram Followers - [REAL+ AUTREFILL 30]",

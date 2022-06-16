@@ -1,5 +1,11 @@
 const DataMyServices = [
     {
+        id: 0,
+        social: "telegram",
+        type: "👍 Telegram Likes - [REAL + IMPRESSION + NO DROP]",
+        price: "00.11₽",
+    },
+    {
         id: 1,
         social: "instagram",
         type: "📺 Instagram Views - [BOT + SPEED 500k/D]",
@@ -61,12 +67,6 @@ const DataMyServices = [
     },
     {
         id: 11,
-        social: "telegram",
-        type: "👍 Telegram Likes - [REAL + IMPRESSION + NO DROP]",
-        price: "00.11₽",
-    },
-    {
-        id: 12,
         social: "telegram",
         type: "👍 Telegram Likes - [REAL + IMPRESSION + NO DROP]",
         price: "00.11₽",

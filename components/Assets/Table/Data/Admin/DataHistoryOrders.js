@@ -1,6 +1,6 @@
 const DataHistoryOrders = [
     {
-        id: 1,
+        id: 0,
         number: "1",
         login: "karapuz",
         social: "Instagram",
@@ -10,7 +10,7 @@ const DataHistoryOrders = [
         color: "purple",
     },
     {
-        id: 2,
+        id: 1,
         number: "2",
         login: "tadjiklove",
         social: "Instagram",
@@ -20,7 +20,7 @@ const DataHistoryOrders = [
         color: "green",
     },
     {
-        id: 3,
+        id: 2,
         number: "3",
         login: "keker007",
         social: "Telegram",
@@ -30,7 +30,7 @@ const DataHistoryOrders = [
         color: "purple",
     },
     {
-        id: 4,
+        id: 3,
         number: "4",
         login: "kotenok",
         social: "Одноклассники",
@@ -40,7 +40,7 @@ const DataHistoryOrders = [
         color: "green",
     },
     {
-        id: 5,
+        id: 4,
         number: "5",
         login: "kotenok1488",
         social: "VK",
@@ -50,7 +50,7 @@ const DataHistoryOrders = [
         color: "purple",
     },
     {
-        id: 6,
+        id: 5,
         number: "6",
         login: "Chechen",
         social: "VK",

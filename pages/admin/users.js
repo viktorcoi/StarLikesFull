@@ -59,9 +59,19 @@ class Users extends Component {
             mail: v?.mail, 
             phone: v?.phone,
             country: v?.country,
+            balance: v?.balance,
             status: v?.status,
         });
         document.body.style.overflow = activeClasses[0] || activeClasses[1] ? 'hidden' : 'overlay';
+    }
+
+    DeleteData = () => {
+        this.setState({ 
+            Data: this.state.Data.filter((v) => this.state.id !== v.id),
+            tableData: this.state.tableData.filter((v) => this.state.id !== v.id)
+        })
+        this.addClass(0)
+        this.setState({...this.state, deleteAlert: true})
     }
 
     render() {
@@ -69,7 +79,7 @@ class Users extends Component {
         const renderData = (v, i) => {
             return (
                 <DataTableColumn key={i}>
-                    <TableDataManagement clickEdit={() => this.addClass(1, v)}  clickDelete={() => {this.addClass(0, v), console.log(v)}}/>
+                    <TableDataManagement clickEdit={() => {this.addClass(1, v)}}  clickDelete={() => {this.addClass(0, v)}}/>
                     <TableData color="purple">{`#${v.number}`}</TableData>
                     <TableData>{v.login}</TableData>
                     <TableData>{`${v.balance}₽`}</TableData>
@@ -85,13 +95,24 @@ class Users extends Component {
 
         const schema = Yup.object({
             login: Yup.string().required("Поле не может быть пустым!"),
-            email: Yup.string()
+            mail: Yup.string()
                 .email("Введите корректный адрес почты")
                 .required("Поле не может быть пустым!"),
         });
 
         return (
             <>  
+                <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""}
+                    title="Вы уверены, что хотите удалить пользователя?">
+                    <BetweenBlock>
+                        <ButtonYes onClick={() => {this.DeleteData()}}/>
+                        <ButtonNo onClick={() => this.addClass(0)}/>
+                    </BetweenBlock>
+                </Popup>
+                <AlertBlock Alert = {this.state.deleteAlert} 
+                    callback = {(v) => {this.setState({...this.state, deleteAlert: v})}} 
+                    img="alert-success"  title="Готово!" description="Пользователь удален!">
+                </AlertBlock>
                 <AlertBlock Alert = {this.state.changeAlert} 
                     callback = {(v) => {this.setState({...this.state, changeAlert: v})}} 
                     img="alert-success"  title="Готово!" description="Изменения сохранены!">
@@ -102,19 +123,23 @@ class Users extends Component {
                         enableReinitialize={true}
                         initialValues={{ 
                             login: this.state.login,
-                            email: this.state.mail,
+                            mail: this.state.mail,
                             phone: this.state.phone,
                             country: this.state.country,
                             status: this.state.status
                         }}
                         validationSchema={schema}
-                        onSubmit = {(values) => {console.log(values)}}>
+                        onSubmit = {(values) => {
+                            let column = ["login", "mail", "phone", "country", "status"]
+                            for (var i = 0; i < 5; i++) {
+                                this.state.tableData.find(x => x.id === this.state.id)[column[i]] = values[column[i]]
+                        }}}>
                         {({ errors, handleSubmit, values }) => {
 
                         const ChangeUser = () => {
-                            if (((values.login.length && values.email.length) != 0)) {
-                                if (errors.email == undefined) {
-                                    this.state.changeAlert = true;
+                            if (((values.login.length && values.mail.length) != 0)) {
+                                if (errors.mail == undefined) {
+                                    this.setState({...this.state, changeAlert: true})
                                     setTimeout(() => {
                                         this.addClass(1)
                                     }, 1);
@@ -129,9 +154,9 @@ class Users extends Component {
                                 classError={errors.login ? "view" : ""} 
                                 textError={errors.login || "ОК"} value={values.login}/>
                             <InputWithError onChange={(e)=> this.setState({ mail: e.target.value })} addClassInput="main-input"
-                                className="mail" placeholder='E-mail' name='email'
-                                classError={errors.email ? "view" : ""} 
-                                textError={errors.email || "ОК"} value={values.email}/>
+                                className="mail" placeholder='E-mail' name='mail'
+                                classError={errors.mail ? "view" : ""} 
+                                textError={errors.mail || "ОК"} value={values.mail}/>
                             <PhoneInput onChange={(e)=> this.setState({ phone: e.target.value })} 
                                 className="phone" name="phone" placeholder="Телефон" 
                                 addClassInput="main-input" value={values.phone}/>
@@ -150,13 +175,6 @@ class Users extends Component {
                         </>
                         );}}
                     </Formik>    
-                </Popup>
-                <Popup namePopup="yes-no" clickClose={() => this.addClass(0)} className={activeClasses[0]? "open" : ""}
-                    title="Вы уверены, что хотите удалить пользователя?">
-                    <BetweenBlock>
-                        <ButtonYes onClick={(v) => this.DeleteData(v)}/>
-                        <ButtonNo onClick={() => this.addClass(0)}/>
-                    </BetweenBlock>
                 </Popup>
                <ContainerForPages>
                     <section className={`${styles["admins-page"]} ${styles["for-menu"]}`}>

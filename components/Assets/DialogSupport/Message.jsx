@@ -12,12 +12,14 @@ const Message = (props) => {
                         <p className={styles.name}>{props.name}</p>
                         <p className={styles.time}>{props.time}</p>
                         <div>
-                            <EditElement onClick={props.clickEdit} imgName={styles.pen}/>
+                            <EditElement clickEdit={props.clickEdit} imgName={styles.pen}/>
                             <DeleteElement clickDelete={props.clickDelete}/>
                         </div>
+                        <img className={`transition_0_3 ${styles["for-edit"]} ${styles[props.edit]}`} src="/assets/img/input-pen.svg"/>
                     </div>
                 </div>
                 <p className={styles["text-message"]}>{props.message}</p>
+                {props.children}
             </div>
         </div>
     )

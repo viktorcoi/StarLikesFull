@@ -1,6 +1,6 @@
 const DataBalance = [
     {
-        id: 1,
+        id: 0,
         date: "20.02.2022",
         method: "Онлайн-касса",
         summ: "33.00",
@@ -9,7 +9,7 @@ const DataBalance = [
         color: "green",
     },
     {
-        id: 2,
+        id: 1,
         date: "21.02.2022",
         method: "Криптовалюта",
         summ: "3.00",
@@ -18,7 +18,7 @@ const DataBalance = [
         color: "red",
     },
     {
-        id: 3,
+        id: 2,
         date: "21.02.2022",
         method: "Онлайн-касса",
         summ: "373.00",
@@ -27,7 +27,7 @@ const DataBalance = [
         color: "green",
     },
     {
-        id: 4,
+        id: 3,
         date: "22.02.2022",
         method: "Онлайн-касса",
         summ: "633.00",
@@ -36,7 +36,7 @@ const DataBalance = [
         color: "green",
     },
     {
-        id: 5,
+        id: 4,
         date: "25.02.2022",
         method: "Криптовалюта",
         summ: "3333.00",
@@ -45,7 +45,7 @@ const DataBalance = [
         color: "green",
     },
     {
-        id: 6,
+        id: 5,
         date: "23.02.2022",
         method: "Онлайн-касса",
         summ: "353.00",
@@ -54,7 +54,7 @@ const DataBalance = [
         color: "red",
     },
     {
-        id: 7,
+        id: 6,
         date: "19.02.2022",
         method: "Онлайн-касса",
         summ: "323.00",

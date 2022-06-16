@@ -39,6 +39,8 @@ class NewOrderSettings extends Component {
             "Одноклассники Followers - [REAL+ AUTOREFILL 30D]"
         ];
 
+        const linkPage = ""
+
         return (
             <>
                 <ContainerForPages>
@@ -64,9 +66,9 @@ class NewOrderSettings extends Component {
                                         const ChangeLink = () => {
                                             if (((values.link.length && values.count.length) != 0)) {
                                                 if (errors.link == undefined && errors.count == undefined) {
-                                                    this.state.linkPage = '/new_order_pay'
+                                                    linkPage = '/new_order_pay'
                                                 } else {
-                                                    this.state.linkPage = ''
+                                                    linkPage = ''
                                                 }
                                             }
                                         } 
@@ -100,7 +102,7 @@ class NewOrderSettings extends Component {
                                                 </div>
                                                 <div className='d-flex items-center'>
                                                     <LinkBack className="white-link">К 1 шагу</LinkBack>
-                                                    <LinkButton onClick={()=>handleSubmit()} className={styles["mini-button"]} href={this.state.linkPage}>Вперёд</LinkButton>  
+                                                    <LinkButton onClick={()=>handleSubmit()} className={styles["mini-button"]} href={linkPage}>Вперёд</LinkButton>  
                                                 </div>
                                             </BetweenBlock>
                                         </>

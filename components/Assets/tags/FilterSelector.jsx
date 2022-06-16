@@ -37,7 +37,7 @@ const FilterSelector = (props) => {
 
     return (
         <div className={`pos-relative ${styles["for-selector"]} ${props.addClassName ?? ""} ${styles[props.className] ?? ""}`}>
-            <div tabindex={0} onClick={() => DropDown(open)} onBlur={() => CloseDropDown()}
+            <div tabIndex={0} onClick={() => DropDown(open)} onBlur={() => CloseDropDown()}
             className={`pos-relative transition_0_3 d-flex items-center ${styles["filter-selector"]} 
             ${styles[props.addIMG]} ${(open ? styles.open : "")} ${(selected ? styles.open : "")}`}>
                 <img alt='filter' src='/assets/img/filter.svg'></img>

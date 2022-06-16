@@ -19,11 +19,13 @@
     "react-copy-text": "^1.0.1",
     "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "17.0.2",
+    "react-file-base64": "^1.0.3",
     "react-input-autosize": "^3.0.0",
     "react-input-mask": "^3.0.0-alpha.2",
     "react-onclickoutside": "^6.12.1",
     "react-rangeslider": "^2.2.0",
     "react-responsive": "^9.0.0-beta.6",
+    "react-uuid": "^1.0.2",
     "reactrangeslider": "^3.0.6",
     "yup": "^0.32.11"
   },

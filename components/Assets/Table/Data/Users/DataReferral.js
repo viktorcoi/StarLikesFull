@@ -1,4 +1,13 @@
 const DataReferral = [
+    
+    {
+        id: 0,
+        date: "21.05.2022",
+        login: "lover00",
+        summ: "50.00₽",
+        status: "не подтвержден",
+        color: "red",
+    },
     {
         id: 1,
         date: "20.02.2022",
@@ -36,14 +45,6 @@ const DataReferral = [
         date: "21.02.2022",
         login: "hachenok",
         summ: "100.00₽",
-        status: "не подтвержден",
-        color: "red",
-    },
-    {
-        id: 6,
-        date: "21.05.2022",
-        login: "lover00",
-        summ: "50.00₽",
         status: "не подтвержден",
         color: "red",
     },

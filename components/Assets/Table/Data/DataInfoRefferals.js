@@ -1,4 +1,4 @@
-const DataInfoRefferal = [
+const DataInfoRefferals = [
     {
         transitions: "17",
         registration: "10",
@@ -8,4 +8,4 @@ const DataInfoRefferal = [
     },
 ]
   
-export default DataInfoRefferal;
+export default DataInfoRefferals;

@@ -16,8 +16,6 @@ import * as Yup from "yup";
 import InputWithError from '../components/Assets/Inputs/InputWithError';
 import TextArea from '../components/Assets/Inputs/TextArea';
 import CustomSelector from '../components/Assets/tags/CustomSelector';
-import ButtonAddFile from '../components/Assets/Buttons/ButtonAddFile';
-import AddFile from '../components/Assets/Blocks/AddFile';
 import FilterSelector from '../components/Assets/tags/FilterSelector';
 import MainTitle from '../components/Assets/tags/MainTitle';
 import HTitle from '../components/Assets/tags/HTitle';
@@ -29,6 +27,7 @@ import DataTable from '../components/Assets/Table/DataTable';
 import CPlaceholders from '../models/Placeholders/Client/index';
 import DataTableColumn from '../components/Assets/Table/DataTableColumn';
 import DataInfoRefferal from '../components/Assets/Table/Data/DataInfoRefferals';
+import AddImageFromPopup from '../components/Assets/Blocks/AddImageFromPopup';
 
 class Referrals extends Component {
 
@@ -36,12 +35,15 @@ class Referrals extends Component {
         super(props);
         this.state = {
             activeClasses: [false, false, false, false],
-            addFile: [],
             filterStatus: ["подтвержденные", "не подтвержденные", "все записи"],
             Data: [...DataReferral],
             DataInfo: [...DataInfoRefferal],
             tableData: [],
-            tableDataInfo: []
+            tableDataInfo: [],
+            typeSelector: ["Технический", "Не технический", "Гипер технический"],
+            theme: "",
+            type: "",
+            message: "",
         };
         this.state.tableData = this.state.DataInfo
         this.state.tableData = this.state.Data
@@ -52,18 +54,6 @@ class Referrals extends Component {
         const activeClasses = [...this.state.activeClasses.slice(0, index), !this.state.activeClasses[index], this.state.activeClasses.slice(index + 1)].flat();
         this.setState({activeClasses});
         document.body.style.overflow = (activeClasses[0] || activeClasses[1] || activeClasses[2] || activeClasses[3]) ? 'hidden' : 'overlay';
-    }
-
-    onRemove = (id) => {
-        this.setState({
-            addFile: this.state.addFile.filter((item) => item.id !== id)
-        })
-    }
-
-    addComponent = (index) => {
-        this.setState({
-            addFile:[...this.state.addFile, { id: index }],
-        })
     }
 
     render() {
@@ -101,57 +91,64 @@ class Referrals extends Component {
         });
 
         const activeClasses = this.state.activeClasses.slice();
-        let type  = ["Технический", "Не технический", "Гипер технический"];
+
+        const linkPage = ""
 
         return (
             <>
                 <Popup clickClose={() => this.addClass(3)} className={activeClasses[3]? "open" : ""} title="Создать обращение">
-                    <Formik
+                   <Formik
+                    enableReinitialize={true}
                         initialValues={{
-                            type: '',
-                            theme: '',
-                            message: '',
+                            type: this.state.type ? this.state.type : "Выберете тип обращения",
+                            theme: this.state.theme,
+                            message: this.state.message,
                         }}
                         validationSchema={schemaSupport}
                         onSubmit = {(values) => {console.log(values)}}>
-                        {({ errors, handleSubmit, handleChange, values }) => {
+                        {({ errors, handleSubmit, values }) => {
 
                         const ChangeLink = () => {
-                            if (values.theme.length && values.message.length > 0 ) {
-                                this.state.linkPage = "/dialog_support";
+                            if (values.theme && values.message != undefined) {
+                                if (values.theme.length && values.message.length > 0) {
+                                    linkPage = "/dialog_support";
+                                } else {
+                                    linkPage = "";
+                                }
                             } else {
-                                this.state.linkPage = "";
+                                linkPage = "";
                             }
                         }
 
                         const sendSupport = () => {
-                            if (values.theme.length && values.message.length > 0 ) {
-                                this.addClass(3)
+                            if (values.theme && values.message != undefined) {
+                                if (values.theme.length && values.message.length > 0) {
+                                    setTimeout(() => {
+                                        this.addClass(3)
+                                    }, 1);
+                                }
                             } 
                         }
 
                         return (
                         <>
                             <div>
-                                <CustomSelector addClassName={styles["margin-selector"]} addIMG="pen" title="Выберите тип обращения" items={type}/>
-                                <InputWithError className="chat" name="theme" onChange={handleChange} onKeyUp={ChangeLink()} 
+                                <CustomSelector onClick={(e)=> (this.setState({ ...this.state, type: e.target.innerText}))}
+                                    title={values.type} items={this.state.typeSelector}
+                                    addClassName={styles["margin-selector"]} addIMG="pen"/>
+                                <InputWithError onChange={(e)=> {this.setState({ theme: e.target.value })}} 
+                                    className="chat" name="theme" onKeyUp={ChangeLink()} 
                                     placeholder='Тема обращения' type="text"
                                     classError={errors.theme ? "view" : ""} addClassInput="main-input"
                                     textError={errors.theme || "ОК"} value={values.theme}/>
-                                <TextArea name="message" onChange={handleChange}  onKeyUp={ChangeLink()} 
+                                <TextArea onChange={(e)=> this.setState({ message: e.target.value })} 
+                                    name="message" onKeyUp={ChangeLink()} 
                                     placeholder='Напишите сообщение' type="text"
                                     classError={errors.message ? "view" : ""} addClassInput="main-input"
                                     textError={errors.message || "ОК"} value={values.message}/>
                             </div>
-                            <ButtonAddFile onClick={this.addComponent}>Добавить файл</ButtonAddFile>
-                            <div className={`${styles["for-added"]} d-flex`}>
-                                {this.state.addFile.map((item)=>(
-                                    item ?
-                                        <AddFile nameFile="Название" clickDelete={()=>this.onRemove(item.id)}/>
-                                    : null
-                                ))}
-                            </div>
-                            <LinkButton onClick={()=>{handleSubmit(), sendSupport()}} href={this.state.linkPage}>Создать обращение</LinkButton> 
+                            <AddImageFromPopup/>
+                            <LinkButton onClick={()=>{handleSubmit(), sendSupport()}} href={linkPage}>Создать обращение</LinkButton> 
                         </>
                         );}}
                     </Formik>

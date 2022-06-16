@@ -75,7 +75,7 @@ const ChoosePaymentMethod = (props) => {
                     {
                         PayOnlineRoutes.slice(0, 4).map(v => {
                             return (
-                                <SocialBlock addClass={styles["pay-online"]} className={v.select} img={v.img}>
+                                <SocialBlock key={v} addClass={styles["pay-online"]} className={v.select} img={v.img}>
                                     {v.name}
                                 </SocialBlock>
                             );
@@ -89,7 +89,7 @@ const ChoosePaymentMethod = (props) => {
                     {
                         PayCryptoRoutes.slice(0, 6).map(v => {
                             return (
-                                <SocialBlock addClass={styles["pay-crypto"]} className={v.select} img={v.img}>
+                                <SocialBlock key={v} addClass={styles["pay-crypto"]} className={v.select} img={v.img}>
                                     {v.name}
                                 </SocialBlock>
                             );

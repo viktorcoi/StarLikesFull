@@ -62,7 +62,7 @@ class NewOrder extends Component {
                                     {
                                         SocialRoutes.slice(0, 13).map(v => {
                                             return (
-                                                <SocialBlock className={v.select} img={v.img}>
+                                                <SocialBlock key={v} className={v.select} img={v.img}>
                                                     {v.name}
                                                 </SocialBlock>
                                             );
